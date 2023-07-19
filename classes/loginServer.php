@@ -8,9 +8,10 @@ class loginServer
         return isset($_SESSION['login']) ? true : false;
     }
 
-    public static function logout(){
+    public static function logout()
+    {
         session_destroy();
-        header('Location: '.INCLUDE_PATH_PAINEL);
+        header('Location: ' . INCLUDE_PATH_PAINEL);
     }
 
     public static function authenticate($email, $senha)
@@ -33,8 +34,7 @@ class loginServer
             $_SESSION['nome'] = $info['log_nome'];
             $_SESSION['senha'] = $info['log_senha'];
             $_SESSION['email'] = $info['log_senha'];
-            header('Location:'.INCLUDE_PATH_PAINEL);
-
+            header('Location:' . INCLUDE_PATH_PAINEL);
         } else {
             //Falhou
             echo frontend::alert('times', 'danger', 'Usuário ou senha incorretos.');
@@ -46,5 +46,10 @@ class loginServer
         if (session_status() === PHP_SESSION_NONE)
             die('Você não tem permissão para acessar este recurso');
     }
+
+    public static function sendRegisterData($nome, $cnpj, $telefone, $email, $obs)
+    {
+        $sql = connectionFactory::connect()->prepare("INSERT INTO `tb_solicitacoes_registro`(`sr_id`,`sr_nome`, `sr_cnpj`, `sr_telefone`, `sr_email`, `sr_observacao`) VALUES (NULL, '$nome', '$cnpj', '$telefone', '$email', '$obs')");
+        $sql->execute();
+    }
 }
-?>
