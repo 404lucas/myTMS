@@ -18,7 +18,7 @@ class frontend
 
     public static function alertCustom($icon, $type, $message)
     {
-        return '<div class="customAlert '.$type.'"><i class="fa-solid fa-' . $icon . '" style="margin-right: 10px;"></i>  
+        return '<div class="customAlert ' . $type . '"><i class="fa-solid fa-' . $icon . '" style="margin-right: 10px;"></i>  
         ' . $message . '
         </div>';
     }
@@ -35,32 +35,39 @@ class frontend
                 header('Location:' . INCLUDE_PATH_PAINEL);
             }
         } else {
-            echo 'Foi mal, essa página não existe!';
+            include('./pages/dashboard.php');
         }
     }
 
-
-    public static function MenuBtn($id, $title, $icon, $url)
+    public static function MenuBtn($id, $title, $icon, $userId)
     {
-        //Componente principal do botão, que é estruturado de acordo com a chamada no frontend para interagir também com o javascript.
-        echo '<div id="button' . $id . '" class="menuBtn btnClosed" onclick="toggleContent(\'button' . $id . '\',\'' . $title . '\')"data-toggle="tooltip" data-placement="right" title="' . $title . '">
-        <i class="fa-solid ' . $icon . ' menuBtnIcon"></i>
-        </div>
-
+        $subButtons = self::getSubButtons($title, $userId);
+        if (!empty($subButtons)) {
+            //Componente principal do botão, que é estruturado de acordo com a chamada no frontend para interagir também com o javascript.
+            echo '<div id="button' . $id . '" class="menuBtn btnClosed" onclick="toggleContent(\'button' . $id . '\',\'' . $title . '\')"data-toggle="tooltip" data-placement="right" title="' . $title . '">
+            <i class="fa-solid ' . $icon . ' menuBtnIcon"></i>
+            </div>
+    
             <div class="buttonContent content" id="button' . $id . '-content">';
-
-
-        //Links abaixo
-        $subButtons = self::getSubButtons($title);
-        foreach ($subButtons as $button) {
-            echo '<a href="' . INCLUDE_PATH_PAINEL . '?url=' . $button['link'] . '">' . $button['title'] . '</a>';
+            //Links abaixo
+            foreach ($subButtons as $button) {
+                echo '<a href="' . INCLUDE_PATH_PAINEL . '?url=' . $button['link'] . '">' . $button['title'] . '</a>';
+            }
+            echo '</div>';
         }
-
-        echo '</div>';
-
     }
 
-    private static function getSubButtons($title)
+    public static function MenuBtnMobile($title, $userId)
+    {
+        $subButtons = self::getSubButtons($title, $userId);
+        if (!empty($subButtons)) {
+            foreach ($subButtons as $button) {
+                echo '<a href="' . INCLUDE_PATH_PAINEL . '?url=' . $button['link'] . '">' . $button['title'] . '</a>';
+            }
+        }
+    }
+
+    private static function getSubButtons($title, $userId)
     {
         //links de cada botão
         $menuLinks = array(
@@ -69,7 +76,8 @@ class frontend
                 'subButtons' => array(
                     array(
                         'title' => 'Ver Relatórios',
-                        'link' => 'relatorios'
+                        'link' => 'relatorios',
+                        'access' => 2 //acessar_relatorios
                     ),
                 )
             ),
@@ -79,7 +87,8 @@ class frontend
                 'subButtons' => array(
                     array(
                         'title' => 'Ver dashboard',
-                        'link' => 'dashboard'
+                        'link' => 'dashboard',
+                        'access' => 0 //default
                     ),
                 )
             ),
@@ -89,20 +98,59 @@ class frontend
                 'subButtons' => array(
                     array(
                         'title' => 'Financeiro',
-                        'link' => 'financeiro'
+                        'link' => 'financeiro',
+                        'access' => 0 //default
                     ),
                 )
-            )
+            ),
+
+            array(
+                'title' => 'Usuários',
+                'subButtons' => array(
+                    array(
+                        'title' => 'Gerenciar usuários',
+                        'link' => 'usuarios',
+                        'access' => 2 //editar_acessos
+                    ),
+                    array(
+                        'title' => 'Acessos',
+                        'link' => 'acessos',
+                        'access' => 2 //editar_acessos
+                    ),
+
+                )
+            ),
+
+            array(
+                'title' => 'Uploads',
+                'subButtons' => array(
+                    array(
+                        'title' => 'Upload CT-e',
+                        'link' => 'uploadCte',
+                        'access' => 4 //upload_cte
+                    ),
+                )
+            ),
         );
+
+        $allowedSubButtons = array();
 
         foreach ($menuLinks as $value) {
             if ($value['title'] == $title) {
-                return $value['subButtons'];
+                foreach ($value['subButtons'] as $subButton) {
+                    $permited = acesso::verifyAppliedAccess($userId, $subButton['access']);
+                    if ($permited || $subButton['access'] == 0) {
+                        $allowedSubButtons[] = $subButton;
+                    }
+                }
             }
         }
 
-        return array(); // Retorna um array vazio se nenhum título correspondente for encontrado
+        return $allowedSubButtons;
     }
+
+
+
 
     public static function ticketSingle($currentTicket, $sessionActive)
     {
@@ -135,7 +183,6 @@ class frontend
                     <input type ="hidden" value="' . $currentTicket->id . '">
                 </div>
              </div>';
-
     }
 
     public static function readingForm($key, $title, $class, $id, $function)
@@ -169,6 +216,4 @@ class frontend
             <input name="' . $title . '" type="text" id="' . $id, $key . '" class="form-control">
         </div></div>';
     }
-
 }
-?>

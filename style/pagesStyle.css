@@ -19,6 +19,7 @@ textarea {
     padding: 20px;
     overflow-x: auto !important;
     overflow-y: visible !important;
+    margin-bottom: 30px !important;
 }
 
 .contentBoxMsg {
@@ -695,6 +696,116 @@ t {
     font-weight: 500;
     color: #909090;
 }
+
+.accessList {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.accessList form{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.accessSingle {
+    padding: 10px;
+    width: 230px;
+    min-height: 90px;
+    margin: 10px;
+    border: 1px solid #dddddd;
+    background-color: #dddddd;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.accessSingle input {
+    accent-color: #F06021;
+}
+.accessSingle h1{
+    font-weight: 600;
+    font-size: 17px;
+    margin-top: 25px;
+    color: #333;
+}
+
+.accessSingle i{
+    color: #F06021;
+}
+
+.accessSingle p{
+    font-size: 12px;
+}
+
+.accessSingle span {
+    background-color: #F06021;
+    min-width: 100% !important;
+    font-size: 12px;
+    color: #fff;
+    padding: 5px;
+    display: flex;
+    border-radius: 5px;
+    height: 15px !important;
+}
+
+.userBox {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.userWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 320px;
+}
+
+.userWrapper .form-group{
+    padding: 0 20px !important;
+}
+
+.userWrapper .form-group label{
+    margin-bottom: 2px;
+}
+
+.userPic {
+    color: #505050;
+    background-color: #ddd;
+    display: flex;
+    margin: 20px;
+    height: 200px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    font-size: 60px;
+}
+
+.userData {    
+    flex: 70%;
+    display: flex;
+    flex-direction: column;
+}
+.userData input {
+    margin: 5px 0;
+    min-width: 320px;
+
+}
+
+.userWrapper button {
+    margin: 25px;
+}
+
+#newUserRevealer {
+    margin: 0 10px;
+}
+
 
 /*-----------------------------------*/
 

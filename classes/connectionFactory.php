@@ -1,8 +1,8 @@
 <?php
 
-define('HOST', 'next-database.mariadb.database.azure.com');
-define('USER', 'nextmaster@next-database');
-define('PASSWORD', '9#p&[Next}5bY*25_@^837%%b!#');
+define('HOST', 'localhost');
+define('USER', 'root');
+define('PASSWORD', '');
 define('DATABASE', 'nexpress');
 
 class connectionFactory

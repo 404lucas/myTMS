@@ -44,9 +44,9 @@
         <div class="formContainer">
             <h1>Gostaria de ser <o>cadastrado(a)?</o>
             </h1>
-            <label>Insira seus dados abaixo para que nossa equipe os insira no nosso sistema.</label>
+            <label>Insira seus dados abaixo para que nossa equipe os insira em nosso sistema.</label>
             <div class="interactContainer" id="interactContainer">
-                <button class="btnAddTicket" id="sendDataBtn" style="top: 0;">
+                <button class="btnSendRegister" id="sendDataBtn" style="top: 0;">
                     <i class="fa-solid fa-arrow-down"></i>
                     Enviar dados
                 </button>
@@ -86,7 +86,7 @@
             } ?>
         </div>
         <div class="imgContainer">
-            <img src="./img/logo.jpeg">
+            <img src="./img/logo.jpeg" style="margin-bottom:40px;">
         </div>
     </div>
     <script>

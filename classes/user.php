@@ -2,20 +2,23 @@
 
 class user
 {
-    
+
     private $id;
     private $nome;
     private $email;
     private $senha;
-    private $id_departamento;
+    private $cnpjCliente;
+    private $fantasiaCliente;
 
     // Método construtor
-    public function __construct($id, $id_departamento, $nome, $email)
+    public function __construct($id, $nome, $email, $senha, $cnpjCliente, $fantasiaCliente)
     {
         $this->id = $id;
         $this->nome = $nome;
         $this->email = $email;
-        $this->id_departamento = $id_departamento;
+        $this->senha = $senha;
+        $this->cnpjCliente = $cnpjCliente;
+        $this->fantasiaCliente = $fantasiaCliente;
     }
 
     // Métodos para retornar os dados do usuário
@@ -36,32 +39,90 @@ class user
 
     public function getSenha()
     {
-        return $this->email;
+        return $this->senha;
+    }
+    public function getFantasiaCliente()
+    {
+        return $this->fantasiaCliente;
     }
 
-    public function getDepartment()
+    public function getCnpjCliente()
     {
-        $department = $this->catchDepartment($this->id_departamento);
-        return $department;
+        return $this->cnpjCliente;
     }
 
-    private function catchDepartment($id)
+    public static function requestALLusers()
     {
-        $sql = connectionFactory::connect()->prepare("SELECT dep_nome from tb_departamento WHERE dep_id = '$id'");
+        $sql = connectionFactory::connect()->prepare("SELECT `log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`, `cli_dado_fantasia`, `cli_dado_cnpj` FROM `tb_login` LEFT JOIN `tb_cliente` ON `tb_login`.`log_id` = `tb_cliente`.`cli_id` WHERE `log_id` != 1 AND `log_nome` != 'Admin' ORDER BY `log_nome` DESC");
         $sql->execute();
 
-        if ($sql->rowCount() > 0) {
-            // Existe um departamento com esse ID
-            $sql = $sql->fetch();
-            $departamento = $sql['dep_nome'];
+        return $sql;
+    }
+    public static function requestSingleUser($userId)
+    {
+        $sql = connectionFactory::connect()->prepare("SELECT `log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`, `cli_dado_cnpj`, `cli_dado_fantasia` FROM `tb_login` LEFT JOIN `tb_cliente` ON `tb_login`.`log_id` = `tb_cliente`.`cli_id` WHERE `log_id` = '$userId' LIMIT 1");
+        $sql->execute();
+        $sql = $sql->fetch();
 
-            return $departamento;
+        return $sql;
+    }
+
+    public static function verifyExistingCPNJ($cnpj)
+    {
+        $sql = connectionFactory::connect()->prepare("SELECT `cli_dado_cnpj` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpj'");
+        $sql->execute();
+
+        if ($sql->rowCount() < 1) {
+            return false;
         } else {
-            // Não foi encontrado nenhum departamento com esse ID
-            return "Departamento não encontrado.";
+            return true;
+        }
+    }
+    public static function updateUser($user)
+    {
+        $id = $user->id;
+        $nome = $user->nome;
+        $email = $user->email;
+        $senha = $user->senha;
+        $cnpjCliente = $user->cnpjCliente;
+
+        if ($cnpjCliente != '') {
+            $sql = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpjCliente' LIMIT 1");
+            $sql->execute();
+            $idCliente = $sql->fetch();
+
+            $query = "UPDATE `tb_login` SET `log_id_cliente` = $idCliente , `log_nome` = '$nome',`log_senha` = '$senha',`log_email` =' $email' WHERE `log_id` = $id";
+
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        } else {
+            $query = "UPDATE `tb_login` SET `log_nome` = '$nome' ,`log_senha` = '$senha',`log_email` =' $email' WHERE `log_id` = $id";
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
         }
     }
 
-}
+    public static function insertUser($user)
+    {
+        $id = $user->id;
+        $nome = $user->nome;
+        $email = $user->email;
+        $senha = $user->senha;
+        $cnpjCliente = $user->cnpjCliente;
 
-?>
+        if ($cnpjCliente != '') {
+            $sql = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpjCliente' LIMIT 1");
+            $sql->execute();
+            $idCliente = $sql->fetch();
+
+            $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (]NULL,'$idCliente','$nome','$senha','$email')";
+
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        } else {
+            $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (NULL,NULL,'$nome','$senha','$email')";
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        }
+    }
+}

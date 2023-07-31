@@ -5,6 +5,8 @@
         </h1>
     </header>
 
+    <?php acesso::verifyAppliedAccess($_SESSION['id'], 2) ? null : die('Você não tem permissão para acessar este recurso.');?>
+
     <div class="contentBox hidden" style='background: #fff;'>
         <div class="contentBoxHeader">
             <h1 class="contentBoxTitle"><i class="fa-solid fa-chart-line"></i> Relatórios de entrega</h1>

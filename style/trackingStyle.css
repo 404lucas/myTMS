@@ -650,14 +650,20 @@ p {
     color: #aaa;
 }
 
-.interactContainer, .registerForm {
+.interactContainer,
+.registerForm {
     min-width: 100%;
     display: flex;
     flex-direction: column;
 }
 
+.registerForm {
+    padding: 35px;
+    }
+
 .formGroup {
     min-width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-self: center;

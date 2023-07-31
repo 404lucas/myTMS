@@ -36,10 +36,10 @@
 
 //Declarando o usuário para uso posterior
 if (class_exists('user')) {
-    $currentUser = new user($_SESSION['id'], $_SESSION['id_departamento'], $_SESSION['nome'], $_SESSION['email']);
+    
 } else {
     //Caso não haja sessão nenhuma, recarregar a página e voltar para o login
-    header('Location: https://'.INCLUDE_PATH_PAINEL.'?url=dashboard');
+    header('Location: https://' . INCLUDE_PATH_PAINEL . '?url=dashboard');
 }
 
 //Logout simples - destruir sessão
@@ -59,11 +59,14 @@ if (isset($_GET['logout'])) {
             <div class="menusContainerClosed">
                 <div style="height:70px;"></div>
 
-                <?php frontend::MenuBtn(0, 'Relatórios', 'fa-chart-line', 'relatorios'); ?>
-                <?php frontend::MenuBtn(1, 'DashBoard', 'fa-gauge-high', 'dashboard'); ?>
-                <?php frontend::MenuBtn(2, 'Financeiro', 'fa-wallet', 'financeiro'); ?>
-                <?php frontend::MenuBtn(3, 'Upload', 'fa-upload', ''); ?>
-                <?php frontend::MenuBtn(4, 'Download', 'fa-download', ''); ?>
+                <?php
+                frontend::MenuBtn(0, 'DashBoard', 'fa-gauge-high',  $_SESSION['id']);
+                frontend::MenuBtn(1, 'Relatórios', 'fa-chart-line', $_SESSION['id']);
+                frontend::MenuBtn(2, 'Financeiro', 'fa-wallet',  $_SESSION['id']);
+                frontend::MenuBtn(3, 'Usuários', 'fa-user', $_SESSION['id']);
+                frontend::MenuBtn(4, 'Uploads', 'fa-upload',  $_SESSION['id']);
+                frontend::MenuBtn(5, 'Download', 'fa-download', $_SESSION['id']);
+                ?>
 
                 <div style="height:100px;"></div>
             </div>
@@ -82,7 +85,7 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </aside>
-	<!--Nav apenas para mobile-->
+    <!--Nav apenas para mobile-->
     <div class="navMobile">
         <div class="navMobileContainer">
             <div class="navMobileHeader">
@@ -94,7 +97,14 @@ if (isset($_GET['logout'])) {
             </p>
             <div class="collapse mobileNavList" id="collapseExample">
                 <div class="mobileNavList">
-                    <a href="<?php echo INCLUDE_PATH_PAINEL . '?url=relatorios';?>">Relatórios</a>
+                    <?php
+                    frontend::MenuBtnMobile('DashBoard',  $_SESSION['id']);
+                    frontend::MenuBtnMobile('Relatórios', $_SESSION['id']);
+                    frontend::MenuBtnMobile('Financeiro', $_SESSION['id']);
+                    frontend::MenuBtnMobile('Usuários', $_SESSION['id']);
+                    frontend::MenuBtnMobile('Uploads', $_SESSION['id']);
+                    frontend::MenuBtnMobile('Download', $_SESSION['id']);
+                    ?>
                     <a href="<?php echo INCLUDE_PATH_PAINEL ?>?logout">Logout</a>
                 </div>
             </div>
@@ -103,8 +113,8 @@ if (isset($_GET['logout'])) {
     <script defer src="./js/app.js"></script>
     <div class="contentArea">
         <?php
-		
-		//Incluindo todas as páginas
+
+        //Incluindo todas as páginas
         frontend::loadPage();
 
         ?>

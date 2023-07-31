@@ -30,7 +30,6 @@ class loginServer
             //Logado
             $_SESSION['login'] = true;
             $_SESSION['id'] = $info['log_id'];
-            $_SESSION['id_departamento'] = $info['log_id_departamento'];
             $_SESSION['nome'] = $info['log_nome'];
             $_SESSION['senha'] = $info['log_senha'];
             $_SESSION['email'] = $info['log_senha'];

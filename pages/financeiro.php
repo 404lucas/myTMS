@@ -5,7 +5,11 @@
         </h1>
     </header>
 
-    <div class="contentBox hidden">
+    <?php 
+        dataFeeder::sendXML();
+    ?>
+
+    <!--div class="contentBox hidden">
 
         <div class="metricBox w3">
             <div class="metricHeader">

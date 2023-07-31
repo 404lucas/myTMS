@@ -1,7 +1,7 @@
 <div class="mainContent">
     <header>
         <h1><i class="fa-solid fa-gauge-high"></i>
-            Dashboard
+            Bem vindo, <o><?php echo $_SESSION['nome']; ?></o>
         </h1>
     </header>
 
