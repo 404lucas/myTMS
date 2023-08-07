@@ -33,7 +33,7 @@ class message
 
     public function getFrom()
     {
-        return $this->from;
+        return $this->from; 
     }
 
     public function getTo()
@@ -87,6 +87,6 @@ class message
             return 'him';
         }
     }
-}
+}                          
 
 ?>

@@ -1,156 +1,203 @@
 <div class="mainContent">
-    <header>
-        <h1><i class="fa-solid fa-chart-line"></i>
-            Relatórios
-        </h1>
+    <header class="dividedHeader">
+        <div class="headerWrapper">
+            <div>
+                <i class="fa-solid fa-chart-line"></i>
+                <h1>
+                    Relatórios
+                </h1>
+            </div>
+            <form method="POST" class="input-group mb-3 w-25">
+                <select class="form-control" name="parameter" style="max-width:50px;">
+                    <option value="nfe_serial_pedido">NF-e</option>
+                    <option value="cte_ide_nCT">CT-e</option>
+                    <option value="nfe_dest_email">E-mail</option>
+                    <option value="nfe_dest_cnpj || cli_dado_cnpj">CNPJ</option>
+                    <option value="nfe_dest_cpf || cli_dado_cpf">CPF</option>
+                    <option value="nfe_id">ID</option>
+                </select>
+                <input type="text" name="value" class="form-control" placeholder="Busca geral" aria-label="Busca geral" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button name="customFilter" class="btn btn-dark" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+            <?php
+            if (isset($_POST['customFilter'])) {
+                $currentFilter = new filter;
+                $currentFilter->addWhere("`" . $_POST['parameter'] . "`" . " = " . "'" . $_POST['value'] . "'");
+                $whereQuery = $currentFilter->getWhereClause();
+            }
+            ?>
+        </div>
     </header>
 
-    <?php acesso::verifyAppliedAccess($_SESSION['id'], 2) ? null : die('Você não tem permissão para acessar este recurso.');?>
+    <?php $errorMsg = 'Você não tem permissão para acessar esse recurso.';
+    acesso::verifyAppliedAccess($_SESSION['id'], 2) ? null : include('error.php'); ?>
 
     <div class="contentBox hidden" style='background: #fff;'>
-        <div class="contentBoxHeader">
-            <h1 class="contentBoxTitle"><i class="fa-solid fa-chart-line"></i> Relatórios de entrega</h1>
+        <div class="contentBoxHeaderDivided">
+            <div class="contentBoxTitle"><i class="fa-solid fa-filter"></i>
+                <h1>Filtrar relatórios<span></span></h1>
+            </div>
+            <a data-toggle="collapse" href="#collapseFilters" role="button" aria-expanded="false" aria-controls="collapseFilters" id="filterCascadeBtn" class="filterCascadeBtn">
+                <i id="filterCascadeIcon" class="fa-solid fa-chevron-down"></i>
+            </a>
         </div>
-        <!--<div class="identLabel"><label><i class="fa-solid fa-filter"></i>Filtros</label></div>-->
-        <form method="post" id="formRelatorio">
+        <div class="collapse" id="collapseFilters">
+            <!--<div class="identLabel"><label><i class="fa-solid fa-filter"></i>Filtros</label></div>-->
+            <form method="post" id="formRelatorio">
 
-            <?php $currentFilter = new filter(); ?>
+                <?php $currentFilter = new filter(); ?>
 
-            <!--TO DO: ADICIONAR FILTRAGEM GERAL-->
+                <!--TO DO: ADICIONAR FILTRAGEM GERAL-->
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Situação da encomenda</label>
-                    <select class="form-control" name="situacao" id="mainOptions">
-                        <option disabled selected value="Em andamento">Selecione...</option>
-                        <!--BASEADO EM STATUS GERAL-->
-                        <option value="Em andamento">Em andamento</option>
-                        <option value="Finalizadas">Finalizadas</option>
-                        <option value="Todas">Todas</option>
-                        <option disabled></option>
-                        <!--BASEADO EM TICKETS - DESTINATARIO-->
-                        <option value="Remetente">Ocorrências Remetente</option>
-                        <option value="Destinatário">Ocorrências Destinatário</option>
-                        <option value="SAC">Ocorrências SAC</option>
-                        <option value="SOP">Ocorrências SOP</option>
-                        <option value="SAT">Ocorrências SAT</option>
-                        <option value="NC">Ocorrências NC</option>
-                        <option value="Adm Bases">Ocorrências Adm Bases</option>
-                        <option disabled></option>
-                        <!--BASEADO EM STATUS-->
-                        <option value="Enviado para sinistro">Enviado para sinistro</option>
-                        <option value="Devolução Solicitada">Devolução Solicitada</option>
-                        <!--BASEADO EM DESCONHECIDO-->
-                        <!--option value="Comprovantes solicitados">Comprovantes solicitados</option>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Situação da encomenda</label>
+                        <select class="form-control" name="situacao" id="mainOptions">
+                            <option disabled value="Em andamento">Selecione...</option>
+                            <!--BASEADO EM STATUS GERAL-->
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Finalizadas">Finalizadas</option>
+                            <option value selected="Todas">Todas</option>
+                            <option disabled></option>
+                            <!--BASEADO EM TICKETS - DESTINATARIO-->
+                            <option value="Remetente">Ocorrências Remetente</option>
+                            <option value="Destinatário">Ocorrências Destinatário</option>
+                            <option value="SAC">Ocorrências SAC</option>
+                            <option value="SOP">Ocorrências SOP</option>
+                            <option value="SAT">Ocorrências SAT</option>
+                            <option value="NC">Ocorrências NC</option>
+                            <option value="Adm Bases">Ocorrências Adm Bases</option>
+                            <option disabled></option>
+                            <!--BASEADO EM STATUS-->
+                            <option value="Enviado para sinistro">Enviado para sinistro</option>
+                            <option value="Devolução Solicitada">Devolução Solicitada</option>
+                            <!--BASEADO EM DESCONHECIDO-->
+                            <!--option value="Comprovantes solicitados">Comprovantes solicitados</option>
                         <option value="Comprovantes disponibilizados">Comprovantes disponibilizados</option>
                         <option value="Acareações Solicitadas">Acareações Solicitadas</option>
                         <option value="Acareações Disponibilizadas">Acareações Disponibilizadas</option-->
-                    </select>
-                </div>
+                        </select>
+                    </div>
+
+                    <script>
+                        $(document).ready(function() {
+                            $('select').select(function() {
+                                $('#formRelatorio').submit();
+                            });
+                        });
+                    </script>
 
 
-                <div class="form-group">
-                    <label>Cliente</label>
-                    <select class="form-control" name="cliente">
-                        <option disabled selected>Selecione...</option>
-                        <?php
-                        #Selecionando os clientes
-                        $currentFilter->getFilter('cli_dado_razao', 'cli_id', 'tb_cliente', '');
-                        ?>
-                    </select>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="cliente">
+                            <option disabled selected>Selecione...</option>
+                            <?php
+                            #Selecionando os clientes
+                            $currentFilter->getFilter('cli_dado_razao', 'cli_id', 'tb_cliente', '');
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Atendente</label>
+                        <select class="form-control" name="atendente">
+                            <option disabled selected>Selecione...</option>
+                            <?php
+                            #Selecionando os logins
+                            $currentFilter->getFilter('log_nome', 'log_id', 'tb_login', 'WHERE log_id != 1');
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Executivo</label>
+                        <select disabled class="form-control" name="executivo">
+                            <option disabled selected>Selecione...</option>
+                            <?php
+                            #Selecionando os logins - DESABILITADO: REQUER ATUALIZAÇÃO NO BANCO
+                            $currentFilter->getFilter('log_nome', 'log_id', 'tb_login', 'WHERE log_id != 1');
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Grupo/Tomador</label>
+                        <select class="form-control" name="todo">
+                            <option>Selecione...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Base/Parceiro</label>
+                        <select class="form-control" name="parceiro">
+                            <option disabled selected>Selecione...</option>
+                            <?php
+                            #Selecionando os parceiros
+                            $currentFilter->getFilter('parc_fantasia', 'parc_id', 'tb_parceiro', '');
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Arquivos Recebidos</label>
+                        <select class="form-control" name="recebidos">
+                            <option>Todos os arquivos</option>
+                            <option>Somente processados</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Inicial</label>
+                        <input type="date" class="form-control yellowBg" name="dataInicial">
+                    </div>
+                    <div class="form-group">
+                        <label>Data Final </label>
+                        <input type="date" class="form-control yellowBg" name="dataFinal">
+                    </div>
+                    <div class="form-group">
+                        <label>Ordenar</label>
+                        <select class="form-control yellowBg" name="order" id>
+                            <option value="id">ID do Envio</option>
+                            <option value="cte">CT-e</option>
+                            <option value="nfe">NF-e</option>
+                            <option value="remetente">Remetente</option>
+                            <option value="destinatario">Destinatário</option>
+                            <option value="dataProcessamento">Data Processamento</option>
+                            <option value="previsao">Previsão de Entrega</option>
+                            <option value="cidade">Cidade</option>
+                            <option value="uf">UF</option>
+                            <option value="dataStatus">Data Status</option>
+                            <option value="descStatus">Descrição Status</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Direção</label>
+                        <select class="form-control yellowBg" name="direction">
+                            <option value="asc">Crescente</option>
+                            <option value="desc">Decrescente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Atual</label>
+                        <select class="form-control" name="status">
+                            <option selected disabled>Selecione...</option>
+                            <?php
+                            $currentFilter->getFilter('stt_nome', 'stt_id', 'tb_status', '');
+                            ?>
+                        </select>
+                    </div>
+                    <button class="btn btn-block btn-dark" type="submit" name="submit"><i class="fa-solid fa-plus"></i>
+                        Gerar Relatório</button>
                 </div>
-                <div class="form-group">
-                    <label>Atendente</label>
-                    <select class="form-control" name="atendente">
-                        <option disabled selected>Selecione...</option>
-                        <?php
-                        #Selecionando os logins
-                        $currentFilter->getFilter('log_nome', 'log_id', 'tb_login', 'WHERE log_id != 1');
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Executivo</label>
-                    <select disabled class="form-control" name="executivo">
-                        <option disabled selected>Selecione...</option>
-                        <?php
-                        #Selecionando os logins - DESABILITADO: REQUER ATUALIZAÇÃO NO BANCO
-                        $currentFilter->getFilter('log_nome', 'log_id', 'tb_login', 'WHERE log_id != 1');
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Grupo/Tomador</label>
-                    <select class="form-control" name="todo">
-                        <option>Selecione...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Base/Parceiro</label>
-                    <select class="form-control" name="parceiro">
-                        <option disabled selected>Selecione...</option>
-                        <?php
-                        #Selecionando os parceiros
-                        $currentFilter->getFilter('parc_fantasia', 'parc_id', 'tb_parceiro', '');
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Arquivos Recebidos</label>
-                    <select class="form-control" name="recebidos">
-                        <option>Todos os arquivos</option>
-                        <option>Somente processados</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Data Inicial</label>
-                    <input type="date" class="form-control yellowBg" name="dataInicial">
-                </div>
-                <div class="form-group">
-                    <label>Data Final </label>
-                    <input type="date" class="form-control yellowBg" name="dataFinal">
-                </div>
-                <div class="form-group">
-                    <label>Ordenar</label>
-                    <select class="form-control yellowBg" name="order" id>
-                        <option value="id">ID do Envio</option>
-                        <option value="cte">CT-e</option>
-                        <option value="nfe">NF-e</option>
-                        <option value="remetente">Remetente</option>
-                        <option value="destinatario">Destinatário</option>
-                        <option value="dataProcessamento">Data Processamento</option>
-                        <option value="previsao">Previsão de Entrega</option>
-                        <option value="cidade">Cidade</option>
-                        <option value="uf">UF</option>
-                        <option value="dataStatus">Data Status</option>
-                        <option value="descStatus">Descrição Status</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Direção</label>
-                    <select class="form-control yellowBg" name="direction">
-                        <option value="asc">Crescente</option>
-                        <option value="desc">Decrescente</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Status Atual</label>
-                    <select class="form-control" name="status">
-                        <option selected disabled>Selecione...</option>
-                        <?php
-                        $currentFilter->getFilter('stt_nome', 'stt_id', 'tb_status', '');
-                        ?>
-                    </select>
-                </div>
-                <button class="btn btn-block btn-dark" type="submit" name="submit"><i class="fa-solid fa-plus"></i> Gerar Relatório</button>
-            </div>
-        </form>
-        </form>
+            </form>
+        </div>
         <form id="hiddenForm" method="post">
             <input type="hidden" id="hiddenQueryInput"></input>
         </form>
     </div>
-    <div class="contentBox" style="background-color: #fff; margin-top: 40px;">
+    <div class="contentBox hidden" style="background-color: #fff; margin-top: 40px;">
+        <div class="contentBoxHeader">
+            <div class="contentBoxTitle"><i class="fa-solid fa-truck"></i>
+                <h1>Encomendas<span></span></h1>
+            </div>
+        </div>
         <?php
 
         if (isset($_POST['submit'])) {
@@ -418,6 +465,11 @@
                         $value['tkt_destinatario'],
                     );
 
+                    $getCte = cte::getMainCTEData($currentNfe->getCteChave());
+                    if ($getCte) {
+                        $currentCTE = new cte($getCte['cte_id'], $getCte['cte_chCTe'], $getCte['cte_ide_nCT'], $getCte['cte_ide_cCT'], 11, $getCte['cte_rem_infNF_vBC'], 'CAF', $getCte['cte_rem_infNF_nPeso'], $getCte['cte_arquivo_xml'], $getCte['cte_arquivo_xml']);
+                    }
+
                 ?>
 
                     <div class="modal fade" id="modal<?php echo $currentNfe->getId(); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -470,6 +522,7 @@
 
                                     <?php if (isset($_POST['enviarTicket' . $currentNfe->getId()])) {
                                         $currentTicket = new ticket(NULL, $currentNfe->getId(), $_SESSION['id'], NULL, $_POST['conteudo'], $_POST['destinatario'], $_POST['visualizador'], 'blob', 0, NULL, NULL, NULL);
+                                        logFeeder::log($_SESSION['id'], 'Envio de Ticket na NF-e ID ' . $currentNfe->getId());
                                         $currentTicket->sendTicket($currentTicket);
                                     } ?>
                                     </form>
@@ -523,7 +576,8 @@
 
                                     <?php if (isset($_POST['enviarStatus' . $currentNfe->getId()])) {
                                         //Envio dos dados para a atualização de status
-                                        $currentStatusApply = new statusApply(($_POST['stt'] ?? 820), $currentNfe->getId(), ($_POST['statusDate'] ?? NULL));
+                                        $currentStatusApply = new statusApply($_POST['stt'] ?? 820, $currentNfe->getId(), $_SESSION['nome'], $_POST['statusDate'] ?? NULL);
+                                        logFeeder::log($_SESSION['id'], 'Adição de status ' . $_SESSION['nome'] . ' sobre a NF-e ID' . $currentNfe->getId());
                                         $currentStatusApply->sendStatus($currentStatusApply);
                                     } ?>
                                     </form>
@@ -532,15 +586,16 @@
                         </div>
                     </div>
 
+
                     <!--Tabela principal para exibição de dados da NFE-->
                     <!--Parte principal-->
                     <tr>
 
                         <td>
-                            <?php echo $currentNfe->getCte(); ?>
+                            <?php echo isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTE vinculado'; ?>
                         </td>
                         <td>
-                            <?php echo $currentNfe->getId(); ?>
+                            <?php echo $currentNfe->getSerialCodigo(); ?>
                         </td>
                         <td>
                             <?php echo $currentNfe->getDestRazao(); ?>
@@ -565,7 +620,7 @@
                         </td>
                         <td>
                             <?php echo '<button class="btn btn-dark" id="btn" onclick="toggleNFEContent(\'' . $key . '\')"><i class="fa-solid fa-chevron-down"></i></button>'; ?>
-                            <div id="<?php echo $key; ?>" style="min-height: 100px; margin-left: 20px; border-radius: 0 50px 20px 20px; background-color: #ececec; width: calc(inherit - 100px) !important; position: absolute; left: 0; border:#DEE2E6 1px solid; display: none; align-self: center; padding: 30px 0; margin-top: 13px;">
+                            <div id="<?php echo $key; ?>" style="min-height: 100px; margin-left: 20px; background-color: #ececec; width: calc(inherit - 100px) !important; position: absolute; left: 0; border:#DEE2E6 1px solid; display: none; align-self: center; padding: 30px 0; margin-top: 13px;">
 
                                 <!--Menu da nota, todos os dados exiibidos-->
                                 <div class="mainTableMenuContainer" id="mainTableMenuContainer">
@@ -606,7 +661,7 @@
                                                                 }
                                                                 $currentTicket = new ticket($value['tkt_id'], $value['tkt_id_nfe'], $value['tkt_id_autor'], $value['autor_nome'], $value['tkt_conteudo'], $value['tkt_destinatario'], $value['tkt_visualizador'], $value['tkt_arquivo'], $value['tkt_finalizado'], $value['tkt_id_finalizador'], $value['finalizador_nome'], $value['tkt_data_criacao']);
 
-                                                                echo frontend::ticketSingle($currentTicket, true);
+                                                                echo frontend::ticketSingle($currentTicket, true, $_SESSION['id']);
                                                         ?>
 
                                                         <?php }
@@ -669,13 +724,15 @@
                                                                 </ul>
                                                             </section>
                                                             <!--Tabela com todos os status-->
-                                                            <table class="table table-striped table-hover table-bordered">
+                                                            <table class="table table-striped table-hover table-bordered" style="zoom:90%;">
                                                                 <thead>
                                                                     <tr class="thead-dark">
                                                                         <th>Tipo</th>
                                                                         <th>Descrição</th>
-                                                                        <th>Descrição Popular</th>
                                                                         <th>Data</th>
+                                                                        <th>Autor</th>
+                                                                        <?php if (acesso::verifyAppliedAccess($_SESSION['id'], 5)) { ?>
+                                                                            <th></th> <?php } ?>
                                                                     </tr>
                                                                 </thead>
                                                                 <?php
@@ -685,6 +742,7 @@
                                                                         $value['stta_id'],
                                                                         $value['stta_id_nfe'],
                                                                         $value['stta_id_status'],
+                                                                        $value['stta_autor'],
                                                                         $value['stt_id'],
                                                                         $value['stt_nome'],
                                                                         $value['stt_descricao'],
@@ -708,11 +766,22 @@
                                                                             <?php echo $currentStatus->getDescricao(); ?>
                                                                         </td>
                                                                         <td>
-                                                                            <?php echo $currentStatus->getDescricaoPopular(); ?>
-                                                                        </td>
-                                                                        <td>
                                                                             <?php echo $currentStatus->getDataAlteracao(); ?>
                                                                         </td>
+                                                                        <td>
+                                                                            <?php echo $currentStatus->getSttaAutor(); ?>
+                                                                        </td>
+
+                                                                        <?php if (acesso::verifyAppliedAccess($_SESSION['id'], 5)) { ?>
+                                                                            <td style="padding: 0;">
+                                                                                <button id="deleteStatusBtn<?php echo $currentStatus->getSttaId(); ?>" class="btn btn-secondary" onclick="deleteStatus(<?php echo $currentStatus->getSttaId(); ?>)"><i class="fa-solid fa-trash-can"></i></button>
+                                                                                <div id="deleteStatusDiv<?php echo $currentStatus->getSttaId(); ?>" class="d-none">
+                                                                                    <button id="cancelStatusDeletingBtn<?php echo $currentStatus->getSttaId(); ?>" onclick='cancelStatusDeleting(<?php echo $currentStatus->getSttaId(); ?>)' class="btn btn-secondary"><i class="fa-solid fa-times"></i></button>
+                                                                                    <a class="btn btn-danger" href=<?php echo 'functions/deleteStatus.php?id=' . $currentStatus->getSttaId() . '&userId=' . $_SESSION['id']; ?>><i class="fa-solid fa-trash-can"></i></a>
+                                                                                </div>
+                                                                            </td>
+                                                                        <?php } ?>
+
                                                                     </tr>
                                                                 <?php } ?>
                                                             </table>
@@ -735,93 +804,103 @@
                                         <form class="formContainer">
 
                                             <label class="formTitle"><i class="fa-solid fa-user"></i>Remetente</label>
+                                            <?php
 
-                                            <?php frontend::readingForm($key, 'ID', 'w33', 'idcliente', $currentNfe->getIdCliente()); ?>
-                                            <?php frontend::readingForm($key, 'CNPJ', 'w33', 'cnpj', $currentNfe->getCliCNPJ()); ?>
-                                            <?php frontend::readingForm($key, 'Inscrição Estadual', 'w33', 'ie', $currentNfe->getCliIE()); ?>
-                                            <?php frontend::readingForm($key, 'Nome Fantasia', 'w33', 'fantasia', $currentNfe->getCliFantasia()); ?>
-                                            <?php frontend::readingForm($key, 'CEP', 'w33', 'cep', $currentNfe->getCliCEP()); ?>
-                                            <?php frontend::readingForm($key, 'Cidade', 'w33', 'ie', $currentNfe->getCliMunicipio()); ?>
+                                            frontend::readingForm($key, 'ID', 'w33', 'idcliente', $currentNfe->getIdCliente());
+                                            frontend::readingForm($key, 'CNPJ', 'w33', 'cnpj', $currentNfe->getCliCNPJ());
+                                            frontend::readingForm($key, 'Inscrição Estadual', 'w33', 'ie', $currentNfe->getCliIE());
+                                            frontend::readingForm($key, 'Nome Fantasia', 'w33', 'fantasia', $currentNfe->getCliFantasia());
+                                            frontend::readingForm($key, 'CEP', 'w33', 'cep', $currentNfe->getCliCEP());
+                                            frontend::readingForm($key, 'Cidade', 'w33', 'ie', $currentNfe->getCliMunicipio());
 
+                                            ?>
                                         </form>
 
                                         <form class="formContainer">
 
                                             <label class="formTitle"><i class="fa-solid fa-truck"></i>Entrega</label>
-
-                                            <?php frontend::readingForm($key, 'Data', 'w50', 'data', $currentNfe->getEntregaData()); ?>
-                                            <?php frontend::readingForm($key, 'Previsão', 'w50', 'previsao', $currentNfe->getEntregaPrevisao()); ?>
-                                            <?php frontend::readingForm($key, 'Prazo', 'w50', 'prazo', $currentNfe->getEntregaPrazo()); ?>
-                                            <?php frontend::readingForm($key, 'Monitorar', 'w50', 'monitorar', $currentNfe->getEntregaMonitorar()); ?>
-
+                                            <?php
+                                            frontend::readingForm($key, 'Data', 'w50', 'data', $currentNfe->getEntregaData());
+                                            frontend::readingForm($key, 'Previsão', 'w50', 'previsao', $currentNfe->getEntregaPrevisao());
+                                            frontend::readingForm($key, 'Prazo', 'w50', 'prazo', $currentNfe->getEntregaPrazo());
+                                            frontend::readingForm($key, 'Monitorar', 'w50', 'monitorar', $currentNfe->getEntregaMonitorar());
+                                            ?>
                                         </form>
 
 
                                         <form class="formContainer">
 
                                             <label class="formTitle"><i class="fa-solid fa-user"></i>Destinatário</label>
-
-                                            <?php frontend::readingForm($key, 'Nome do destinatário', 'w33', 'razaoSocial', $currentNfe->getCliRazao()); ?>
-                                            <?php frontend::readingForm($key, 'CPL', 'w33', 'CPL', $currentNfe->getCte()); ?>
-                                            <?php frontend::readingForm($key, 'CPF', 'w33', 'CPF', $currentNfe->getDestCPF()); ?>
-                                            <?php frontend::readingForm($key, 'CNPJ', 'w33', 'CNPJ', $currentNfe->getDestCNPJ()); ?>
-                                            <?php frontend::readingForm($key, 'UF', 'w33', 'UF', $currentNfe->getDestUF()); ?>
-                                            <?php frontend::readingForm($key, 'Cidade', 'w33', 'Cidade', $currentNfe->getDestCidade()); ?>
-                                            <?php frontend::readingForm($key, 'Bairro', 'w33', 'Bairro', $currentNfe->getDestBairro()); ?>
-                                            <?php frontend::readingForm($key, 'Logradouro', 'w50', 'Logradouro', $currentNfe->getDestLogradouro()); ?>
-                                            <?php frontend::readingForm($key, 'Complemento', 'w33', 'Complemento', $currentNfe->getDestComplemento()); ?>
-                                            <?php frontend::readingForm($key, 'P. de referência', 'w100', 'referência', $currentNfe->getDestPReferencia()); ?>
-
+                                            <?php
+                                            frontend::readingForm($key, 'Nome do destinatário', 'w33', 'razaoSocial', $currentNfe->getCliRazao());
+                                            frontend::readingForm($key, 'CPL', 'w33', 'CPL', $currentNfe->getCte());
+                                            frontend::readingForm($key, 'CPF', 'w33', 'CPF', $currentNfe->getDestCPF());
+                                            frontend::readingForm($key, 'CNPJ', 'w33', 'CNPJ', $currentNfe->getDestCNPJ());
+                                            frontend::readingForm($key, 'UF', 'w33', 'UF', $currentNfe->getDestUF());
+                                            frontend::readingForm($key, 'Cidade', 'w33', 'Cidade', $currentNfe->getDestCidade());
+                                            frontend::readingForm($key, 'Bairro', 'w33', 'Bairro', $currentNfe->getDestBairro());
+                                            frontend::readingForm($key, 'Logradouro', 'w50', 'Logradouro', $currentNfe->getDestLogradouro());
+                                            frontend::readingForm($key, 'Complemento', 'w33', 'Complemento', $currentNfe->getDestComplemento());
+                                            frontend::readingForm($key, 'P. de referência', 'w100', 'referência', $currentNfe->getDestPReferencia());
+                                            ?>
                                         </form>
 
 
                                         <form class="formContainer">
-
                                             <label class="formTitle"><i class="fa-solid fa-paperclip"></i>Documentação</label>
+                                            <?php
 
-                                            <?php frontend::readingForm($key, 'Sigla da tabela', 'w25', 'siglaTabela', $currentNfe->getDocSiglaTabela()); ?>
-                                            <?php frontend::readingForm($key, 'AWB', 'w25', 'AWB', $currentNfe->getDocAWB()); ?>
-                                            <?php frontend::readingForm($key, 'Gris', 'w25', 'Gris', $currentNfe->getDocGris()); ?>
-                                            <?php frontend::readingForm($key, 'Seguro', 'w25', 'Seguro', $currentNfe->getDocSeguro()); ?>
-                                            <?php frontend::readingForm($key, 'CFOP', 'w33', 'CFOP', $currentNfe->getDocCFOP()); ?>
-                                            <?php frontend::readingForm($key, 'Justificativa', 'w33', 'Justificativa', $currentNfe->getDocJustificativa()); ?>
-                                            <?php frontend::readingForm($key, 'Declaração', 'w33', 'Declaração', $currentNfe->getDocDeclaracao()); ?>
-                                            <?php frontend::readingForm($key, 'ICSM', 'w33', 'ICSM', $currentNfe->getDocICSM()); ?>
-                                            <?php frontend::readingForm($key, 'Rodo Courier', 'w33', 'RodoCourier', $currentNfe->getDocRodoCourier()); ?>
+                                            frontend::readingForm($key, 'AWB', 'w25', 'AWB', $currentNfe->getDocAWB());
+                                            frontend::readingForm($key, 'Gris', 'w25', 'Gris', $currentNfe->getDocGris());
+                                            frontend::readingForm($key, 'Seguro', 'w25', 'Seguro', $currentNfe->getDocSeguro());
+                                            frontend::readingForm($key, 'CFOP', 'w33', 'CFOP', $currentNfe->getDocCFOP());
+                                            frontend::readingForm($key, 'Rodo Courier', 'w33', 'RodoCourier', $currentNfe->getDocRodoCourier());
 
-                                            <?php frontend::readingForm($key, 'CTe', 'w33', 'CTe', $currentNfe->getCte()); ?>
-                                            <?php frontend::readingForm($key, 'Chave do CTe DLog', 'w33', 'Chave', $currentNfe->getCteChave()); ?>
-                                            <?php frontend::readingForm($key, 'cCT', 'w33', 'cCT', $currentNfe->getCtecct()); ?>
-                                            <?php frontend::readingForm($key, 'Origem', 'w33', 'Origem', $currentNfe->getCteOrigem()); ?>
+                                            frontend::readingForm($key, 'CTe', 'w33', 'CTe', isset($currentCTE) ? $currentCTE->getNCTe(): 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'Chave do CTe DLog', 'w33', 'Chave', isset($currentCTE) ? $currentCTE->getchCTe(): 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'cCT', 'w33', 'cCT', isset($currentCTE) ? $currentCTE->getCCT(): 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'Origem', 'w33', 'Origem', isset($currentCTE) ? $currentCTE->getNCTe(): 'Sem CTe vinculado.');
 
-                                            <?php frontend::readingForm($key, 'Pedido', 'w33', 'serialpedido', $currentNfe->getSerialPedido()); ?>
-                                            <?php frontend::readingForm($key, 'Código', 'w33', 'serialcodigo', $currentNfe->getSerialCodigo()); ?>
-                                            <?php frontend::readingForm($key, 'Série', 'w33', 'serialserie', $currentNfe->getSerialSerie()); ?>
-                                            <?php frontend::readingForm($key, 'VerProc', 'w33', 'serialverproc', $currentNfe->getSerialVerProc()); ?>
-                                            <?php frontend::readingForm($key, 'NNF', 'w33', 'serialnnf', $currentNfe->getSerialNNF()); ?>
-                                            <?php frontend::readingForm($key, 'Data do Protocolo', 'w33', 'serialdataprotocolo', $currentNfe->getSerialDataProtocolo()); ?>
-                                            <?php frontend::readingForm($key, 'Emissor do Protocolo', 'w33', 'serialemissor', $currentNfe->getSerialEmissorProtocolo()); ?>
+                                            frontend::readingForm($key, 'Pedido', 'w33', 'serialpedido', $currentNfe->getSerialPedido());
+                                            frontend::readingForm($key, 'Código', 'w33', 'serialcodigo', $currentNfe->getSerialCodigo());
+                                            frontend::readingForm($key, 'Série', 'w33', 'serialserie', $currentNfe->getSerialSerie());
+                                            frontend::readingForm($key, 'VerProc', 'w33', 'serialverproc', $currentNfe->getSerialVerProc());
+                                            frontend::readingForm($key, 'NNF', 'w33', 'serialnnf', $currentNfe->getSerialNNF());
+                                            frontend::readingForm($key, 'Data do Protocolo', 'w33', 'serialdataprotocolo', $currentNfe->getSerialDataProtocolo());
+                                            frontend::readingForm($key, 'Emissor do Protocolo', 'w33', 'serialemissor', $currentNfe->getSerialEmissorProtocolo());
 
+                                            ?>
                                         </form>
 
                                         <form class="formContainer">
 
                                             <label class="formTitle"><i class="fa-solid fa-user-tag"></i>Operadores</label>
-
-                                            <?php frontend::readingForm($key, 'Operador atendente', '100', 'operadornome', $currentNfe->getOperadorNome()); ?>
-                                            <?php frontend::readingForm($key, 'Comercial', '100', 'operadornome', $currentNfe->getExecutivoNome()); ?>
-
+                                            <?php
+                                            frontend::readingForm($key, 'Operador atendente', '100', 'operadornome', $currentNfe->getOperadorNome());
+                                            frontend::readingForm($key, 'Comercial', '100', 'operadornome', $currentNfe->getExecutivoNome());
+                                            ?>
                                         </form>
 
                                         <form class="formContainer">
 
                                             <label class="formTitle"><i class="fa-solid fa-calendar"></i>Datas</label>
-
-                                            <?php frontend::readingForm($key, 'Data de criação', 'w33', 'criacao', $currentNfe->getDataCriacao()); ?>
-                                            <?php frontend::readingForm($key, 'Data de alteração', 'w33', 'alteracao', $currentNfe->getDataAlteracao()); ?>
+                                            <?php
+                                            frontend::readingForm($key, 'Data de criação', 'w33', 'criacao', $currentNfe->getDataCriacao());
+                                            frontend::readingForm($key, 'Data de alteração', 'w33', 'alteracao', $currentNfe->getDataAlteracao()); ?>
 
                                         </form>
+                                        <?php
+                                        echo "<a class='btn btn-light' href=\"ctepdfgenerator.php?\" target='_blank'><i class='fa-solid fa-download'></i> <b>CT-E PDF</b></a><br>";
 
+                                        if (isset($currentCTE) && $currentCTE->getArquivoXML()) {
+                                            echo isset($currentCTE) ? "<a class='btn btn-light' href=\"download.php?file=" . urlencode($currentCTE->getArquivoXML()) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>" : NULL;
+                                        } elseif (isset($currentCTE) && is_array($currentCTE)) {
+                                            foreach ($currentCTE as $value) {
+                                                echo "<a class='btn btn-light' href=\"download.php?file=" . urlencode($value->getArquivoXML()) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>";
+                                            }
+                                        }
+                                        ?>
+                                        <br>
                                     </div>
                                 </div>
                             </div>
@@ -829,14 +908,37 @@
                     </tr>
             <?php }
             } else {
-                echo frontend::alert('question', 'dark', 'Não há <b>nenhuma</b> nota Fiscal que atende os requisitos da busca.');
+                echo frontend::alert('xmark', 'dark', 'Desculpe, não há <b>nenhuma</b> nota Fiscal que atende os requisitos da busca.');
             }
-            //} 
             ?>
             </table>
 
     </div>
 </div>
+<script>
+    var rotated = false;
+
+    $("#filterCascadeBtn").on("click", function() {
+        if (rotated) {
+            $("#filterCascadeIcon").css('transform', 'rotate(0deg)');
+        } else {
+            $("#filterCascadeIcon").css('transform', 'rotate(180deg)');
+        }
+        rotated = !rotated;
+    });
+
+    function deleteStatus(id) {
+        $('#deleteStatusDiv' + id).removeClass('d-none');
+        $('#deleteStatusDiv' + id).addClass('d-flex');
+        $('#deleteStatusBtn' + id).hide();
+    }
+
+    function cancelStatusDeleting(id) {
+        $('#deleteStatusDiv' + id).add('d-none');
+        $('#deleteStatusBtn' + id).addClass('d-flex');
+        $('#deleteStatusBtn' + id).show();
+    }
+</script>
 
 
 </div>

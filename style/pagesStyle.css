@@ -10,6 +10,9 @@ textarea {
 }
 
 .contentBox {
+    -webkit-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
     width: calc(100% - 20px);
     display: flex;
@@ -17,7 +20,6 @@ textarea {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    overflow-x: auto !important;
     overflow-y: visible !important;
     margin-bottom: 30px !important;
 }
@@ -37,7 +39,12 @@ textarea {
 
 .contentBoxHeader {
     width: 100%;
-    padding: 25px;
+}
+
+.contentBoxHeaderDivided {
+    min-width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
 }
 
 .tableWrapper {
@@ -46,16 +53,66 @@ textarea {
 
 .contentBoxTitle {
     font-size: 20px;
-    color: #505050;
-    font-weight: 700;
+    color: #000;
+    font-weight: 500;
+}
+
+.contentBoxTitle h1 {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    top: -15px;
+    left: 15px;
+}
+
+.contentBoxTitle h1 span {
+    width: 80px;
+    border-radius: 5px;
+    height: 3px;
+    display: flex;
+    position: relative;
+    top: 5px;
+    background-color: #F06021;
 }
 
 .contentBoxTitle i {
     color: #fff;
+    padding: 20px;
+    font-size: 30px;
     background-color: #F06021;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 20px 0 50px 0px;
     margin-right: 10px;
+    position: relative;
+    top: -21px;
+    left: -21px;
+}
+
+.contentBoxTitle p {
+    color: #909090;
+    font-size: 12px;
+    top: -20px;
+    left: 15px;
+    position: relative;
+}
+
+.metricContentBox {
+    min-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.dashboard25Container{
+    flex: 25%;
+    height: 100%;
+}
+
+.dashboard75Container{
+    flex: 75%;
+    height: 100%;
 }
 
 .identLabel {
@@ -114,14 +171,42 @@ form {
     max-width: 25% !important;
 }
 
+.h50 {
+    min-height: 50%;
+}
+
+.announceForm {
+    width: 450px;
+    flex-direction: column !important;
+}
+
+.announceForm input,
+.announceForm .form-group {
+    width: 100% !important;
+}
+
+.announceForm i {
+    font-size: 20px;
+    color: #707070;
+}
+
+.announceForm .fa-quote-right {
+    align-self: flex-end;
+}
+
+.announceForm .fa-quote-left {
+    align-self: flex-start;
+}
+
 .metricBox {
     align-self: center;
-    padding: 20px;
+    padding: 0;
     height: 180px;
     margin-top: 20px;
     margin-right: 20px;
     border-radius: 15px;
     background-color: #fff;
+    -top: -20px;
 }
 
 .metricHeader {
@@ -141,8 +226,8 @@ form {
 }
 
 .metricData {
-    color: #505050;
-    font-weight: 700;
+    color: #202020;
+    font-weight: 800;
     font-size: 55px;
 }
 
@@ -252,7 +337,7 @@ form {
     margin: 0;
 }
 
-.ticketHeaderIcon i {
+.commentIcon {
     background-color: #f0f0f0;
     color: #F06021;
     border: none;
@@ -326,12 +411,6 @@ p.sender {
     color: #505050;
     font-weight: 600;
     line-height: 18px;
-}
-
-
-.ticketHeader i {
-    font-size: 60px;
-    color: #F06021;
 }
 
 .ticketContent {
@@ -498,11 +577,10 @@ p.sender {
     flex-direction: column;
     justify-content: center;
     min-height: 100px;
-    border-radius: 0 50px 20px 20px;
     background-color: #ececec;
-    width: calc(inherit - 100px) !important;
+    width: calc(100% - 60px) !important;
     position: absolute;
-    left: 0;
+    left: 20px;
     border: #DEE2E6 1px solid;
     display: none;
     align-self: center;
@@ -574,7 +652,7 @@ p.sender {
     min-height: 60px;
 }
 
-.dividedHeader {
+.dividedHeader2 {
     display: flex;
     width: 91% !important;
     justify-content: space-between;
@@ -590,7 +668,6 @@ p.sender {
 }
 
 .dividedHeader i {
-    color: #ffffffce;
     margin-right: 10px;
 }
 
@@ -605,6 +682,12 @@ p.sender {
     color: #F06021;
     max-width: 60%;
     text-align: right !important;
+}
+
+.filterCascadeBtn i {
+    color: #505050;
+    font-size: 30px;
+    transition: 0.2s;
 }
 
 
@@ -705,7 +788,7 @@ t {
     align-items: center;
 }
 
-.accessList form{
+.accessList form {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -727,18 +810,19 @@ t {
 .accessSingle input {
     accent-color: #F06021;
 }
-.accessSingle h1{
+
+.accessSingle h1 {
     font-weight: 600;
     font-size: 17px;
     margin-top: 25px;
     color: #333;
 }
 
-.accessSingle i{
+.accessSingle i {
     color: #F06021;
 }
 
-.accessSingle p{
+.accessSingle p {
     font-size: 12px;
 }
 
@@ -766,11 +850,11 @@ t {
     min-width: 320px;
 }
 
-.userWrapper .form-group{
+.userWrapper .form-group {
     padding: 0 20px !important;
 }
 
-.userWrapper .form-group label{
+.userWrapper .form-group label {
     margin-bottom: 2px;
 }
 
@@ -787,11 +871,12 @@ t {
     font-size: 60px;
 }
 
-.userData {    
+.userData {
     flex: 70%;
     display: flex;
     flex-direction: column;
 }
+
 .userData input {
     margin: 5px 0;
     min-width: 320px;
@@ -933,12 +1018,34 @@ t {
         display: flex;
         flex-direction: column;
         text-align: center;
+        justify-content: center;
     }
-    
+
+    .contentBoxHeaderDivided {
+        flex-direction: column;
+    }
+
+    .filterCascadeBtn {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .contentBoxTitle h1 {
+        position: static;
+    }
+
     .contentBoxTitle i {
-        width: 50px;
         align-self: center;
+        border-radius: 0;
+        padding: 10px;
         margin-bottom: 10px;
+        border-radius: 10px;
+        position: static;
+    }
+
+    .contentBoxTitle h1 span {
+        margin: 0 auto;
     }
 
     .form-group {
@@ -992,7 +1099,32 @@ t {
         zoom: 60%;
     }
 
-    .ticketSingle { 
+    .ticketSingle {
         zoom: 70%;
+    }
+}
+
+@media (max-width: 596px) {
+
+    header {
+        text-align: center;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .dividedHeader {
+        height: 180px;
+        width: 100% !important;
+    }
+
+    .headerWrapper {
+        flex-direction: column;
+        padding-top: 10px;
+        height: 180px;
+    }
+
+    .headerWrapper form {
+        width: 80% !important;
+        margin: 20px;
     }
 }

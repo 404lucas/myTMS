@@ -33,6 +33,7 @@
 
     <!--fontawesome-->
     <script src="https://kit.fontawesome.com/6d424ce658.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
 
     <title>Next Express - Rastreamento</title>
@@ -301,6 +302,7 @@
                                                                                 $value['stta_id'],
                                                                                 $value['stta_id_nfe'],
                                                                                 $value['stta_id_status'],
+                                                                                $value['stta_autor'],
                                                                                 $value['stt_id'],
                                                                                 $value['stt_nome'],
                                                                                 $value['stt_descricao'],
@@ -455,7 +457,6 @@
                                 </div>
                             </div>
                         </div>
-                        <p>© 2023 Todos os direitos reservados | Next Express</p>
                     </div>
                 </div>
 

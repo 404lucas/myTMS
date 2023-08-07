@@ -39,6 +39,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
+        <link rel="icon" href="img/favicon.png" type="image/png">
+
     <title>NextExpress - Entrar</title>
 </head>
 

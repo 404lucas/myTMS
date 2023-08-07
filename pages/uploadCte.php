@@ -1,14 +1,19 @@
 <div class="mainContent">
     <header>
-        <h1><i class="fa-solid fa-upload"></i>
-            Uploads
-        </h1>
+        <div>
+            <i class="fa-solid fa-upload"></i>
+            <h1>
+                Uploads
+            </h1>
+        </div>
     </header>
 
-    <?php acesso::verifyAppliedAccess($_SESSION['id'], 4) ? null : die('Você não tem permissão para acessar este recurso.'); ?>
-    <?php
-    if ($_FILES["file"]["error"] == UPLOAD_ERR_OK) {
-        $pastaDestino = 'C:/xampp/htdocs/nexpress/cteBank/';
+    <?php $errorMsg = 'Você não tem permissão para acessar esse recurso.';
+    acesso::verifyAppliedAccess($_SESSION['id'], 4) ? null : include('error.php');
+
+    $pastaDestino = 'C:/xampp/htdocs/nexpress/cteBank/';
+
+    if (isset($_FILES["file"]) && $_FILES["file"]["error"] == UPLOAD_ERR_OK) {
         $nomeArquivo = $_FILES["file"]["name"];
         $caminhoCompleto = $pastaDestino . $nomeArquivo;
 
@@ -22,7 +27,6 @@
                     // Arquivo enviado com sucesso
                     echo frontend::alert('check', 'success', 'XML enviado!');
                     // Chama a função para enviar o XML ao banco de dados
-                    dataFeeder::sendXML();
                 } else {
                     echo frontend::alert('times', 'danger', 'Erro ao enviar arquivo');
                 }
@@ -31,19 +35,20 @@
             }
         }
         dataFeeder::sendXML();
-    } else {
-        echo frontend::alert('times', 'danger', 'Erro:' . $_FILES["file"]["error"]);
     }
 
     ?>
     <div class="contentBox hidden" style="background: #fff;">
         <div class="contentBoxHeader">
-            <h1 class="contentBoxTitle"><i class="fa-solid fa-upload"></i>Upload de CT-e</h1>
+            <div class="contentBoxTitle"><i class="fa-solid fa-upload"></i>
+                <h1>Upload de CT-e</h1>
+            </div>
         </div>
         <div>
-            <form method="POST" enctype="multipart/form-data" accept="application/xml, text/xml">
-                <input type="file" name="file" id="arquivo"></input>
-                <input type="submit" value="Enviar">
+            <form class="d-flex flex-column align-items-start" method="POST" enctype="multipart/form-data" accept="application/xml, text/xml">
+                <span class="badge badge-pill">Só são aceitos arquivos .XML</span>
+                <input type="file" name="file" id="arquivo" class="btn btn-outline-secondary btn-block"></input>
+                <button class="btn btn-dark btn-block" type="submit" value="Enviar">Enviar</button>
             </form>
         </div>
     </div>

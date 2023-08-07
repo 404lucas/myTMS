@@ -81,8 +81,9 @@ class dataFeeder
                 $UFEmit = (string)$xml->CTe->infCte->emit->enderEmit->UF ?? null;
                 $foneEmit = (string)$xml->CTe->infCte->rem->enderEmit->fone ?? null;
 
+
                 $CNPJRem = (string)$xml->CTe->infCte->rem->CNPJ ?? null;
-                $CPFRem = (string)$xml->CTe->infCte->rem->CPF ?? null;
+                $CPFRem = (string)$xml->CTe->infCte->rem->CPF ?? 'Sem CPF';
                 $IERem = (string)$xml->CTe->infCte->rem->IE ?? null;
                 $xNomeRem = (string)$xml->CTe->infCte->rem->xNome ?? null;
                 $xFantRem = (string)$xml->CTe->infCte->rem->xFant ?? null;
@@ -118,7 +119,6 @@ class dataFeeder
                 $chaveRem = (string)$xml->CTe->infCte->rem->infNFe->chave ?? null;
                 $pinNFeRem = (string)$xml->CTe->infCte->rem->infNFe->pin ?? null;
 
-
                 $CNPJRcv = (string)$xml->CTe->infCte->receb->CNPJ ?? null;
                 $CPFRcv = (string)$xml->CTe->infCte->receb->CPF ?? null;
                 $IERcv = (string)$xml->CTe->infCte->receb->IE ?? null;
@@ -138,7 +138,7 @@ class dataFeeder
 
                 $CNPJDest = (string)$xml->CTe->infCte->dest->CPF ?? null;
                 $CPFDest = (string)$xml->CTe->infCte->dest->CPF ?? null;
-                $IEDest = (string)$xml->CTe->infCte->dest->IE ?? 'vampeppt';
+                $IEDest = (string)$xml->CTe->infCte->dest->IE ?? null;
                 $xNomeDest = (string)$xml->CTe->infCte->dest->xNome ?? null;
                 $foneDest = (string)$xml->CTe->infCte->dest->fone ?? null;
                 $ISUFDest = (string)$xml->CTe->infCte->dest->ISUF ?? null;
@@ -151,7 +151,7 @@ class dataFeeder
                 $CEPDest = (string)$xml->CTe->infCte->dest->enderDest->CEP ?? null;
                 $UFDest = (string)$xml->CTe->infCte->dest->enderDest->UF ?? null;
                 $cPaisDest = (string)$xml->CTe->infCte->rem->enderDest->cPais ?? 0000;
-                $xPaisDest = (string)$xml->CTe->infCte->rem->enderDest->xPais ?? 'BRASIL';
+                $xPaisDest = (string)$xml->CTe->infCte->rem->enderDest->xPais ?? null;
                 $emailDest = (string)$xml->CTe->infCte->dest->email ?? null;
 
                 $vTPrest = (int)$xml->CTe->infCte->vPrest->vTPrest ?? null;
@@ -185,32 +185,51 @@ class dataFeeder
                 $chaveNFe = (string)$xml->CTe->infCte->infCTeNorm->infDoc->infNFe->chave ?? null;
                 $dPrev = (string)$xml->CTe->infCte->infCTeNorm->infDoc->infNFe->dPrev ?? null;
                 $RNTRC = (string)$xml->CTe->infCte->infCTeNorm->infModal->rodo->RNTRC ?? null;
+                $chCTe = (string)$xml->protCTe->infProt->chCTe ?? null;
+                $cStat = (string)$xml->protCTe->infProt->cStat ?? null;
 
-                // Inserindo no banco de dados
-                $query = "INSERT INTO `tb_cte`(`cte_id`, `cte_status`, `cte_chCTe`, `cte_ide_cUF`, `cte_ide_cCT`, `cte_ide_CFOP`, `cte_ide_natOp`, `cte_ide_forPag`, `cte_ide_mod`, `cte_ide_serie`, `cte_ide_nCT`, `cte_ide_dhEmi`, `cte_ide_tpImp`, `cte_ide_tpEmis`, `cte_ide_cDV`, `cte_ide_tpAmb`, `cte_ide_tpCTe`, `cte_ide_procEmi`, `cte_ide_verProc`, `cte_ide_cMunEnv`, `cte_ide_xMunEnv`, `cte_ide_UFEnv`, `cte_ide_modal`, `cte_ide_tpServ`, `cte_ide_cMunIni`, `cte_ide_xMunIni`, `cte_ide_UFIni`, `cte_ide_cMunFim`, `cte_ide_xMunFim`, `cte_ide_UFFim`, `cte_ide_retira`, `cte_emit_CNPJ`, `cte_emit_IE`, `cte_emit_xNome`, `cte_emit_xFant`, `cte_emit_enderEmit_xLgr`, `cte_emit_enderEmit_nro`, `cte_emit_enderEmit_xCpl`, `cte_emit_enderEmit_xBairro`, `cte_emit_enderEmit_cMun`, `cte_emit_enderEmit_xMun`, `cte_emit_enderEmit_CEP`, `cte_emit_enderEmit_UF`, `cte_emit_enderEmit_fone`, `cte_rem_CNPJ`, `cte_rem_CPF`, `cte_rem_IE`, `cte_rem_xNome`, `cte_rem_xFant`, `cte_rem_fone`, `cte_rem_enderReme_xLgr`, `cte_rem_enderReme_nro`, `cte_rem_enderReme_xCpl`, `cte_rem_enderReme_xBairro`, `cte_rem_enderReme_cMun`, `cte_rem_enderReme_xMun`, `cte_rem_enderReme_CEP`, `cte_rem_enderReme_UF`, `cte_rem_enderReme_cPais`, `cte_rem_enderReme_xPais`, `cte_rem_email`, `cte_rem_infNF_nRoma`, `cte_rem_infNF_nPed`, `cte_rem_infNF_mod`, `cte_rem_infNF_serie`, `cte_rem_infNF_nDoc`, `cte_rem_infNF_dEmi`, `cte_rem_infNF_vBC`, `cte_rem_infNF_vICMS`, `cte_rem_infNF_vBCST`, `cte_rem_infNF_vST`, `cte_rem_infNF_vProd`, `cte_rem_infNF_vNF`, `cte_rem_infNF_nCFOP`, `cte_rem_infNF_nPeso`, `cte_rem_infNF_PIN`, `cte_rem_infNFe_Chave`, `cte_rem_infNFe_PIN`, `cte_exped_CNPJ`, `cte_exped_CPF`, `cte_exped_IE`, `cte_exped_xNome`, `cte_exped_fone`, `cte_exped_enderExped_xLgr`, `cte_exped_enderExped_nro`, `cte_exped_enderExped_xCpl`, `cte_exped_enderExped_xBairro`, `cte_exped_enderExped_cMun`, `cte_exped_enderExped_xMun`, `cte_exped_enderExped_CEP`, `cte_exped_enderExped_UF`, `cte_exped_enderExped_cPais`, `cte_exped_enderExped_xPais`, `cte_exped_email`, `cte_dest_CNPJ`, `cte_dest_CPF`, `cte_dest_IE`, `cte_dest_xNome`, `cte_dest_fone`, `cte_dest_ISUF`, `cte_dest_enderDest_xLgr`, `cte_dest_enderDest_nro`, `cte_dest_enderDest_xCpl`, `cte_dest_enderDest_xBairro`, `cte_dest_enderDest_cMun`, `cte_dest_enderDest_xMun`, `cte_dest_enderDest_CEP`, `cte_dest_enderDest_UF`, `cte_dest_enderDest_cPais`, `cte_dest_enderDest_xPais`, `cte_dest_email`, `cte_vPrest_vTPrest`, `cte_vPrest_vRec`, `cte_vPrest_Comp_xNome`, `cte_vPrest_Comp_vComp`, `cte_arquivo`, `cte_status_protocolo`, `cte_arquivo_xml`, `cte_cte_data_proc`) 
-                VALUES 
+                if ($cStat == 100) {
+                    // Inserindo no banco de dados
+                    if (!cliente::verifyExistence($CNPJRem, $CPFRem)) {
+                        $date = date('Y-m-d H:i:s');
+                        
+                        $query = "INSERT INTO `tb_cliente`(`cli_id`, `cli_id_grupo_cliente`, `cli_id_executivo`, `cli_id_cliente_contato`, `cli_id_operador_atendente`, `cli_status`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_fantasia`, `cli_dado_ie`, `cliente_dado_id_integrador_remoto`, `cliente_dado_id_integrador_coleta`, `cli_end_pais`, `cli_end_uf`, `cli_end_cep`, `cli_end_municipio`, `cli_end_bairro`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_base_operacional`, `cli_end_cod_municipal`, `cli_fin_prazo_pagamento`, `cli_fin_ciclo_fatura`, `cli_fin_cris_grupo`, `cli_fin_base_calc_icms`, `cli_fin_tipo_documento`, `cli_fin_tp_remuneracao`, `cli_fin_tp_remuneracao_valor`, `cli_fin_tp_remuneracao_courier`, `cli_fin_diferenca_minima_valor`, `cli_fin_adi_ftp`, `cli_fin_diferenca_prazo`, `cli_fin_vm_adicional`, `cli_fin_fatura_cubagem_rodo`, `cli_fin_percent_adicional`, `cli_cond_expedidor`, `cli_cond_herdeiro_comercial`, `cli_cond_esporadico`, `cli_cond_protestavel`, `cli_cond_tomador`, `cli_cond_isento_icms`, `cli_cond_grupo`, `cli_cond_cobra_seguro`, `cli_cond_op_bloqueada`, `cli_cond_isencao_cubagem_rodo`, `cli_rodo_interno`, `cli_cond_atualiza_email`, `cli_cond_operacao_rodo`, `cli_cond_operacao_courier`, `cli_cond_isencao_cubagem`, `cli_cond_redespacho`, `cli_cond_webservice`, `cli_email_cabecalho`, `cli_email_rodape`, `cli_espec_peso_maximo_rodo`, `cli_espec_peso_minimo_rodo`, `cli_espec_peso_maximo_courier`, `cli_espec_peso_minimo_courier`, `cli_espec_analise_envios`, `cli_fx_inicio`, `cli_tab_fx_fim`, `cli_token`, `cli_media_envio`, `cli_indicador_con`, `cli_data_criacao`, `cli_data_alteracao`, `cli_data_prazo_extra`) VALUES (
+                        NULL, NULL, NULL, NULL, NULL, 1, 'n/a', '$CNPJRem', '$xNomeRem', '$xFantRem', '$IERem', NULL, NULL, 'BRASIL', '$UFRem', '$CEPRem', '$xMunRem', '$xBairroRem', '$xLgrRem', '$nroRem', '$xCplRem', NULL, '$cMunRem', NULL, NULL, NULL, '$vICMSRem', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$date', '$date', NULL)";
+
+                        $sql = connectionFactory::connect()->prepare($query);
+                        $sql->execute();
+                        cliente::newContato($CNPJRem, $CPFRem, $foneRem, $emailRem);
+
+                        echo frontend::alert('user', 'success', 'Usuário relacionado ao documento era inexistente, <b>cadastrado</b>.');
+                        logFeeder::log($_SESSION['id'], 'Cadastro de cliente via CT-e. CTe: ' . $nCT . '. CNPJ: ' . $CNPJRem . '.');
+                    }
+
+
+                    $query = "INSERT INTO `tb_cte`(`cte_id`, `cte_chCTe`, `cte_ide_cUF`, `cte_ide_cCT`, `cte_ide_CFOP`, `cte_ide_natOp`, `cte_ide_forPag`, `cte_ide_mod`, `cte_ide_serie`, `cte_ide_nCT`, `cte_ide_dhEmi`, `cte_ide_tpImp`, `cte_ide_tpEmis`, `cte_ide_cDV`, `cte_ide_tpAmb`, `cte_ide_tpCTe`, `cte_ide_procEmi`, `cte_ide_verProc`, `cte_ide_cMunEnv`, `cte_ide_xMunEnv`, `cte_ide_UFEnv`, `cte_ide_modal`, `cte_ide_tpServ`, `cte_ide_cMunIni`, `cte_ide_xMunIni`, `cte_ide_UFIni`, `cte_ide_cMunFim`, `cte_ide_xMunFim`, `cte_ide_UFFim`, `cte_ide_retira`, `cte_emit_CNPJ`, `cte_emit_IE`, `cte_emit_xNome`, `cte_emit_xFant`, `cte_emit_enderEmit_xLgr`, `cte_emit_enderEmit_nro`, `cte_emit_enderEmit_xCpl`, `cte_emit_enderEmit_xBairro`, `cte_emit_enderEmit_cMun`, `cte_emit_enderEmit_xMun`, `cte_emit_enderEmit_CEP`, `cte_emit_enderEmit_UF`, `cte_emit_enderEmit_fone`, `cte_rem_CNPJ`, `cte_rem_CPF`, `cte_rem_IE`, `cte_rem_xNome`, `cte_rem_xFant`, `cte_rem_fone`, `cte_rem_enderReme_xLgr`, `cte_rem_enderReme_nro`, `cte_rem_enderReme_xCpl`, `cte_rem_enderReme_xBairro`, `cte_rem_enderReme_cMun`, `cte_rem_enderReme_xMun`, `cte_rem_enderReme_CEP`, `cte_rem_enderReme_UF`, `cte_rem_enderReme_cPais`, `cte_rem_enderReme_xPais`, `cte_rem_email`, `cte_rem_infNF_nRoma`, `cte_rem_infNF_nPed`, `cte_rem_infNF_mod`, `cte_rem_infNF_serie`, `cte_rem_infNF_nDoc`, `cte_rem_infNF_dEmi`, `cte_rem_infNF_vBC`, `cte_rem_infNF_vICMS`, `cte_rem_infNF_vBCST`, `cte_rem_infNF_vST`, `cte_rem_infNF_vProd`, `cte_rem_infNF_vNF`, `cte_rem_infNF_nCFOP`, `cte_rem_infNF_nPeso`, `cte_rem_infNF_PIN`, `cte_rem_infNFe_Chave`, `cte_rem_infNFe_PIN`, `cte_exped_CNPJ`, `cte_exped_CPF`, `cte_exped_IE`, `cte_exped_xNome`, `cte_exped_fone`, `cte_exped_enderExped_xLgr`, `cte_exped_enderExped_nro`, `cte_exped_enderExped_xCpl`, `cte_exped_enderExped_xBairro`, `cte_exped_enderExped_cMun`, `cte_exped_enderExped_xMun`, `cte_exped_enderExped_CEP`, `cte_exped_enderExped_UF`, `cte_exped_enderExped_cPais`, `cte_exped_enderExped_xPais`, `cte_exped_email`, `cte_dest_CNPJ`, `cte_dest_CPF`, `cte_dest_IE`, `cte_dest_xNome`, `cte_dest_fone`, `cte_dest_ISUF`, `cte_dest_enderDest_xLgr`, `cte_dest_enderDest_nro`, `cte_dest_enderDest_xCpl`, `cte_dest_enderDest_xBairro`, `cte_dest_enderDest_cMun`, `cte_dest_enderDest_xMun`, `cte_dest_enderDest_CEP`, `cte_dest_enderDest_UF`, `cte_dest_enderDest_cPais`, `cte_dest_enderDest_xPais`, `cte_dest_email`, `cte_vPrest_vTPrest`, `cte_vPrest_vRec`, `cte_vPrest_Comp_xNome`, `cte_vPrest_Comp_vComp`, `cte_arquivo`, `cte_status_protocolo`, `cte_arquivo_xml`, `cte_cte_data_proc`) 
+                                    VALUES 
                 (
-                NULL, 1, 'varrrchar44', '$cUF', '$cCT', '$CFOP', '$natOp', 1, '$mod', '$serie', '$nCT', '$dhEmi', '$tpImp', '$tpEmis', '$cDV', '$tpAmb', '$tpCTe', '$procEmi', '$verProc', '$cMunEnv', '$xMunEnv', '$UFEnv', '$modal', '$tpServ', '$cMunIni', '$xMunIni', '$UFIni', '$cMunFim', '$xMunFim', '$UFFim', '$retira',
+                NULL, '$chCTe', '$cUF', '$cCT', '$CFOP', '$natOp', 1, '$mod', '$serie', '$nCT', '$dhEmi', '$tpImp', '$tpEmis', '$cDV', '$tpAmb', '$tpCTe', '$procEmi', '$verProc', '$cMunEnv', '$xMunEnv', '$UFEnv', '$modal', '$tpServ', '$cMunIni', '$xMunIni', '$UFIni', '$cMunFim', '$xMunFim', '$UFFim', '$retira',
         
                 '$CNPJEmit', '$IEEmit', '$xNomeEmit', '$xFantEmit', '$xLgrEmit', '$nroEmit', '$xCplEmit', '$xBairroEmit', '$cMunEmit', '$xMunEmit', '$CEPEmit', '$UFEmit', '$foneEmit',
          
                 '$CNPJRem', '$CPFRem', '$IERem', '$xNomeRem', '$xFantRem', '$foneRem', '$xLgrRem', '$nroRem', '$xCplRem', '$xBairroRem', '$cMunRem', '$xMunRem', '$CEPRem', '$UFRem',
-
                 '$cPaisRem','$xPaisRem','$emailRem','$nRomaRem','$nPedRem','$modRem','$serieRem','$nDocRem','$dEmiRem','$vBCRem','$vICMSRem','$vBCSTRem','$vSTRem','$vProdRem','$vNFRem','$nCFOPRem','$nPesoRem','$pinRem','$chaveRem','$pinNFeRem',
 
-                '$CNPJRcv','$CPFRcv', '$IERcv', '$xNomeRcv', '$foneRcv', '$xLgrRcv', '$nroRcv', '$xCplRcv', '$xBairroRcv', '$cMunRcv', '$xMunRcv', '$CEPRcv', '$UFRcv', '$cPaisRcv','$xPaisRcv','$emailRcv'
+                '$CNPJRcv','$CPFRcv', '$IERcv', '$xNomeRcv', '$foneRcv', '$xLgrRcv', '$nroRcv', '$xCplRcv', '$xBairroRcv', '$cMunRcv', '$xMunRcv', '$CEPRcv', '$UFRcv', '$cPaisRcv','$xPaisRcv','$emailRcv',
         
                 '$CNPJDest', '$CPFDest', '$IEDest', '$xNomeDest', '$foneDest', '$ISUFDest', '$xLgrDest', '$nroDest', '$xCplDest', '$xBairroDest', '$cMunDest', '$xMunDest', '$CEPDest', '$UFDest', '$cPaisDest','$xPaisDest','$emailDest',
         
                 '$vTPrest', '$vRec', '$vRec',
          
-                '$vComp1Nome', '$vComp1Valor', null, 0, NULL, '$dhEmi'
+                '$vComp1Nome', '$vComp1Valor', 0, '$arquivo', '$dhEmi'
                 )";
 
-                $sql = connectionFactory::connect()->prepare($query);
-                $sql->execute();
-
-                //'$indIEToma', '$toma', '$xCaracAd', '$xCaracSer', '$xObs', 
+                    $sql = connectionFactory::connect()->prepare($query);
+                    $sql->execute();
+                    logFeeder::log($_SESSION['id'], 'Cadastro de CT-e ' . $nCT . '.');
+                } else {
+                    echo frontend::alert('exclamation', 'warning', 'O CT-e não está autorizado');
+                }
             }
         }
     }

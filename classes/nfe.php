@@ -578,7 +578,8 @@ class nfe
         `stt_cor`,
         `stt_nome`,
         `stt_finalizador`,        
-        `tkt_destinatario`
+        `tkt_destinatario`,
+        `cte_ide_nCT`
         
         FROM `tb_nfe` 
     
@@ -586,6 +587,9 @@ class nfe
         LEFT JOIN `tb_status` ON `tb_status_apply`.`stta_id_status` = `tb_status`.`stt_id` 
 
         LEFT JOIN `tb_ticket` ON `tb_nfe`.`nfe_id` = `tb_ticket`.`tkt_id_nfe` 
+
+/*Join no CT-e somente para filtragem, não é pego como atributo*/
+        LEFT JOIN `tb_cte` ON `tb_nfe`.`nfe_cte_chave` = `tb_cte`.`cte_chCTe` 
 
         INNER JOIN `tb_volume` ON `tb_nfe`.`nfe_id_volume` = `tb_volume`.`vol_id` 
         INNER JOIN `tb_servico` ON `tb_nfe`.`nfe_id_servico` = `tb_servico`.`serv_id`

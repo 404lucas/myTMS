@@ -25,6 +25,7 @@
     <!--fontawesome-->
     <script src="https://kit.fontawesome.com/6d424ce658.js" crossorigin="anonymous"></script>
 
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <title>Next Express - Cadastro</title>
 </head>

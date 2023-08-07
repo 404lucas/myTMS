@@ -16,17 +16,21 @@
 
 html {
     min-height: 100%;
-    background-color: #e6e6e6 !important;
+    background-color: #ececec !important;
+    zoom: 93% !important;
 }
 
 body {
-    background-color: #e6e6e6 !important;
+    background-color: #ececec !important;
     height: 100%;
     display: flex;
     padding: 20px;
 }
 
 aside {
+    -webkit-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.15);
     background-color: #fff;
     width: var(--asideWidth);
     height: calc(100% - 40px);
@@ -129,12 +133,27 @@ aside {
     justify-content: center !important;
 }
 
-.menuBtn:hover {
+.menuBtn:hover, .commsBtn:hover {
+    cursor: pointer;
     background-color: #f3d8cc;
     color: #F06021;
     text-decoration: none;
     transition: 0.2s;
     margin-right: 37px;
+}
+
+.currentPageMenuBtn {
+    background-color: #f3d8cc;
+    color: #F06021;
+    text-decoration: none;
+    transition: 0.2s;
+    margin-right: 37px;
+    animation: forwards 0.2s startupAnimation2;
+}
+
+.currentPageMenuBtn:hover{
+    filter: saturate(1.5);
+    transition: 0.2s;
 }
 
 .menuBtn:active {
@@ -157,9 +176,9 @@ aside {
 }
 
 .tooltip {
-    z-index: 9999 !important; 
+    z-index: 9999 !important;
 
-  }
+}
 
 
 .buttonContent {
@@ -203,6 +222,33 @@ aside {
     align-self: center;
 }
 
+.commsBtn {
+    font-size: 20px;
+    color: #666666;
+    width: 55px;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+    margin-left: 10px;
+}
+
+.commsBtn i{
+    animation: readMe 0.2s infinite;
+    animation-timing-function: linear;
+}
+
+.notificationSpan {
+    display: block;
+    position: relative;
+    height: 12px;
+    width: 12px;
+    border-radius: 8px;
+    background-color: rgb(0, 179, 0);
+    top: 11px;
+    left: 22px;
+    
+}
+
 .footer {
     height: var(--footersize);
     display: flex;
@@ -212,6 +258,9 @@ aside {
     background-color: #fff;
     bottom: 20px;
     width: var(--asideClosedWidth);
+    background: rgb(255, 255, 255);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 81%, rgba(255, 106, 0, 1) 81%);
+    border-radius: 10px;
 }
 
 .footerPic {
@@ -258,27 +307,43 @@ aside {
 }
 
 header {
-    display: flex;
+    -webkit-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: -1px 4px 6px 0px rgba(0, 0, 0, 0.08);
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 97%, rgba(255, 106, 0, 1) 97%);
+    display: flex !important;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: row;
     height: 100px;
-    width: 100% !important;
-    border-radius: 10px;
-    color: #505050;
+    width: calc(100% - 20px) !important;
+    border-radius: 20px;
+    color: #000;
+    padding: 25px;
     padding-right: 20px;
+    margin-bottom: 20px;
 }
 
 header h1 {
     flex: 50%;
-    font-size: 50px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 600;
 }
 
-header h1 i {
+header i {
+    font-size: 20px;
+
     color: var(--mainOrange);
 }
 
+.headerWrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
 
 .button {
     margin-bottom: 10px;
@@ -297,25 +362,28 @@ header h1 i {
 
 @media (max-width: 596px) {
 
-    body{
+    body {
         padding: 10px;
         overflow-x: hidden;
         flex-direction: column;
         justify-content: center;
-        
+    }
+
+    body span {
+        display: none;
     }
 
     aside {
         display: none !important;
     }
 
-    header {        
+    header {
         padding: 0;
     }
 
     header h1 {
         position: relative;
-        top:15px;
+        top: 15px;
         font-size: 35px;
         text-align: center;
     }
@@ -373,9 +441,9 @@ header h1 i {
         flex-direction: column;
         z-index: 1000 !important;
     }
-    
 
-    .mobileNavList a{
+
+    .mobileNavList a {
         background-color: #f3d8cc;
         color: #F06021;
         min-width: 100% !important;
@@ -432,5 +500,32 @@ header h1 i {
         transition: all 1s;
         opacity: 1;
         transform: translateY(5px);
+    }
+}
+
+@keyframes startupAnimation2 {
+    from {
+        opacity: 0;
+        filter: blur(5px);
+        transition: all 2s;
+    }
+
+    to {
+        transition: all 1s;
+        opacity: 1;
+    }
+}
+
+@keyframes readMe {
+    0% {
+        rotate: 7deg;
+    }
+
+    50% {
+        rotate: -7deg;
+    }
+
+    100% {
+        rotate: 7deg;
     }
 }

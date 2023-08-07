@@ -5,8 +5,7 @@
         </h1>
     </header>
 
-    <?php 
-        dataFeeder::sendXML();
+    <?php
     ?>
 
     <!--div class="contentBox hidden">

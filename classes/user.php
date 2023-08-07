@@ -31,12 +31,11 @@ class user
     {
         return $this->nome;
     }
-
+    
     public function getEmail()
     {
         return $this->email;
     }
-
     public function getSenha()
     {
         return $this->senha;
@@ -110,19 +109,26 @@ class user
         $senha = $user->senha;
         $cnpjCliente = $user->cnpjCliente;
 
-        if ($cnpjCliente != '') {
-            $sql = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpjCliente' LIMIT 1");
-            $sql->execute();
-            $idCliente = $sql->fetch();
+        $exists = connectionFactory::connect()->prepare("SELECT `log_id` FROM `tb_login` WHERE `log_email` = '$email'");
+        $exists->execute();
 
-            $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (]NULL,'$idCliente','$nome','$senha','$email')";
+        if ($exists->rowCount() === 0) {
+            if ($cnpjCliente != '') {
+                $sql = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpjCliente' LIMIT 1");
+                $sql->execute();
+                $idCliente = $sql->fetch();
 
-            $sql = connectionFactory::connect()->prepare($query);
-            $sql->execute();
+                $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (NULL,'$idCliente','$nome','$senha','$email')";
+
+                $sql = connectionFactory::connect()->prepare($query);
+                $sql->execute();
+            } else {
+                $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (NULL,NULL,'$nome','$senha','$email')";
+                $sql = connectionFactory::connect()->prepare($query);
+                $sql->execute();
+            }
         } else {
-            $query = "INSERT INTO `tb_login`(`log_id`, `log_id_cliente`, `log_nome`, `log_senha`, `log_email`) VALUES (NULL,NULL,'$nome','$senha','$email')";
-            $sql = connectionFactory::connect()->prepare($query);
-            $sql->execute();
+            echo frontend::alert('times', 'danger', 'Esse email já está cadastrado.');
         }
     }
 }

@@ -2,7 +2,6 @@
 
 class loginServer
 {
-
     public static function logged()
     {
         return isset($_SESSION['login']) ? true : false;
@@ -16,11 +15,8 @@ class loginServer
 
     public static function authenticate($email, $senha)
     {
-
         //Selecionando da tabela de usuários
-        $sql = connectionFactory::connect()->prepare("SELECT * FROM `tb_login` WHERE log_email = :email AND log_senha = :senha");
-        $sql->bindParam(':email', $email);
-        $sql->bindParam(':senha', $senha);
+        $sql = connectionFactory::connect()->prepare("SELECT * FROM `tb_login` WHERE log_email = '$email' AND log_senha = '$senha'");
         $sql->execute();
 
         //Verificando se há apenas um resultado
@@ -34,7 +30,7 @@ class loginServer
             $_SESSION['senha'] = $info['log_senha'];
             $_SESSION['email'] = $info['log_senha'];
             header('Location:' . INCLUDE_PATH_PAINEL);
-        } else {
+        } else{
             //Falhou
             echo frontend::alert('times', 'danger', 'Usuário ou senha incorretos.');
         }

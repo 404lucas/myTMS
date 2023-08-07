@@ -48,7 +48,7 @@ class acesso
 
     public static function getAcesses()
     {
-        $sql = connectionFactory::connect()->prepare("SELECT * FROM `tb_acesso` ORDER BY `acs_nome`");
+        $sql = connectionFactory::connect()->prepare("SELECT * FROM `tb_acesso` ORDER BY `acs_nome` ASC");
         $sql->execute();
 
         return $sql;

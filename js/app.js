@@ -10,6 +10,35 @@ const observer = new IntersectionObserver((entries) => {
     });
 });
 
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
+$(function () {
+    $('.popover-exemplo').popover({
+      container: 'body'
+    })
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtém o valor do parâmetro 'url' da URL da página
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlParamValue = urlParams.get('url');
+
+    // Obtém todos os botões
+    const botoes = document.querySelectorAll('.menuBtn');
+
+    // Percorre os botões e verifica se o nome do botão corresponde ao valor do parâmetro 'url'
+    botoes.forEach(botao => {
+        botao.classList.forEach(classeSingle => {
+            if (urlParamValue === classeSingle) {
+                botao.classList.add('currentPageMenuBtn'); // Adiciona a classe CSS ao botão
+            }
+        })
+    });
+});
+
+
 // Função para mostrar ou ocultar a div associada ao botão
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
@@ -22,10 +51,12 @@ function toggleContent(buttonId, text) {
     button.classList.toggle("pressed");
 }
 
+function deleteStatus(id){
+    $('#deleteStatusBtn'+id).hide();
+}
 
 var menuOpened = false;
 var documents = document.documentElement || document.body;
-
 //Toggle do menu formulário
 function toggleNFEContent(keys) {
 
@@ -52,8 +83,6 @@ function toggleNFEContent(keys) {
     }
 }
 
-
-
 function copyToClipboard(id) {
     var textBox = document.getElementById(id);
     textBox.select();
@@ -75,3 +104,4 @@ function validarInputTracking() {
 
     return true; // Permite o envio do formulário
 }
+

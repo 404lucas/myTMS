@@ -28,6 +28,7 @@
     <!--fontawesome-->
     <script src="https://kit.fontawesome.com/6d424ce658.js" crossorigin="anonymous"></script>
 
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <title>Next Express - Interno</title>
 </head>
@@ -36,7 +37,6 @@
 
 //Declarando o usuário para uso posterior
 if (class_exists('user')) {
-    
 } else {
     //Caso não haja sessão nenhuma, recarregar a página e voltar para o login
     header('Location: https://' . INCLUDE_PATH_PAINEL . '?url=dashboard');
@@ -47,10 +47,12 @@ if (isset($_GET['logout'])) {
     loginServer::logout();
 }
 
-
 ?>
 
 <body>
+    <span style="height:190px; width:100px; display:flex; background:#ff6a00; position:fixed; bottom: 0; left: 0; border-radius: 0 50px 0 0 "></span>
+    <span style="height:190px; width:100px; display:flex; background:#ececec; position:fixed; bottom: 10px; left: 10px; border-radius: 10px;"></span>
+
     <aside class="Closed">
         <div class="mainAsideContainerClosed">
             <div class="asideHeaderClosed">
@@ -65,13 +67,18 @@ if (isset($_GET['logout'])) {
                 frontend::MenuBtn(2, 'Financeiro', 'fa-wallet',  $_SESSION['id']);
                 frontend::MenuBtn(3, 'Usuários', 'fa-user', $_SESSION['id']);
                 frontend::MenuBtn(4, 'Uploads', 'fa-upload',  $_SESSION['id']);
+                frontend::MenuBtn(6, 'Administração', 'fa-bars-progress',  $_SESSION['id']);
                 frontend::MenuBtn(5, 'Download', 'fa-download', $_SESSION['id']);
                 ?>
 
                 <div style="height:100px;"></div>
+                <button type="button" class="commsBtn" data-toggle="popover"data-trigger="focus" title="<?php echo notificator::getLastNotification()['com_title'] ?? 'Nenhum comunicado, por enquanto!'; ?>" data-content="<?php echo notificator::getLastNotification()['com_content'] ?? '' . notificator::getLastNotification()['com_autor'] ?? ''.' - '. notificator::getLastNotification()['com_data'] ?? ''; ?>"><span class="notificationSpan"></span><i id='notificationBell' class="fa-solid fa-bell"></i></button>
             </div>
         </div>
         <div class="footer">
+
+
+
             <div class="footerPic">
 
                 <div class="dropdown">
@@ -109,6 +116,8 @@ if (isset($_GET['logout'])) {
                 </div>
             </div>
         </div>
+        <input type="hidden" id="sessionId" value="<?php echo $_SESSION['id']; ?>"></input>
+        <input type="hidden" id="comId" value="<?php echo notificator::getLastNotification()['com_id']; ?>"></input>
     </div>
     <script defer src="./js/app.js"></script>
     <div class="contentArea">
@@ -116,8 +125,52 @@ if (isset($_GET['logout'])) {
 
         //Incluindo todas as páginas
         frontend::loadPage();
-
         ?>
     </div>
+
+    <script>
+        function verifyNotifications() {
+            var session_id_getter = $('#sessionId').val();
+            var com_id_getter = $('#comId').val();
+            $.ajax({
+                url: 'functions/verifyNotifications.php',
+                method: 'POST',
+                data: {
+                    session_id: session_id_getter,
+                    com_id: com_id_getter
+                },
+                success: function(data) {
+                    if (data > 0) {
+                        $('.notificationSpan').hide();
+                        $('#notificationBell').css('animation', 'none');
+                    }
+                }
+            });
+        }
+
+        function readNotifications() {
+            var session_id_getter = $('#sessionId').val();
+            var com_id_getter = $('#comId').val();
+            $.ajax({
+                url: 'functions/readNotifications.php',
+                method: 'POST',
+                data: {
+                    session_id: session_id_getter,
+                    com_id: com_id_getter
+                },
+                success: function(data) {
+                    console.log(data);
+                    verifyNotifications();
+                }
+            });
+        }
+
+        $('.commsBtn').blur(readNotifications);
+
+        // Verificar notificações a cada X segundos (por exemplo, a cada 10 segundos)
+        setInterval(verifyNotifications, 20000);
+        // Chamar a função inicialmente
+        verifyNotifications();
+    </script>
 
 </html>

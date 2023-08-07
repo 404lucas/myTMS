@@ -1,21 +1,27 @@
 <div class="mainContent">
     <header>
-        <h1><i class="fa-solid fa-address-card"></i>
-            Acessos
-        </h1>
+        <div>
+            <i class="fa-solid fa-address-card"></i>
+            <h1>
+                Acessos
+            </h1>
+        </div>
     </header>
 
-    <?php acesso::verifyAppliedAccess($_SESSION['id'], 3) ? null : die('Você não tem permissão para acessar este recurso.'); ?>
+    <?php $errorMsg = 'Você não tem permissão para acessar esse recurso.';
+    acesso::verifyAppliedAccess($_SESSION['id'], 3) ? null : include('error.php'); ?>
 
     <div class="contentBox hidden" style="background: #fff;">
         <div class="contentBoxHeader">
-            <h1 class="contentBoxTitle"><i class="fa-solid fa-user"></i>Usuário</h1>
+            <div class="contentBoxTitle"><i class="fa-solid fa-user"></i>
+                <h1>Usuário</h1>
+            </div>
         </div>
         <div class="userForm">
             <form method="GET">
                 <input type="hidden" name="url" value="acessos">
                 <div class="form-group align-center">
-                    <label for="mainOptions" class="align-center">Cliente</label>
+                    <label for="mainOptions" class="align-center">Usuário</label>
                     <select id="mainOptions" class="form-control" name="userID" required>
                         <option disabled selected>Selecione</option>
                         <?php
@@ -40,16 +46,20 @@
         if (isset($_POST['upAcess'])) {
             $currentId = $selectedUserID;
             if (isset($_POST["checkbox"]) && is_array($_POST["checkbox"])) {
+                logFeeder::log($_SESSION['id'], 'Adição de acesso ao usuário ID ' . $currentId);
                 acesso::applyAcesses($currentId, $_POST["checkbox"], false);
             } elseif (!isset($_POST['checkbox'])) {
-                acesso::applyAcesses($currentId, NULL , true);
+                logFeeder::log($_SESSION['id'], 'Adição de acesso ' . $_POST["checkbox"] . ' ao usuário ID ' . $currentId);
+                acesso::applyAcesses($currentId, NULL, true);
             }
         }
     ?>
 
         <div class="contentBox hidden" style='background: #fff;'>
             <div class="contentBoxHeader">
-                <h1 class="contentBoxTitle"><i class="fa-solid fa-hand"></i> Acessos do usuário</h1>
+                <div class="contentBoxTitle"><i class="fa-solid fa-hand"></i>
+                    <h1>Acessos do usuário</h1>
+                </div>
             </div>
 
             <div class="form-group">

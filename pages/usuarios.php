@@ -1,15 +1,21 @@
 <div class="mainContent">
     <header>
-        <h1><i class="fa-solid fa-user"></i>
-            Usuários
-        </h1>
+        <div>
+            <i class="fa-solid fa-user"></i>
+            <h1>
+                Gerenciar usuários
+            </h1>
+        </div>
     </header>
 
-    <?php acesso::verifyAppliedAccess($_SESSION['id'], 3) ? null : die('Você não tem permissão para acessar este recurso.'); ?>
+    <?php $errorMsg = 'Você não tem permissão para acessar esse recurso.';
+    acesso::verifyAppliedAccess($_SESSION['id'], 3) ? null : include('error.php'); ?>
 
     <div class="contentBox hidden" style="background: #fff; flex-direction:column !important;">
         <div class="contentBoxHeader">
-            <h1 class="contentBoxTitle"><i class="fa-solid fa-user"></i>Usuários</h1>
+            <div class="contentBoxTitle"><i class="fa-solid fa-user"></i>
+                <h1>Usuários</h1>
+            </div>
         </div>
         <div class="form-group">
             <form method="GET" id="userForm">
@@ -85,23 +91,23 @@
                         <div class="userData">
                             <div class="form-group">
                                 <label for="inputNome">Nome</label><br>
-                                <input placeholder="Nome" id="inputNome" type="text" name="nome" value="<?php echo $currentUser->getNome(); ?>" disabled value="">
+                                <input class="form-control" placeholder="Nome" id="inputNome" type="text" name="nome" value="<?php echo $currentUser->getNome(); ?>" disabled value="">
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">E-mail</label><br>
-                                <input placeholder="E-mail" id="inputEmail" type="text" name="email" value="<?php echo $currentUser->getEmail(); ?>" disabled value="">
+                                <input class="form-control" placeholder="E-mail" id="inputEmail" type="text" name="email" value="<?php echo $currentUser->getEmail(); ?>" disabled value="">
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">Senha</label><br>
-                                <input placeholder="Senha" id="inputSenha" type="password" name="senha" value="<?php echo $currentUser->getSenha(); ?>" disabled value="">
+                                <input class="form-control" placeholder="Senha" id="inputSenha" type="password" name="senha" value="<?php echo $currentUser->getSenha(); ?>" disabled value="">
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">CNPJ da organização</label><br>
-                                <input placeholder="CNPJ da organização" id="inputCnpj" name="cnpj" value="<?php echo $currentUser->getCnpjCliente() ?? ''; ?>" type="text" disabled value="">
+                                <input class="form-control" placeholder="CNPJ da organização" id="inputCnpj" name="cnpj" value="<?php echo $currentUser->getCnpjCliente() ?? ''; ?>" type="text" disabled value="">
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">Organização</label><br>
-                                <input placeholder="Organização" id="inputOrg" type="text" name="org" value="<?php echo $currentUser->getFantasiaCliente() ?? ''; ?>" disabled value="">
+                                <input class="form-control" placeholder="Organização" id="inputOrg" type="text" name="org" value="<?php echo $currentUser->getFantasiaCliente() ?? ''; ?>" disabled value="">
                             </div>
 
                             <button id="sendEdition" type="submit" name="sendEdition" class="d-none btn btn-secondary">Atualizar</button>
@@ -115,7 +121,8 @@
 <div class="newUserContainer">
     <button id="newUserRevealer" class="btn btn-outline-dark btn-block">Novo usuário</button>
 
-    <div class="userBox" id="newUserBox">
+    <div class="userBox d-none" id="newUserBox">
+        <button id="gerarSenhaBtn">Gerar Senha</button>
         <div class="userWrapper">
             <h2>Novo usuário</h2>
             <div class="userPic">
@@ -125,19 +132,19 @@
                 <div class="userData">
                     <div class="form-group">
                         <label for="inputNome">Nome</label><br>
-                        <input placeholder="Nome" id="newNome" type="text" required name="newNome">
+                        <input class="form-control" placeholder="Nome" id="newNome" type="text" required name="newNome">
                     </div>
                     <div class=" form-group">
                         <label for="inputNome">E-mail</label><br>
-                        <input placeholder="E-mail" id="newEmail" type="text" required name="newEmail">
+                        <input class="form-control" placeholder="E-mail" id="newEmail" type="text" required name="newEmail">
                     </div>
                     <div class="form-group">
                         <label for="inputNome">Senha</label><br>
-                        <input placeholder="Senha" id="newSenha" type="password" minlength="8" required name="newSenha">
+                        <input class="form-control" placeholder="Senha" id="newSenha" type="password" minlength="8" required name="newSenha">
                     </div>
                     <div class="form-group">
                         <label for="inputNome">CNPJ da organização</label><br>
-                        <input placeholder="CNPJ da organização" id="newCnpj" minlength="11" name="newCnpj" type="text">
+                        <input class="form-control" placeholder="CNPJ da organização" id="newCnpj" minlength="11" name="newCnpj" type="text">
                     </div>
 
                     <button id="sendNewUser" type="submit" name="sendNewUser" class="btn btn-secondary">Cadastrar</button>
@@ -155,24 +162,37 @@
         });
 
         $('#newUserRevealer').on('click', function() {
-            $('#newUserBox').hasClass('d-none') ? $('#newUserBox').removeClass('d-none') : $('#newUserBox').addClass('d-none');
+            $('#newUserBox').hasClass('d-none') ? $('#newUserBox').removeClass('d-none') : $('#newUserBox')
+                .addClass('d-none');
         });
-    });
 
-    $('#btnEditUser').click(function() {
-        if ($('input[type="text"]').attr('disabled')) {
-            ($('input[type="text"]').removeAttr('disabled')).hide().fadeIn('slow');
-            ($('input[placeholder="Organização"]').attr('disabled', true));
-            ($('#sendEdition').removeClass('d-none')).hide().fadeIn('slow');
-        } else {
-            ($('#editUserBtn').addClass('d-none')).hide().fadeIn('slow');
-            ($('input[type="text"]').attr('disabled', true)).hide().fadeIn('slow');
-        }
+        $('#btnEditUser').click(function() {
+            if ($('input[type="text"]').attr('disabled')) {
+                ($('input[type="text"]').removeAttr('disabled')).hide().fadeIn('slow');
+                ($('input[placeholder="Organização"]').attr('disabled', true));
+                ($('#sendEdition').removeClass('d-none')).hide().fadeIn('slow');
+            } else {
+                ($('#editUserBtn').addClass('d-none')).hide().fadeIn('slow');
+                ($('input[type="text"]').attr('disabled', true)).hide().fadeIn('slow');
+            }
 
-        if ($('input[type="password"]').attr('disabled')) {
-            ($('input[type="password"]').removeAttr('disabled')).hide().fadeIn('normal');
-        } else {
-            ($('input[type="password"]').attr('disabled', true)).hide().fadeIn('slow');
-        }
+            if ($('input[type="password"]').attr('disabled')) {
+                ($('input[type="password"]').removeAttr('disabled')).hide().fadeIn('normal');
+            } else {
+                ($('input[type="password"]').attr('disabled', true)).hide().fadeIn('slow');
+            }
+        });
+
+        $('#gerarSenhaBtn').click(function() {
+            var caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_';
+            var tamanho = 8;
+            var senha = '';
+
+            for (var i = 0; i < tamanho; i++) {
+                senha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+
+            alert("Senha gerada: " + senha);
+        });
     });
 </script>

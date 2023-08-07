@@ -114,6 +114,7 @@ class ticket
 
         $sql = connectionFactory::connect()->prepare("INSERT INTO `tb_ticket` (`tkt_id`, `tkt_id_nfe`, `tkt_id_autor`, `tkt_conteudo`, `tkt_destinatario`, `tkt_visualizador`, `tkt_arquivo`,`tkt_data_criacao`) VALUES (NULL, '$idNfe', '$idAutor', '$conteudo', '$destinatarioTicket', '$visualizador', '$arquivo', '$data')");
         $sql->execute();
+        
     }
 
     public function sendTicketDestinatario($ticket)
