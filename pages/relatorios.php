@@ -44,12 +44,9 @@
             </a>
         </div>
         <div class="collapse" id="collapseFilters">
-            <!--<div class="identLabel"><label><i class="fa-solid fa-filter"></i>Filtros</label></div>-->
             <form method="post" id="formRelatorio">
 
                 <?php $currentFilter = new filter(); ?>
-
-                <!--TO DO: ADICIONAR FILTRAGEM GERAL-->
 
                 <div class="form-row">
                     <div class="form-group">
@@ -145,6 +142,7 @@
                     </div>
                     <div class="form-group">
                         <label>Data Inicial</label>
+                        <input type=""></input>
                         <input type="date" class="form-control yellowBg" name="dataInicial">
                     </div>
                     <div class="form-group">
@@ -192,7 +190,7 @@
             <input type="hidden" id="hiddenQueryInput"></input>
         </form>
     </div>
-    <div class="contentBox hidden" style="background-color: #fff; margin-top: 40px;">
+    <div class="contentBox" style="background-color: #fff; margin-top: 40px;">
         <div class="contentBoxHeader">
             <div class="contentBoxTitle"><i class="fa-solid fa-truck"></i>
                 <h1>Encomendas<span></span></h1>
@@ -630,7 +628,6 @@
                                         </h1>
                                     </div>
                                     <div class="formsContainer">
-
                                         <!--Collapse do Ticket-->
                                         <div class="accordionsContainer">
                                             <div class="accordion w50" style="background-color:#fff !important;" id="accordionTicket<?php echo $currentNfe->getId(); ?>">
@@ -774,9 +771,9 @@
 
                                                                         <?php if (acesso::verifyAppliedAccess($_SESSION['id'], 5)) { ?>
                                                                             <td style="padding: 0;">
-                                                                                <button id="deleteStatusBtn<?php echo $currentStatus->getSttaId(); ?>" class="btn btn-secondary" onclick="deleteStatus(<?php echo $currentStatus->getSttaId(); ?>)"><i class="fa-solid fa-trash-can"></i></button>
+                                                                                <!--button id="deleteStatusBtn<?php /*echo $currentStatus->getSttaId(); ?>" class="btn btn-secondary" onclick="deleteStatus(<?php echo $currentStatus->getSttaId(); ?>)"><i class="fa-solid fa-trash-can"></i></button>
                                                                                 <div id="deleteStatusDiv<?php echo $currentStatus->getSttaId(); ?>" class="d-none">
-                                                                                    <button id="cancelStatusDeletingBtn<?php echo $currentStatus->getSttaId(); ?>" onclick='cancelStatusDeleting(<?php echo $currentStatus->getSttaId(); ?>)' class="btn btn-secondary"><i class="fa-solid fa-times"></i></button>
+                                                                                    <button id="cancelStatusDeletingBtn<?php echo $currentStatus->getSttaId(); ?>" onclick='cancelStatusDeleting(<?php echo $currentStatus->getSttaId(); */ ?>)' class="btn btn-secondary"><i class="fa-solid fa-times"></i></button-->
                                                                                     <a class="btn btn-danger" href=<?php echo 'functions/deleteStatus.php?id=' . $currentStatus->getSttaId() . '&userId=' . $_SESSION['id']; ?>><i class="fa-solid fa-trash-can"></i></a>
                                                                                 </div>
                                                                             </td>
@@ -856,10 +853,10 @@
                                             frontend::readingForm($key, 'CFOP', 'w33', 'CFOP', $currentNfe->getDocCFOP());
                                             frontend::readingForm($key, 'Rodo Courier', 'w33', 'RodoCourier', $currentNfe->getDocRodoCourier());
 
-                                            frontend::readingForm($key, 'CTe', 'w33', 'CTe', isset($currentCTE) ? $currentCTE->getNCTe(): 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'Chave do CTe DLog', 'w33', 'Chave', isset($currentCTE) ? $currentCTE->getchCTe(): 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'cCT', 'w33', 'cCT', isset($currentCTE) ? $currentCTE->getCCT(): 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'Origem', 'w33', 'Origem', isset($currentCTE) ? $currentCTE->getNCTe(): 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'CTe', 'w33', 'CTe', isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'Chave do CTe DLog', 'w33', 'Chave', isset($currentCTE) ? $currentCTE->getchCTe() : 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'cCT', 'w33', 'cCT', isset($currentCTE) ? $currentCTE->getCCT() : 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'Origem', 'w33', 'Origem', isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTe vinculado.');
 
                                             frontend::readingForm($key, 'Pedido', 'w33', 'serialpedido', $currentNfe->getSerialPedido());
                                             frontend::readingForm($key, 'Código', 'w33', 'serialcodigo', $currentNfe->getSerialCodigo());
@@ -916,6 +913,9 @@
     </div>
 </div>
 <script>
+
+$(document).ready(function(){
+
     var rotated = false;
 
     $("#filterCascadeBtn").on("click", function() {
@@ -928,8 +928,8 @@
     });
 
     function deleteStatus(id) {
-        $('#deleteStatusDiv' + id).removeClass('d-none');
-        $('#deleteStatusDiv' + id).addClass('d-flex');
+        $('#deleteStatusDiv24').addClass('d-flex');
+        $('#deleteStatusDiv24').removeClass('d-none');
         $('#deleteStatusBtn' + id).hide();
     }
 
@@ -938,6 +938,8 @@
         $('#deleteStatusBtn' + id).addClass('d-flex');
         $('#deleteStatusBtn' + id).show();
     }
+
+});
 </script>
 
 

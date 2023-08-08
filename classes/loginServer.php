@@ -9,8 +9,8 @@ class loginServer
 
     public static function logout()
     {
-        session_destroy();
-        header('Location: ' . INCLUDE_PATH_PAINEL);
+        $_SESSION = array();
+        header('Location: index.php');
     }
 
     public static function authenticate($email, $senha)
@@ -22,14 +22,13 @@ class loginServer
         //Verificando se há apenas um resultado
         if ($sql->rowCount() == 1) {
             $info = $sql->fetch();
-
             //Logado
             $_SESSION['login'] = true;
             $_SESSION['id'] = $info['log_id'];
             $_SESSION['nome'] = $info['log_nome'];
             $_SESSION['senha'] = $info['log_senha'];
-            $_SESSION['email'] = $info['log_senha'];
-            header('Location:' . INCLUDE_PATH_PAINEL);
+            $_SESSION['email'] = $info['log_email'];
+            header('Location: index.php');
         } else{
             //Falhou
             echo frontend::alert('times', 'danger', 'Usuário ou senha incorretos.');

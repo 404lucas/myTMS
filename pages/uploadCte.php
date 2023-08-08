@@ -12,7 +12,6 @@
     acesso::verifyAppliedAccess($_SESSION['id'], 4) ? null : include('error.php');
 
     $pastaDestino = 'C:/xampp/htdocs/nexpress/cteBank/';
-
     if (isset($_FILES["file"]) && $_FILES["file"]["error"] == UPLOAD_ERR_OK) {
         $nomeArquivo = $_FILES["file"]["name"];
         $caminhoCompleto = $pastaDestino . $nomeArquivo;

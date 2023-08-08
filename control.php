@@ -35,18 +35,8 @@
 
 <?php
 
+require 'config.php';
 //Declarando o usuário para uso posterior
-if (class_exists('user')) {
-} else {
-    //Caso não haja sessão nenhuma, recarregar a página e voltar para o login
-    header('Location: https://' . INCLUDE_PATH_PAINEL . '?url=dashboard');
-}
-
-//Logout simples - destruir sessão
-if (isset($_GET['logout'])) {
-    loginServer::logout();
-}
-
 ?>
 
 <body>
@@ -64,11 +54,12 @@ if (isset($_GET['logout'])) {
                 <?php
                 frontend::MenuBtn(0, 'DashBoard', 'fa-gauge-high',  $_SESSION['id']);
                 frontend::MenuBtn(1, 'Relatórios', 'fa-chart-line', $_SESSION['id']);
-                frontend::MenuBtn(2, 'Financeiro', 'fa-wallet',  $_SESSION['id']);
+                //frontend::MenuBtn(2, 'Financeiro', 'fa-wallet',  $_SESSION['id']);
                 frontend::MenuBtn(3, 'Usuários', 'fa-user', $_SESSION['id']);
-                frontend::MenuBtn(4, 'Uploads', 'fa-upload',  $_SESSION['id']);
+                frontend::MenuBtn(4, 'Clientes', 'fa-building',  $_SESSION['id']);
+                frontend::MenuBtn(5, 'Uploads', 'fa-upload',  $_SESSION['id']);
                 frontend::MenuBtn(6, 'Administração', 'fa-bars-progress',  $_SESSION['id']);
-                frontend::MenuBtn(5, 'Download', 'fa-download', $_SESSION['id']);
+                frontend::MenuBtn(7, 'Download', 'fa-download', $_SESSION['id']);
                 ?>
 
                 <div style="height:100px;"></div>
@@ -86,7 +77,7 @@ if (isset($_GET['logout'])) {
                         <i class="fa-solid fa-user" style="font-size: 20px; color: #505050;"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="<?php echo INCLUDE_PATH_PAINEL ?>?logout"> <i class="fa-solid fa-sign-out"></i> Logout</a>
+                        <a class="dropdown-item" href="<?php echo INCLUDE_PATH_PAINEL ?>logout.php"> <i class="fa-solid fa-sign-out"></i> Logout</a>
                     </div>
                 </div>
             </div>
@@ -112,7 +103,7 @@ if (isset($_GET['logout'])) {
                     frontend::MenuBtnMobile('Uploads', $_SESSION['id']);
                     frontend::MenuBtnMobile('Download', $_SESSION['id']);
                     ?>
-                    <a href="<?php echo INCLUDE_PATH_PAINEL ?>?logout">Logout</a>
+                    <a href="<?php echo INCLUDE_PATH_PAINEL ?>logout.php">Logout</a>
                 </div>
             </div>
         </div>

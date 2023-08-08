@@ -10,7 +10,7 @@
 
     <div class="mainContainer">
         <i class="fa-solid fa-gear" style="font-size: 40px;"></i>
-        <h1> Página em desenvolvimento.</h1>
+        <h1> Em breve um sistema novo da Next Express.</h1>
         <img src="./img/logo.jpeg">
         <script>
             function goBack() {

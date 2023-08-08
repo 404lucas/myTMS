@@ -3,6 +3,8 @@
 // Modifica a zona de tempo a ser utilizada.
 date_default_timezone_set('America/Sao_Paulo');
 
+require 'vendor/autoload.php';
+
 @session_start();
 
 @define('INCLUDE_PATH_PAINEL', '');

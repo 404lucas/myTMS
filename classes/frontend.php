@@ -140,6 +140,19 @@ class frontend
             ),
 
             array(
+                'title' => 'Clientes',
+                'subButtons' => array(
+                    array(
+                        'title' => 'Gerenciar clientes',
+                        'link' => 'clientes',
+                        'access' => 9 //editar_acessos
+                    ),
+
+
+                )
+            ),
+
+            array(
                 'title' => 'Uploads',
                 'subButtons' => array(
                     array(
@@ -194,7 +207,7 @@ class frontend
         //     $sessionActive = '?chat=true';
         // }
 
-        $deleteBtn = acesso::verifyAppliedAccess($_SESSION['id'], 7) ? '<a class="btn btn-danger" href="functions/deleteTicket.php?id=' . $currentTicket->id . '&userId=' . $userID . '"><i class="fa-solid fa-trash-can"></i></a>' : '';
+        $deleteBtn = acesso::verifyAppliedAccess($userID, 7) ? '<a class="btn btn-danger" href="functions/deleteTicket.php?id=' . $currentTicket->id . '&userId=' . $userID . '"><i class="fa-solid fa-trash-can"></i></a>' : '';
 
         return '
         <div class="ticketSingle">
@@ -230,8 +243,9 @@ class frontend
         <label for="formGroupExampleInput">' . $title . '</label>
         <!--Input-->
         <div class="input-group mb-3">
-            <input type="text" id="' . $id, $key . '" class="form-control"
+            <input type="text" id="' . $id, $key . '" name="' . $id . '" class="form-control"
                 value="' . $function . '" readonly>
+                </input>
             <div class="input-group-append">
                 <!--Copiar-->
                 <button class="btn btn-outline-secondary" data-toggle="tooltip' . $id . '"

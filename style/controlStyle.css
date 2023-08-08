@@ -17,7 +17,7 @@
 html {
     min-height: 100%;
     background-color: #ececec !important;
-    zoom: 93% !important;
+    zoom: 85% !important;
 }
 
 body {
@@ -194,7 +194,8 @@ aside {
     left: 32px;
     border-radius: 10px;
     animation: forwards 0.2s startupAnimation;
-
+    position: relative;
+    top: -10px;
 }
 
 .buttonContent a {

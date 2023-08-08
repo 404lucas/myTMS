@@ -455,6 +455,161 @@ class cliente
         $sql->execute();
     }
 
+    public static function getAllClientNames()
+    {
+        $query = "SELECT `cli_dado_fantasia`, `cli_dado_cnpj` FROM `tb_cliente` ORDER BY `cli_dado_fantasia` ASC";
+
+        $sql = connectionFactory::connect()->prepare($query);
+        $sql->execute();
+        $sql = $sql->fetchAll();
+
+        return $sql;
+    }
+
+    public static function getSingleClient($cnpj)
+    {
+        $query = "SELECT `cli_id`, `cli_id_grupo_cliente`, `cli_id_executivo`, `cli_id_cliente_contato`, `cli_id_operador_atendente`, `cli_status`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_fantasia`, `cli_dado_ie`, `cliente_dado_id_integrador_remoto`, `cliente_dado_id_integrador_coleta`, `cli_end_pais`, `cli_end_uf`, `cli_end_cep`, `cli_end_municipio`, `cli_end_bairro`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_base_operacional`, `cli_end_cod_municipal`, `cli_fin_prazo_pagamento`, `cli_fin_ciclo_fatura`, `cli_fin_cris_grupo`, `cli_fin_base_calc_icms`, `cli_fin_tipo_documento`, `cli_fin_tp_remuneracao`, `cli_fin_tp_remuneracao_valor`, `cli_fin_tp_remuneracao_courier`, `cli_fin_diferenca_minima_valor`, `cli_fin_adi_ftp`, `cli_fin_diferenca_prazo`, `cli_fin_vm_adicional`, `cli_fin_fatura_cubagem_rodo`, `cli_fin_percent_adicional`, `cli_cond_expedidor`, `cli_cond_herdeiro_comercial`, `cli_cond_esporadico`, `cli_cond_protestavel`, `cli_cond_tomador`, `cli_cond_isento_icms`, `cli_cond_grupo`, `cli_cond_cobra_seguro`, `cli_cond_op_bloqueada`, `cli_cond_isencao_cubagem_rodo`, `cli_rodo_interno`, `cli_cond_atualiza_email`, `cli_cond_operacao_rodo`, `cli_cond_operacao_courier`, `cli_cond_isencao_cubagem`, `cli_cond_redespacho`, `cli_cond_webservice`, `cli_email_cabecalho`, `cli_email_rodape`, `cli_espec_peso_maximo_rodo`, `cli_espec_peso_minimo_rodo`, `cli_espec_peso_maximo_courier`, `cli_espec_peso_minimo_courier`, `cli_espec_analise_envios`, `cli_fx_inicio`, `cli_tab_fx_fim`, `cli_token`, `cli_media_envio`, `cli_indicador_con`, `cli_data_criacao`, `cli_data_alteracao`, `cli_data_prazo_extra` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpj'";
+
+        $sql = connectionFactory::connect()->prepare($query);
+        $sql->execute();
+        $sql = $sql->fetch();
+
+        if (!$sql) {
+            echo frontend::alert('times', 'dark', '<b>Desculpe!</b> O cliente solicitado não foi encontrado.');
+        } else {
+            $cliente = new cliente(
+                $sql['cli_id'],
+                $sql['cli_id_grupo_cliente'],
+                $sql['cli_id_executivo'],
+                $sql['cli_id_cliente_contato'],
+                $sql['cli_id_operador_atendente'],
+                $sql['cli_status'],
+                $sql['cli_dado_cpf'],
+                $sql['cli_dado_cnpj'],
+                $sql['cli_dado_razao'],
+                $sql['cli_dado_fantasia'],
+                $sql['cli_dado_ie'],
+                $sql['cliente_dado_id_integrador_remoto'],
+                $sql['cliente_dado_id_integrador_coleta'],
+                $sql['cli_end_pais'],
+                $sql['cli_end_uf'],
+                $sql['cli_end_cep'],
+                $sql['cli_end_municipio'],
+                $sql['cli_end_bairro'],
+                $sql['cli_end_logradouro'],
+                $sql['cli_end_numero'],
+                $sql['cli_end_complemento'],
+                $sql['cli_end_base_operacional'],
+                $sql['cli_end_cod_municipal'],
+                $sql['cli_fin_prazo_pagamento'],
+                $sql['cli_fin_ciclo_fatura'],
+                $sql['cli_fin_cris_grupo'],
+                $sql['cli_fin_base_calc_icms'],
+                $sql['cli_fin_tipo_documento'],
+                $sql['cli_fin_tp_remuneracao'],
+                $sql['cli_fin_tp_remuneracao_valor'],
+                $sql['cli_fin_tp_remuneracao_courier'],
+                $sql['cli_fin_diferenca_minima_valor'],
+                $sql['cli_fin_adi_ftp'],
+                $sql['cli_fin_diferenca_prazo'],
+                $sql['cli_fin_vm_adicional'],
+                $sql['cli_fin_fatura_cubagem_rodo'],
+                $sql['cli_fin_percent_adicional'],
+                $sql['cli_cond_expedidor'],
+                $sql['cli_cond_herdeiro_comercial'],
+                $sql['cli_cond_esporadico'],
+                $sql['cli_cond_protestavel'],
+                $sql['cli_cond_tomador'],
+                $sql['cli_cond_isento_icms'],
+                $sql['cli_cond_grupo'],
+                $sql['cli_cond_cobra_seguro'],
+                $sql['cli_cond_op_bloqueada'],
+                $sql['cli_cond_isencao_cubagem_rodo'],
+                $sql['cli_rodo_interno'],
+                $sql['cli_cond_atualiza_email'],
+                $sql['cli_cond_operacao_rodo'],
+                $sql['cli_cond_operacao_courier'],
+                $sql['cli_cond_isencao_cubagem'],
+                $sql['cli_cond_redespacho'],
+                $sql['cli_cond_webservice'],
+                $sql['cli_email_cabecalho'],
+                $sql['cli_email_rodape'],
+                $sql['cli_espec_peso_maximo_rodo'],
+                $sql['cli_espec_peso_minimo_rodo'],
+                $sql['cli_espec_peso_maximo_courier'],
+                $sql['cli_espec_peso_minimo_courier'],
+                $sql['cli_espec_analise_envios'],
+                $sql['cli_fx_inicio'],
+                $sql['cli_tab_fx_fim'],
+                $sql['cli_token'],
+                $sql['cli_media_envio'],
+                $sql['cli_indicador_con'],
+                $sql['cli_data_criacao'],
+                $sql['cli_data_alteracao'],
+                $sql['cli_data_prazo_extra']
+            );
+            return $cliente;
+        }
+    }
+
+    public static function conditionedUpdate($cnpj, $nRazaosocial, $nFantasia, $nCPF, $nCNPJ, $nIE, $nPais, $nUF, $nCEP, $nMunicipio, $nBairro, $nLogradouro, $nNumero, $nComplemento, $nCMUN)
+    {
+        $currentClient = self::getSingleClient($cnpj);
+
+        // Compare os valores atuais com os novos valores
+        $colunasAlteradas = [];
+        if ($currentClient->razao != $nRazaosocial) {
+            $colunasAlteradas[] = "cli_dado_razao = '$nRazaosocial'";
+        }
+        if ($currentClient->fantasia != $nFantasia) {
+            $colunasAlteradas[] = "cli_dado_fantasia = '$nFantasia'";
+        }
+        if ($currentClient->cpf != $nCPF) {
+            $colunasAlteradas[] = "cli_dado_cpf = '$nCPF'";
+        }
+        if ($currentClient->cnpj != $nCNPJ) {
+            $colunasAlteradas[] = "cli_dado_cnpj = '$nCNPJ'";
+        }
+        if ($currentClient->ie != $nIE) {
+            $colunasAlteradas[] = "cli_dado_ie = '$nIE'";
+        }
+        if ($currentClient->pais != $nPais) {
+            $colunasAlteradas[] = "cli_end_pais = '$nPais'";
+        }
+        if ($currentClient->uf != $nUF) {
+            $colunasAlteradas[] = "cli_end_uf = '$nUF'";
+        }
+        if ($currentClient->cep != $nCEP) {
+            $colunasAlteradas[] = "cli_end_cep = '$nCEP'";
+        }
+        if ($currentClient->municipio != $nMunicipio) {
+            $colunasAlteradas[] = "cli_end_municipio = '$nMunicipio'";
+        }
+        if ($currentClient->bairro != $nBairro) {
+            $colunasAlteradas[] = "cli_end_bairro = '$nBairro'";
+        }
+        if ($currentClient->logradouro != $nLogradouro) {
+            $colunasAlteradas[] = "cli_end_logradouro = '$nLogradouro'";
+        }
+        if ($currentClient->numero != $nNumero) {
+            $colunasAlteradas[] = "cli_end_numero = '$nNumero'";
+        }
+        if ($currentClient->complemento != $nComplemento) {
+            $colunasAlteradas[] = "cli_end_complemento = '$nComplemento'";
+        }
+        if ($currentClient->codMun != $nCMUN) {
+            $colunasAlteradas[] = "cli_end_cod_municipal = '$nCMUN'";
+        }
+
+        $data = connectionFactory::dateGetter();
+        // Se houver colunas alteradas, construa e execute a consulta UPDATE
+        if (!empty($colunasAlteradas)) {
+            $query = "UPDATE `tb_cliente` SET " . implode(', ', $colunasAlteradas) . ", `cli_data_alteracao` = '$data' WHERE `cli_dado_cnpj` = $cnpj";
+            echo $query;
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        }
+    }
 
     public static function verifyExistence($cnpjData, $cpfData)
     {

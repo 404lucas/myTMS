@@ -21,4 +21,9 @@ class connectionFactory
         }
         return self::$pdo;
     }
+
+    public static function dateGetter(){
+        $data = date('Y-m-d H:i:s');
+        return $data;
+    }
 }

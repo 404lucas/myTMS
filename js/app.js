@@ -10,6 +10,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 });
 
+
+
 $(function () {
     $('[data-toggle="popover"]').popover()
 });
@@ -51,9 +53,7 @@ function toggleContent(buttonId, text) {
     button.classList.toggle("pressed");
 }
 
-function deleteStatus(id){
-    $('#deleteStatusBtn'+id).hide();
-}
+
 
 var menuOpened = false;
 var documents = document.documentElement || document.body;
@@ -90,6 +90,7 @@ function copyToClipboard(id) {
     textBox.blur();
     $('#tooltip' + id).tooltip(options)
 }
+
 
 const hiddenElements = document.querySelectorAll('.hidden');
 hiddenElements.forEach((el) => observer.observe(el));

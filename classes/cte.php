@@ -77,4 +77,11 @@ class cte
 
         return $sql;
     }    
+
+    public static function verifyCteExistence($chave){
+        $sql = connectionFactory::connect()->prepare("SELECT `cte_id`, `cte_chCTe`  FROM `tb_cte` WHERE `cte_chCTe` = '$chave' LIMIT 1");
+        $sql->execute();
+
+        return $sql->rowCount() > 0 ? true : false;
+    }
 }

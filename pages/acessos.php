@@ -74,6 +74,7 @@
             <div class="accessList">
                 <form method="POST">
                     <?php
+
                     $acesses = acesso::getAcesses();
                     foreach ($acesses as $value) {
                         $currentAcess = new acesso(
@@ -93,7 +94,7 @@
                             </div>
                             <h1><?php echo $currentAcess->getNome(); ?></h1>
                             <p><?php echo $currentAcess->getDesc(); ?></p>
-                            <?php if ($currentAcess->getToCliente()) { ?> <span></span> <?php } ?>
+                            <?php echo $currentAcess->getToCliente() ? '<span></span>' : ''; ?>
                         </div>
                     <?php } ?>
                     <input type="submit" name="upAcess" class="btn btn-outline-dark btn-block" value="Atualizar">
