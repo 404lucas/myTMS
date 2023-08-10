@@ -81,7 +81,6 @@ class dataFeeder
                 $UFEmit = (string)$xml->CTe->infCte->emit->enderEmit->UF ?? null;
                 $foneEmit = (string)$xml->CTe->infCte->rem->enderEmit->fone ?? null;
 
-
                 $CNPJRem = (string)$xml->CTe->infCte->rem->CNPJ ?? null;
                 $CPFRem = (string)$xml->CTe->infCte->rem->CPF ?? 'Sem CPF';
                 $IERem = (string)$xml->CTe->infCte->rem->IE ?? null;
