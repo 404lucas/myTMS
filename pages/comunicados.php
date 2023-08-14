@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-comment"></i>
             <h1>
-                Comunicados
+                Comunicados<span></span>
             </h1>
         </div>
     </header>
@@ -24,14 +24,14 @@
     <div class="contentBox hidden" style="background: #fff; flex-direction:column !important;">
         <div class="contentBoxHeader">
             <div class="contentBoxTitle"><i class="fa-solid fa-comment"></i>
-                <h1>Adicionar comunicado</h1>
-                <p>Adicione uma mensagem para todos os usuários do sistema verem.</p>
+                <h1>Adicionar comunicado<span></span></h1>
+                <!--p>Adicione uma mensagem para todos os usuários do sistema verem.</p-->
             </div>
         </div>
         <div>
             <form class="announceForm" method="POST" name="sendAnnouncement">
                 <i class="fa-solid fa-quote-left"></i>
-                <div class="form-group">
+                <div class="form-group"> 
                     <label for="inputNome">Título</label><br>
                     <input class="form-control" placeholder="Assunto" id="newNome" type="text" required name="title">
                 </div>
@@ -42,6 +42,9 @@
                 <button id="sendNewUser" type="submit" name="sendAnnouncementBtn" class="btn btn-secondary">Enviar</button>
                 <i class="fa-solid fa-quote-right"></i>
             </form>
+            <habib>
+                
+            </habib>
         </div>
     </div>
 </div>

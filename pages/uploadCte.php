@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-upload"></i>
             <h1>
-                Uploads
+                Uploads<span></span>
             </h1>
         </div>
     </header>
@@ -40,7 +40,7 @@
     <div class="contentBox hidden" style="background: #fff;">
         <div class="contentBoxHeader">
             <div class="contentBoxTitle"><i class="fa-solid fa-upload"></i>
-                <h1>Upload de CT-e</h1>
+                <h1>Upload de CT-e<span></span></h1>
             </div>
         </div>
         <div>

@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-gauge-high"></i>
             <h1>
-                Olá, <o><?php echo $_SESSION['nome']; ?>.</o>
+                Olá, <o><?php echo $_SESSION['nome']; ?>.</o><span></span>
             </h1>
         </div>
     </header>
@@ -16,7 +16,8 @@
             function goBack() {
                 window.history.back();
             }
-        </script>
+        </script>"
+        <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Volume" data-trigger="focus" data-content="Aqui vai <br> algum tipo de conteúdo. Muito da hora, né?!"><i class="fa-solid fa-box"></i> #1</button>
     </div>
 
     <style>

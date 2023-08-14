@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-address-card"></i>
             <h1>
-                Acessos
+                Acessos<span></span>
             </h1>
         </div>
     </header>
@@ -14,7 +14,7 @@
     <div class="contentBox hidden" style="background: #fff;">
         <div class="contentBoxHeader">
             <div class="contentBoxTitle"><i class="fa-solid fa-user"></i>
-                <h1>Usuário</h1>
+                <h1>Usuário<span></span></h1>
             </div>
         </div>
         <div class="userForm">
@@ -58,7 +58,7 @@
         <div class="contentBox hidden" style='background: #fff;'>
             <div class="contentBoxHeader">
                 <div class="contentBoxTitle"><i class="fa-solid fa-hand"></i>
-                    <h1>Acessos do usuário</h1>
+                    <h1>Acessos do usuário<span></span></h1>
                 </div>
             </div>
 

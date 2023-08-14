@@ -2,11 +2,9 @@
 
 class nfe
 {
-
     private $id;
     private $ativa;
     private $idCliente;
-    private $idVolume;
     private $idFornecedor;
     private $idParceiro;
     private $idServico;
@@ -68,7 +66,6 @@ class nfe
     private $cliCNPJ;
     private $cliCEP;
     private $cliIE;
-    private $volItem;
     private $fornFantasia;
     private $parcFantasia;
     private $servNome;
@@ -80,8 +77,13 @@ class nfe
     private $sttNome;
     private $sttFinalizado;
     private $tktDestinatario;
+    private $chCTe;
+    private $nCTe;
+    private $cCT;
+    private $arquivoXMLCTE;
+    private $dataProtocolo;
 
-    public function __construct($id, $ativa, $idCliente, $idVolume, $idFornecedor, $idParceiro, $idServico, $serialPedido, $serialCodigo, $serialSerie, $serialVerProc, $serialNNF, $serialDataProtocolo, $serialEmissorProtocolo, $docAWB, $docGris, $docSeguro, $docCFOP, $docJustificativa, $docSiglaTabela, $docDeclaracao, $docICSM, $docRodoCourier, $destFantasia, $destRazao, $destCPL, $destCPF, $destCNPJ, $destUF, $destCidade, $destBairro, $destLogradouro, $destComplemento, $destPReferencia, $destNumero, $cte, $cteChave, $ctecct, $cteOrigem, $entregaData, $entregaPrevisao, $entregaPrazo, $entregaMonitorar, $totalBC, $totalICMS, $totalProduto, $totalSeguro, $totalDesconto, $totalPIS, $totalCOFINS, $totalNF, $arquivoXML, $complementar, $dataCriacao, $dataAlteracao, $cliRazao, $cliCNPJ, $cliIE, $cliFantasia, $cliCEP, $cliCidade, $clilogradouro, $cliNumero, $cliComplemento, $cliBairro, $volItem, $fornFantasia, $parcFantasia, $servNome, $operadorNome, $executivoNome, $sttDescricao, $sttaDataAlteracao, $sttCor, $sttNome, $sttFinalizado, $tktDestinatario)
+    public function __construct($id, $ativa, $idCliente, $idFornecedor, $idParceiro, $idServico, $serialPedido, $serialCodigo, $serialSerie, $serialVerProc, $serialNNF, $serialDataProtocolo, $serialEmissorProtocolo, $docAWB, $docGris, $docSeguro, $docCFOP, $docJustificativa, $docSiglaTabela, $docDeclaracao, $docICSM, $docRodoCourier, $destFantasia, $destRazao, $destCPL, $destCPF, $destCNPJ, $destUF, $destCidade, $destBairro, $destLogradouro, $destComplemento, $destPReferencia, $destNumero, $entregaData, $entregaPrevisao, $entregaPrazo, $entregaMonitorar, $totalBC, $totalICMS, $totalProduto, $totalSeguro, $totalDesconto, $totalPIS, $totalCOFINS, $totalNF, $arquivoXML, $complementar, $dataCriacao, $dataAlteracao, $cliRazao, $cliCNPJ, $cliIE, $cliFantasia, $cliCEP, $cliCidade, $clilogradouro, $cliNumero, $cliComplemento, $cliBairro, $fornFantasia, $parcFantasia, $servNome, $operadorNome, $executivoNome, $sttDescricao, $sttaDataAlteracao, $sttCor, $sttNome, $sttFinalizado, $tktDestinatario, $chCTe, $nCTe, $cCT, $arquivoXMLCTE, $dataProtocolo)
     {
         $this->id = $id;
         $this->ativa = $ativa;
@@ -89,7 +91,6 @@ class nfe
         $this->idFornecedor = $idFornecedor;
         $this->idParceiro = $idParceiro;
         $this->idServico = $idServico;
-        $this->idVolume = $idVolume;
         $this->serialPedido = $serialPedido;
         $this->serialCodigo = $serialCodigo;
         $this->serialSerie = $serialSerie;
@@ -118,10 +119,6 @@ class nfe
         $this->destComplemento = $destComplemento;
         $this->destPReferencia = $destPReferencia;
         $this->destNumero = $destNumero;
-        $this->cte = $cte;
-        $this->cteChave = $cteChave;
-        $this->ctecct = $ctecct;
-        $this->cteOrigem = $cteOrigem;
         $this->entregaData = $entregaData;
         $this->entregaPrevisao = $entregaPrevisao;
         $this->entregaPrazo = $entregaPrazo;
@@ -148,7 +145,6 @@ class nfe
         $this->cliNumero = $cliNumero;
         $this->cliComplemento = $cliComplemento;
         $this->cliBairro = $cliBairro;
-        $this->volItem = $volItem;
         $this->fornFantasia = $fornFantasia;
         $this->parcFantasia = $parcFantasia;
         $this->servNome = $servNome;
@@ -160,6 +156,11 @@ class nfe
         $this->sttNome = $sttNome;
         $this->sttFinalizado = $sttFinalizado;
         $this->tktDestinatario = $tktDestinatario;
+        $this->chCTe = $chCTe;
+        $this->nCTe = $nCTe;
+        $this->cCT = $cCT;
+        $this->arquivoXMLCTE = $arquivoXMLCTE;
+        $this->dataProtocolo = $dataProtocolo;
     }
 
     public function getId()
@@ -491,12 +492,6 @@ class nfe
     {
         return $this->cliBairro;
     }
-
-    public function getVolItem()
-    {
-        return $this->volItem;
-    }
-
     public function getFornFantasia()
     {
         return $this->fornFantasia;
@@ -556,18 +551,36 @@ class nfe
     {
         return $this->tktDestinatario;
     }
-
+    public function getChCTe()
+    {
+        return $this->chCTe;
+    }
+    public function getNCTe()
+    {
+        return $this->nCTe;
+    }
+    public function getCCT()
+    {
+        return $this->cCT;
+    }
+    public function getArquivoXMLCTE()
+    {
+        return $this->arquivoXMLCTE;
+    }
+    public function getDataProtocolo()
+    {
+        return $this->dataProtocolo;
+    }
 
 
     public static function getListJoined($limitQuery, $orderQuery, $whereQuery)
     {
-        $query = "SELECT DISTINCT `nfe_id`, `nfe_ativa`, `nfe_id_status`, `nfe_id_cliente`, `nfe_id_volume`, `nfe_id_fornecedor`, `nfe_id_servico`, `nfe_id_parceiro`, `nfe_serial_pedido`, `nfe_serial_codigo`, `nfe_serial_serie`, `nfe_serial_verProc`, `nfe_serial_nnf`, `nfe_serial_data_protocolo`, `nfe_serial_emissor_protocolo`, `nfe_doc_awb`, `nfe_doc_gris`, `nfe_doc_seguro`, `nfe_doc_CFOP`, `nfe_doc_justificativa`, `nfe_doc_sigla_tabela`, `nfe_doc_declaracao`, `nfe_doc_icsm`, `nfe_doc_rodo_courier`, `nfe_dest_razao`, `nfe_dest_fantasia`, `nfe_dest_cpl`, `nfe_dest_cpf`, `nfe_dest_cnpj`, `nfe_dest_uf`, `nfe_dest_cidade`, `nfe_dest_bairro`, `nfe_dest_logradouro`, `nfe_dest_complemento`, `nfe_dest_p_referencia`, `nfe_dest_numero`, `nfe_CTe`, `nfe_CTe_chave`, `nfe_CTe_cCT`, `nfe_CTe_origem`, `nfe_entrega_data`, `nfe_entrega_previsao`, `nfe_entrega_prazo`, `nfe_entrega_monitorar`, `nfe_total_BC`, `nfe_total_ICMS`, `nfe_total_produto`, `nfe_total_seguro`, `nfe_total_desconto`, `nfe_total_PIS`, `nfe_total_COFINS`, `nfe_total_NF`, `nfe_arquivo_XML`, `nfe_complementar`, `nfe_data_criacao`, `nfe_data_alteracao`,
+        $query = "SELECT DISTINCT `nfe_id`, `nfe_ativa`, `nfe_id_status`, `nfe_id_cliente`, `nfe_id_fornecedor`, `nfe_id_servico`, `nfe_id_parceiro`, `nfe_serial_pedido`, `nfe_serial_codigo`, `nfe_serial_serie`, `nfe_serial_verProc`, `nfe_serial_nnf`, `nfe_serial_data_protocolo`, `nfe_serial_emissor_protocolo`, `nfe_doc_awb`, `nfe_doc_gris`, `nfe_doc_seguro`, `nfe_doc_CFOP`, `nfe_doc_justificativa`, `nfe_doc_sigla_tabela`, `nfe_doc_declaracao`, `nfe_doc_icsm`, `nfe_doc_rodo_courier`, `nfe_dest_razao`, `nfe_dest_fantasia`, `nfe_dest_cpl`, `nfe_dest_cpf`, `nfe_dest_cnpj`, `nfe_dest_uf`, `nfe_dest_cidade`, `nfe_dest_bairro`, `nfe_dest_logradouro`, `nfe_dest_complemento`, `nfe_dest_p_referencia`, `nfe_dest_numero`, `nfe_entrega_data`, `nfe_entrega_previsao`, `nfe_entrega_prazo`, `nfe_entrega_monitorar`, `nfe_total_BC`, `nfe_total_ICMS`, `nfe_total_produto`, `nfe_total_seguro`, `nfe_total_desconto`, `nfe_total_PIS`, `nfe_total_COFINS`, `nfe_total_NF`, `nfe_arquivo_XML`, `nfe_complementar`, `nfe_data_criacao`, `nfe_data_alteracao`,
             
         /*Dados do cliente*/
         `cli_dado_fantasia`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_ie`,  `cli_end_cep`, `cli_end_municipio`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_bairro`,  
         
         /*Dados adicionais*/
-        `vol_item`,
         `forn_fantasia`,
         `parc_fantasia`,
         `serv_nome`,
@@ -579,8 +592,12 @@ class nfe
         `stt_nome`,
         `stt_finalizador`,        
         `tkt_destinatario`,
-        `cte_ide_nCT`
-        
+        `cte_chCTe`,
+        `cte_ide_nCT`,
+        `cte_ide_cCT`,
+        `cte_arquivo_xml`,
+        `cte_cte_data_proc`
+
         FROM `tb_nfe` 
     
         LEFT JOIN `tb_status_apply` ON `tb_nfe`.`nfe_id` = `tb_status_apply`.`stta_id_nfe` 
@@ -588,10 +605,8 @@ class nfe
 
         LEFT JOIN `tb_ticket` ON `tb_nfe`.`nfe_id` = `tb_ticket`.`tkt_id_nfe` 
 
-/*Join no CT-e somente para filtragem, não é pego como atributo*/
-        LEFT JOIN `tb_cte` ON `tb_nfe`.`nfe_cte_chave` = `tb_cte`.`cte_chCTe` 
+        LEFT JOIN `tb_cte` ON `tb_cte`.`cte_id_nfe` = `tb_nfe`.`nfe_id`
 
-        INNER JOIN `tb_volume` ON `tb_nfe`.`nfe_id_volume` = `tb_volume`.`vol_id` 
         INNER JOIN `tb_servico` ON `tb_nfe`.`nfe_id_servico` = `tb_servico`.`serv_id`
         INNER JOIN `tb_cliente` ON `tb_nfe`.`nfe_id_cliente` = `tb_cliente`.`cli_id`
         INNER JOIN `tb_login` ON `tb_cliente`.`cli_id_operador_atendente` = `tb_login`.`log_id` 
@@ -617,6 +632,15 @@ class nfe
         $sql->execute();
         $sql = $sql->fetchColumn();
         return $sql;
+    }
+
+    public static function getIdByKey($key)
+    {
+        $sql = connectionFactory::connect()->prepare("SELECT `nfe_id` FROM `tb_nfe` WHERE `nfe_serial_codigo` = '$key' LIMIT 1");
+        $sql->execute();
+        $sql = $sql->fetchColumn();
+
+        return $sql ? $sql : 1;
     }
 
     public static function defaultFunctionAll($query)

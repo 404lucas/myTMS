@@ -6,6 +6,7 @@ class status
     private $sttaId;
     private $sttaIdStatus;
     private $sttaIdNfe;
+    private $sttaIdVolume;
     private $sttaAutor;
     private $sttId;
     private $nome;
@@ -21,11 +22,12 @@ class status
     private $dataCriacao;
 
     // Método construtor
-    public function __construct($sttaId, $sttaIdStatus, $sttaIdNfe, $sttaAutor, $sttId, $nome, $descricao, $cor, $ocorrencia, $hiddenPopular, $descricaoPopular, $finalizador, $mobile, $step, $dataAlteracao, $dataCriacao)
+    public function __construct($sttaId, $sttaIdStatus, $sttaIdNfe, $sttaIdVolume, $sttaAutor, $sttId, $nome, $descricao, $cor, $ocorrencia, $hiddenPopular, $descricaoPopular, $finalizador, $mobile, $step, $dataAlteracao, $dataCriacao)
     {
         $this->sttaId = $sttaId;
         $this->sttaIdStatus = $sttaIdStatus;
         $this->sttaIdNfe = $sttaIdNfe;
+        $this->sttaIdVolume = $sttaIdVolume;
         $this->sttaAutor = $sttaAutor;
         $this->sttId = $sttId;
         $this->nome = $nome;
@@ -53,6 +55,10 @@ class status
     public function getSttaIdNfe()
     {
         return $this->sttaIdNfe;
+    }
+    public function getSttaIdVolume()
+    {
+        return $this->sttaIdVolume;
     }
     public function getSttaAutor()
     {
@@ -116,7 +122,7 @@ class status
     public static function requestStatus($idNfe)
     {
         $sql = connectionFactory::connect()->prepare(
-            "SELECT DISTINCT `stta_id`, `stta_id_nfe`, `stta_autor`, `stta_id_status`, 
+        "SELECT DISTINCT `stta_id`, `stta_id_nfe`, `stta_autor`, `stta_id_status`, `stta_id_volume`,
         `stt_id`, `stt_nome`, `stt_descricao`, `stt_cor`, `stt_ocorrencia`, `stt_hidden_popular`, `stt_descricao_popular`, `stt_finalizador`, `stt_mobile`, `stt_step`, `stta_data_alteracao`, `stt_data_criacao`
         FROM `tb_status_apply`
 

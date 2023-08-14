@@ -5,6 +5,7 @@ class ticket
     public $id;
     public $idNfe;
     public $idAutor;
+    public $idVolume;
     public $nomeAutor;
     public $conteudo;
     public $destinatarioTicket;
@@ -16,11 +17,12 @@ class ticket
     public $data;
 
     // Método construtor
-    public function __construct($id, $idNfe, $idAutor, $nomeAutor, $conteudo, $destinatarioTicket, $visualizador, $arquivo, $finalizado, $idFinalizador, $nomeFinalizador, $dataCriacao)
+    public function __construct($id, $idNfe, $idAutor, $idVolume, $nomeAutor, $conteudo, $destinatarioTicket, $visualizador, $arquivo, $finalizado, $idFinalizador, $nomeFinalizador, $dataCriacao)
     {
         $this->id = $id;
         $this->idNfe = $idNfe;
         $this->idAutor = $idAutor;
+        $this->idVolume = $idVolume;
         $this->nomeAutor = $nomeAutor;
         $this->conteudo = $conteudo;
         $this->destinatarioTicket = $destinatarioTicket;
@@ -46,6 +48,10 @@ class ticket
     public function getAutor()
     {
         return $this->idAutor;
+    }
+    public function getIdVolume()
+    {
+        return $this->idVolume;
     }
 
     public function getNomeAutor()
@@ -107,12 +113,16 @@ class ticket
         $idNfe = $ticket->idNfe;
         $idAutor = $ticket->idAutor;
         $conteudo = $ticket->conteudo;
+        $idVolume = $ticket->idVolume;
         $destinatarioTicket = $ticket->destinatarioTicket;
         $visualizador = $ticket->visualizador;
         $arquivo = $ticket->arquivo;
-        $data = date("Y-m-d H:i:s");
+        $data = date("Y-m-d H:i:s"); 
 
-        $sql = connectionFactory::connect()->prepare("INSERT INTO `tb_ticket` (`tkt_id`, `tkt_id_nfe`, `tkt_id_autor`, `tkt_conteudo`, `tkt_destinatario`, `tkt_visualizador`, `tkt_arquivo`,`tkt_data_criacao`) VALUES (NULL, '$idNfe', '$idAutor', '$conteudo', '$destinatarioTicket', '$visualizador', '$arquivo', '$data')");
+        $idVolume == "*" ? $idVolume = 'NULL' : NULL;
+
+        $query = "INSERT INTO `tb_ticket` (`tkt_id`, `tkt_id_nfe`, `tkt_id_autor`, `tkt_id_volume`, `tkt_conteudo`, `tkt_destinatario`, `tkt_visualizador`, `tkt_arquivo`,`tkt_data_criacao`) VALUES (NULL, '$idNfe', '$idAutor', $idVolume, '$conteudo', '$destinatarioTicket', '$visualizador', '$arquivo', '$data')";
+        $sql = connectionFactory::connect()->prepare($query);
         $sql->execute();
         
     }
@@ -122,39 +132,23 @@ class ticket
         $idNfe = $ticket->idNfe;
         $idAutor = $ticket->idAutor;
         $conteudo = $ticket->conteudo;
+        $idVolume= $ticket->idVolume;
         $destinatarioTicket = $ticket->destinatarioTicket;
         $visualizador = $ticket->visualizador;
         $arquivo = $ticket->arquivo;
         $data = date("Y-m-d H:i:s");
 
-        $sql = connectionFactory::connect()->prepare("INSERT INTO `tb_ticket` (`tkt_id`, `tkt_id_nfe`, `tkt_id_autor`, `tkt_conteudo`, `tkt_destinatario`, `tkt_visualizador`, `tkt_arquivo`,`tkt_data_criacao`) VALUES (NULL, '$idNfe', NULL, '$conteudo', '$destinatarioTicket', '$visualizador', '$arquivo', '$data')");
+        $idVolume == "*" ? $idVolume = 'NULL' : NULL;
+
+        $sql = connectionFactory::connect()->prepare("INSERT INTO `tb_ticket` (`tkt_id`, `tkt_id_nfe`, `tkt_id_autor`, `tkt_id_volume`, `tkt_conteudo`, `tkt_destinatario`, `tkt_visualizador`, `tkt_arquivo`,`tkt_data_criacao`) VALUES (NULL, '$idNfe', NULL, $idVolume, '$conteudo', '$destinatarioTicket', '$visualizador', '$arquivo', '$data')");
         $sql->execute();
 
-    }
-
-    public static function requestTickets($id, $condition)
-    {
-        $sql = connectionFactory::connect()->prepare(
-            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, autor.log_nome AS autor_nome, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, finalizador.log_nome AS finalizador_nome, t1.tkt_data_criacao
-            FROM tb_ticket AS t1
-
-            INNER JOIN tb_login AS autor ON t1.tkt_id_autor = autor.log_id
-            INNER JOIN tb_login AS finalizador ON t1.tkt_id_finalizador = finalizador.log_id
-
-            WHERE t1.tkt_id_nfe = $id $condition
-            ORDER BY t1.tkt_data_criacao DESC
-        "
-        );
-        $sql->execute();
-        $sql = $sql->fetchAll();
-
-        return $sql;
     }
 
     public static function requestTicketsLeftJoined($id, $condition)
     {
         $sql = connectionFactory::connect()->prepare(
-            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, t1.tkt_data_criacao
+            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, t1.tkt_id_volume, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, t1.tkt_data_criacao, finalizador.log_nome AS finalizador_nome, autor.log_nome AS autor_nome
             FROM tb_ticket AS t1
 
             LEFT JOIN tb_login AS autor ON t1.tkt_id_autor = autor.log_id
@@ -170,28 +164,10 @@ class ticket
         return $sql;
     }
 
-    public static function requestSingleTicket($ticketId)
-    {
-        $sql = connectionFactory::connect()->prepare(
-            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, autor.log_nome AS autor_nome, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, finalizador.log_nome AS finalizador_nome, t1.tkt_data_criacao
-            FROM tb_ticket AS t1
-            
-            INNER JOIN tb_login AS autor ON t1.tkt_id_autor = autor.log_id
-            INNER JOIN tb_login AS finalizador ON t1.tkt_id_finalizador = finalizador.log_id
-            
-            WHERE t1.tkt_id = $ticketId
-            ORDER BY t1.tkt_data_criacao DESC"
-        );
-        $sql->execute();
-        $sql = $sql->fetch();
-
-        return $sql;
-    }
-
     public static function requestSingleTicketLeftJoined($ticketId)
     {
         $sql = connectionFactory::connect()->prepare(
-            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, autor.log_nome AS autor_nome, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, finalizador.log_nome AS finalizador_nome, t1.tkt_data_criacao
+            "SELECT t1.tkt_id, t1.tkt_id_nfe, t1.tkt_id_autor, autor.log_nome AS autor_nome, t1.tkt_conteudo, t1.tkt_destinatario, t1.tkt_visualizador, t1.tkt_arquivo, t1.tkt_finalizado, t1.tkt_id_finalizador, finalizador.log_nome AS finalizador_nome, autor.log_nome AS autor_nome t1.tkt_data_criacao
             FROM tb_ticket AS t1
             
             LEFT JOIN tb_login AS autor ON t1.tkt_id_autor = autor.log_id

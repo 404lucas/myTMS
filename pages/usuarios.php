@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-user"></i>
             <h1>
-                Gerenciar usuários
+                Gerenciar usuários<span></span>
             </h1>
         </div>
     </header>
@@ -14,7 +14,7 @@
     <div class="contentBox hidden" style="background: #fff; flex-direction:column !important;">
         <div class="contentBoxHeader">
             <div class="contentBoxTitle"><i class="fa-solid fa-user"></i>
-                <h1>Usuários</h1>
+                <h1>Usuários<span></span></h1>
             </div>
         </div>
         <div class="form-group">
@@ -99,7 +99,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">Senha</label><br>
-                                <input class="form-control" placeholder="Senha" id="inputSenha" type="password" name="senha" value="<?php echo $currentUser->getSenha(); ?>" disabled value="">
+                                <input class="form-control " placeholder="Senha" id="inputSenha" type="password" name="senha" value="<?php echo $currentUser->getSenha(); ?>" disabled value="">
                             </div>
                             <div class="form-group">
                                 <label for="inputNome">CNPJ da organização</label><br>
@@ -122,7 +122,6 @@
     <button id="newUserRevealer" class="btn btn-outline-dark btn-block">Novo usuário</button>
 
     <div class="userBox d-none" id="newUserBox">
-        <button id="gerarSenhaBtn">Gerar Senha</button>
         <div class="userWrapper">
             <h2>Novo usuário</h2>
             <div class="userPic">
@@ -131,16 +130,21 @@
             <form method="POST" name="editUser">
                 <div class="userData">
                     <div class="form-group">
-                        <label for="inputNome">Nome</label><br>
+                        <label for="newNome">Nome</label><br>
                         <input class="form-control" placeholder="Nome" id="newNome" type="text" required name="newNome">
                     </div>
                     <div class=" form-group">
-                        <label for="inputNome">E-mail</label><br>
+                        <label for="newEmail">E-mail</label><br>
                         <input class="form-control" placeholder="E-mail" id="newEmail" type="text" required name="newEmail">
                     </div>
-                    <div class="form-group">
-                        <label for="inputNome">Senha</label><br>
-                        <input class="form-control" placeholder="Senha" id="newSenha" type="password" minlength="8" required name="newSenha">
+                    <div class="form-group input-group">
+                        <label for="newSenha">Senha</label><br>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Senha" id="newSenha" type="text" minlength="8" required name="newSenha" aria-label="gerarSenhaBtn" aria-describedby="gerarSenhaBtn">
+                            <div class="input-group-append">
+                                <button name="customFilter" class="btn btn-secondary" type="submit" id="gerarSenhaBtn"><i class="fa-solid fa-key"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputNome">CNPJ da organização</label><br>
@@ -184,7 +188,7 @@
         });
 
         $('#gerarSenhaBtn').click(function() {
-            var caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_';
+            var caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*-_';
             var tamanho = 8;
             var senha = '';
 
@@ -192,7 +196,7 @@
                 senha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
             }
 
-            alert("Senha gerada: " + senha);
+            $('#newSenha').val(senha);
         });
     });
 </script>

@@ -2,9 +2,9 @@
     <header class="dividedHeader">
         <div class="headerWrapper">
             <div>
-                <i class="fa-solid fa-chart-line"></i>
+                <i class="fa-solid fa-truck-fast"></i>
                 <h1>
-                    Relatórios
+                    Encomendas
                 </h1>
             </div>
             <form method="POST" class="input-group mb-3 w-25">
@@ -387,7 +387,6 @@
                         $value['nfe_id'],
                         $value['nfe_ativa'],
                         $value['nfe_id_cliente'],
-                        $value['nfe_id_volume'],
                         $value['nfe_id_fornecedor'],
                         $value['nfe_id_parceiro'],
                         $value['nfe_id_servico'],
@@ -419,10 +418,6 @@
                         $value['nfe_dest_complemento'],
                         $value['nfe_dest_p_referencia'],
                         $value['nfe_dest_numero'],
-                        $value['nfe_CTe'],
-                        $value['nfe_CTe_chave'],
-                        $value['nfe_CTe_cCT'],
-                        $value['nfe_CTe_origem'],
                         $value['nfe_entrega_data'],
                         $value['nfe_entrega_previsao'],
                         $value['nfe_entrega_prazo'],
@@ -449,7 +444,6 @@
                         $value['cli_end_numero'],
                         $value['cli_end_complemento'],
                         $value['cli_end_bairro'],
-                        $value['vol_item'],
                         $value['forn_fantasia'],
                         $value['parc_fantasia'],
                         $value['serv_nome'],
@@ -461,12 +455,12 @@
                         $value['stt_nome'],
                         $value['stt_finalizador'],
                         $value['tkt_destinatario'],
+                        $value['cte_chCTe'],
+                        $value['cte_ide_nCT'],
+                        $value['cte_ide_cCT'],
+                        $value['cte_arquivo_xml'],
+                        $value['cte_cte_data_proc']
                     );
-
-                    $getCte = cte::getMainCTEData($currentNfe->getCteChave());
-                    if ($getCte) {
-                        $currentCTE = new cte($getCte['cte_id'], $getCte['cte_chCTe'], $getCte['cte_ide_nCT'], $getCte['cte_ide_cCT'], 11, $getCte['cte_rem_infNF_vBC'], 'CAF', $getCte['cte_rem_infNF_nPeso'], $getCte['cte_arquivo_xml'], $getCte['cte_arquivo_xml']);
-                    }
 
                 ?>
 
@@ -500,6 +494,19 @@
                                                 <option value="Sinistro">Enviar para sinistro</option>
                                             </select>
                                         </div>
+                                        <div class="form-group ticketModal">
+                                            <label>Volume</label>
+                                            <select class="form-control" name="volId" required id="mainOptions">
+                                                <option selected value="*">Todos</option>
+                                                <?php
+                                                $volumns = volume::getIdsByNfe($currentNfe->getId());
+                                                foreach ($volumns as $value) { ?>
+                                                    <option value="<?php echo $value['vol_id']; ?>"><?php echo $value['vol_id']; ?>
+                                                    </option>
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label>Visualizadores</label>
                                             <select class="form-control" name="visualizador" id="mainOptions">
@@ -513,13 +520,15 @@
                                             <label>Conteúdo do Ticket</label>
                                             <textarea name="conteudo" class="form-control" required></textarea>
                                         </div>
+                                        
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                                     <input type="submit" name="enviarTicket<?php echo $currentNfe->getId(); ?>" class="btn btn-warning">
 
                                     <?php if (isset($_POST['enviarTicket' . $currentNfe->getId()])) {
-                                        $currentTicket = new ticket(NULL, $currentNfe->getId(), $_SESSION['id'], NULL, $_POST['conteudo'], $_POST['destinatario'], $_POST['visualizador'], 'blob', 0, NULL, NULL, NULL);
+                                        $currentTicket = new ticket(NULL, $currentNfe->getId(), $_SESSION['id'], $_POST['volId'], $_SESSION['nome'], $_POST['conteudo'], $_POST['destinatario'], $_POST['visualizador'], 'blob', 0, NULL, NULL, NULL);
+                                        var_dump($currentTicket);
                                         logFeeder::log($_SESSION['id'], 'Envio de Ticket na NF-e ID ' . $currentNfe->getId());
                                         $currentTicket->sendTicket($currentTicket);
                                     } ?>
@@ -561,6 +570,19 @@
                                                 ?>
                                             </select>
                                         </div>
+                                        <div class="form-group ticketModal">
+                                            <label>Volume</label>
+                                            <select class="form-control" name="volId" required id="mainOptions">
+                                                <option selected value="*">Todos</option>
+                                                <?php
+                                                $volumns = volume::getIdsByNfe($currentNfe->getId());
+                                                foreach ($volumns as $value) { ?>
+                                                    <option value="<?php echo $value['vol_id']; ?>"><?php echo $value['vol_id']; ?>
+                                                    </option>
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label>Data retroativa</label>
                                             <label style="margin: 1px 0; color: #999; font-size: 15px; font-weight: 400 !important;">Caso
@@ -574,7 +596,7 @@
 
                                     <?php if (isset($_POST['enviarStatus' . $currentNfe->getId()])) {
                                         //Envio dos dados para a atualização de status
-                                        $currentStatusApply = new statusApply($_POST['stt'] ?? 820, $currentNfe->getId(), $_SESSION['nome'], $_POST['statusDate'] ?? NULL);
+                                        $currentStatusApply = new statusApply($_POST['stt'] ?? 820, $currentNfe->getId(), $_SESSION['nome'], $_POST['volId'], $_POST['statusDate'] ?? NULL);
                                         logFeeder::log($_SESSION['id'], 'Adição de status ' . $_SESSION['nome'] . ' sobre a NF-e ID' . $currentNfe->getId());
                                         $currentStatusApply->sendStatus($currentStatusApply);
                                     } ?>
@@ -590,7 +612,7 @@
                     <tr>
 
                         <td>
-                            <?php echo isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTE vinculado'; ?>
+                            <?php echo $currentNfe->getNCTe(); ?>
                         </td>
                         <td>
                             <?php echo $currentNfe->getSerialCodigo(); ?>
@@ -656,7 +678,7 @@
                                                                     $value['autor_nome'] = 'Destinatário';
                                                                     $value['finalizador_nome'] = '';
                                                                 }
-                                                                $currentTicket = new ticket($value['tkt_id'], $value['tkt_id_nfe'], $value['tkt_id_autor'], $value['autor_nome'], $value['tkt_conteudo'], $value['tkt_destinatario'], $value['tkt_visualizador'], $value['tkt_arquivo'], $value['tkt_finalizado'], $value['tkt_id_finalizador'], $value['finalizador_nome'], $value['tkt_data_criacao']);
+                                                                $currentTicket = new ticket($value['tkt_id'], $value['tkt_id_nfe'], $value['tkt_id_autor'], $value['tkt_id_volume'], $value['autor_nome'], $value['tkt_conteudo'], $value['tkt_destinatario'], $value['tkt_visualizador'], $value['tkt_arquivo'], $value['tkt_finalizado'], $value['tkt_id_finalizador'], $value['finalizador_nome'], $value['tkt_data_criacao']);
 
                                                                 echo frontend::ticketSingle($currentTicket, true, $_SESSION['id']);
                                                         ?>
@@ -726,8 +748,9 @@
                                                                     <tr class="thead-dark">
                                                                         <th>Tipo</th>
                                                                         <th>Descrição</th>
-                                                                        <th>Data</th>
+                                                                        <th>Volume</th>
                                                                         <th>Autor</th>
+                                                                        <th>Data</th>
                                                                         <?php if (acesso::verifyAppliedAccess($_SESSION['id'], 5)) { ?>
                                                                             <th></th> <?php } ?>
                                                                     </tr>
@@ -739,6 +762,7 @@
                                                                         $value['stta_id'],
                                                                         $value['stta_id_nfe'],
                                                                         $value['stta_id_status'],
+                                                                        $value['stta_id_volume'],
                                                                         $value['stta_autor'],
                                                                         $value['stt_id'],
                                                                         $value['stt_nome'],
@@ -763,12 +787,14 @@
                                                                             <?php echo $currentStatus->getDescricao(); ?>
                                                                         </td>
                                                                         <td>
-                                                                            <?php echo $currentStatus->getDataAlteracao(); ?>
+                                                                            <?php echo $currentStatus->getSttaIdVolume() ?? "*"; ?>
                                                                         </td>
                                                                         <td>
                                                                             <?php echo $currentStatus->getSttaAutor(); ?>
                                                                         </td>
-
+                                                                        <td>
+                                                                            <?php echo $currentStatus->getDataAlteracao(); ?>
+                                                                        </td>
                                                                         <?php if (acesso::verifyAppliedAccess($_SESSION['id'], 5)) { ?>
                                                                             <td style="padding: 0;">
                                                                                 <!--button id="deleteStatusBtn<?php /*echo $currentStatus->getSttaId(); ?>" class="btn btn-secondary" onclick="deleteStatus(<?php echo $currentStatus->getSttaId(); ?>)"><i class="fa-solid fa-trash-can"></i></button>
@@ -803,12 +829,12 @@
                                             <label class="formTitle"><i class="fa-solid fa-user"></i>Remetente</label>
                                             <?php
 
-                                            frontend::readingForm($key, 'ID', 'w33', 'idcliente', $currentNfe->getIdCliente());
-                                            frontend::readingForm($key, 'CNPJ', 'w33', 'cnpj', $currentNfe->getCliCNPJ());
-                                            frontend::readingForm($key, 'Inscrição Estadual', 'w33', 'ie', $currentNfe->getCliIE());
-                                            frontend::readingForm($key, 'Nome Fantasia', 'w33', 'fantasia', $currentNfe->getCliFantasia());
-                                            frontend::readingForm($key, 'CEP', 'w33', 'cep', $currentNfe->getCliCEP());
-                                            frontend::readingForm($key, 'Cidade', 'w33', 'ie', $currentNfe->getCliMunicipio());
+                                            frontend::readingForm($key, 'ID', 'w33', 'idcliente', '', $currentNfe->getIdCliente());
+                                            frontend::readingForm($key, 'CNPJ', 'w33', 'cnpj', '', $currentNfe->getCliCNPJ());
+                                            frontend::readingForm($key, 'Inscrição Estadual', 'w33', 'ie', '', $currentNfe->getCliIE());
+                                            frontend::readingForm($key, 'Nome Fantasia', 'w33', 'fantasia', '', $currentNfe->getCliFantasia());
+                                            frontend::readingForm($key, 'CEP', 'w33', 'cep', '', $currentNfe->getCliCEP());
+                                            frontend::readingForm($key, 'Cidade', 'w33', 'ie', '', $currentNfe->getCliMunicipio());
 
                                             ?>
                                         </form>
@@ -817,10 +843,10 @@
 
                                             <label class="formTitle"><i class="fa-solid fa-truck"></i>Entrega</label>
                                             <?php
-                                            frontend::readingForm($key, 'Data', 'w50', 'data', $currentNfe->getEntregaData());
-                                            frontend::readingForm($key, 'Previsão', 'w50', 'previsao', $currentNfe->getEntregaPrevisao());
-                                            frontend::readingForm($key, 'Prazo', 'w50', 'prazo', $currentNfe->getEntregaPrazo());
-                                            frontend::readingForm($key, 'Monitorar', 'w50', 'monitorar', $currentNfe->getEntregaMonitorar());
+                                            frontend::readingForm($key, 'Data', 'w50', 'data', '', $currentNfe->getEntregaData());
+                                            frontend::readingForm($key, 'Previsão', 'w50', 'previsao', '', $currentNfe->getEntregaPrevisao());
+                                            frontend::readingForm($key, 'Prazo', 'w50', 'prazo', '', $currentNfe->getEntregaPrazo());
+                                            frontend::readingForm($key, 'Monitorar', 'w50', 'monitorar', '', $currentNfe->getEntregaMonitorar());
                                             ?>
                                         </form>
 
@@ -829,16 +855,16 @@
 
                                             <label class="formTitle"><i class="fa-solid fa-user"></i>Destinatário</label>
                                             <?php
-                                            frontend::readingForm($key, 'Nome do destinatário', 'w33', 'razaoSocial', $currentNfe->getCliRazao());
-                                            frontend::readingForm($key, 'CPL', 'w33', 'CPL', $currentNfe->getCte());
-                                            frontend::readingForm($key, 'CPF', 'w33', 'CPF', $currentNfe->getDestCPF());
-                                            frontend::readingForm($key, 'CNPJ', 'w33', 'CNPJ', $currentNfe->getDestCNPJ());
-                                            frontend::readingForm($key, 'UF', 'w33', 'UF', $currentNfe->getDestUF());
-                                            frontend::readingForm($key, 'Cidade', 'w33', 'Cidade', $currentNfe->getDestCidade());
-                                            frontend::readingForm($key, 'Bairro', 'w33', 'Bairro', $currentNfe->getDestBairro());
-                                            frontend::readingForm($key, 'Logradouro', 'w50', 'Logradouro', $currentNfe->getDestLogradouro());
-                                            frontend::readingForm($key, 'Complemento', 'w33', 'Complemento', $currentNfe->getDestComplemento());
-                                            frontend::readingForm($key, 'P. de referência', 'w100', 'referência', $currentNfe->getDestPReferencia());
+                                            frontend::readingForm($key, 'Nome do destinatário', 'w33', 'razaoSocial', '', $currentNfe->getCliRazao());
+                                            frontend::readingForm($key, 'CPL', 'w33', 'CPL', '', $currentNfe->getCte());
+                                            frontend::readingForm($key, 'CPF', 'w33', 'CPF', '', $currentNfe->getDestCPF());
+                                            frontend::readingForm($key, 'CNPJ', 'w33', 'CNPJ', '', $currentNfe->getDestCNPJ());
+                                            frontend::readingForm($key, 'UF', 'w33', 'UF', '', $currentNfe->getDestUF());
+                                            frontend::readingForm($key, 'Cidade', 'w33', 'Cidade', '', $currentNfe->getDestCidade());
+                                            frontend::readingForm($key, 'Bairro', 'w33', 'Bairro', '', $currentNfe->getDestBairro());
+                                            frontend::readingForm($key, 'Logradouro', 'w50', 'Logradouro', '', $currentNfe->getDestLogradouro());
+                                            frontend::readingForm($key, 'Complemento', 'w33', 'Complemento', '', $currentNfe->getDestComplemento());
+                                            frontend::readingForm($key, 'P. de referência', 'w100', 'referência', '', $currentNfe->getDestPReferencia());
                                             ?>
                                         </form>
 
@@ -847,24 +873,24 @@
                                             <label class="formTitle"><i class="fa-solid fa-paperclip"></i>Documentação</label>
                                             <?php
 
-                                            frontend::readingForm($key, 'AWB', 'w25', 'AWB', $currentNfe->getDocAWB());
-                                            frontend::readingForm($key, 'Gris', 'w25', 'Gris', $currentNfe->getDocGris());
-                                            frontend::readingForm($key, 'Seguro', 'w25', 'Seguro', $currentNfe->getDocSeguro());
-                                            frontend::readingForm($key, 'CFOP', 'w33', 'CFOP', $currentNfe->getDocCFOP());
-                                            frontend::readingForm($key, 'Rodo Courier', 'w33', 'RodoCourier', $currentNfe->getDocRodoCourier());
+                                           // frontend::readingForm($key, 'AWB', 'w25', 'AWB', '', $currentNfe->getDocAWB());
+                                        // frontend::readingForm($key, 'Gris', 'w25', 'Gris', '', $currentNfe->getDocGris());
+                                        //    frontend::readingForm($key, 'Seguro', 'w25', 'Seguro', '', $currentNfe->getDocSeguro());
+                                        //    frontend::readingForm($key, 'CFOP', 'w33', 'CFOP', '', $currentNfe->getDocCFOP());
+                                        //    frontend::readingForm($key, 'Rodo Courier', 'w33', 'RodoCourier', '', $currentNfe->getDocRodoCourier());
 
-                                            frontend::readingForm($key, 'CTe', 'w33', 'CTe', isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'Chave do CTe DLog', 'w33', 'Chave', isset($currentCTE) ? $currentCTE->getchCTe() : 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'cCT', 'w33', 'cCT', isset($currentCTE) ? $currentCTE->getCCT() : 'Sem CTe vinculado.');
-                                            frontend::readingForm($key, 'Origem', 'w33', 'Origem', isset($currentCTE) ? $currentCTE->getNCTe() : 'Sem CTe vinculado.');
+                                            frontend::readingForm($key, 'CTe', 'w33', 'CTe', '', $currentNfe->getNCTe() ?? 'Sem CT-e vinculado');
+                                            frontend::readingForm($key, 'Chave do CTe', 'w33', 'Chave', '', $currentNfe->getchCTe() ?? 'Sem CT-e vinculado');
+                                            frontend::readingForm($key, 'cCT', 'w33', 'cCT', '', $currentNfe->getCCT() ?? 'Sem CT-e vinculado');
+                                            frontend::readingForm($key, 'Origem', 'w33', 'Origem', '', $currentNfe->getNCTe() ?? 'Sem CT-e vinculado');
 
-                                            frontend::readingForm($key, 'Pedido', 'w33', 'serialpedido', $currentNfe->getSerialPedido());
-                                            frontend::readingForm($key, 'Código', 'w33', 'serialcodigo', $currentNfe->getSerialCodigo());
-                                            frontend::readingForm($key, 'Série', 'w33', 'serialserie', $currentNfe->getSerialSerie());
-                                            frontend::readingForm($key, 'VerProc', 'w33', 'serialverproc', $currentNfe->getSerialVerProc());
-                                            frontend::readingForm($key, 'NNF', 'w33', 'serialnnf', $currentNfe->getSerialNNF());
-                                            frontend::readingForm($key, 'Data do Protocolo', 'w33', 'serialdataprotocolo', $currentNfe->getSerialDataProtocolo());
-                                            frontend::readingForm($key, 'Emissor do Protocolo', 'w33', 'serialemissor', $currentNfe->getSerialEmissorProtocolo());
+                                            frontend::readingForm($key, 'Pedido', 'w33', 'serialpedido', '', $currentNfe->getSerialPedido());
+                                            frontend::readingForm($key, 'Código', 'w33', 'serialcodigo', '', $currentNfe->getSerialCodigo());
+                                            frontend::readingForm($key, 'Série', 'w33', 'serialserie', '', $currentNfe->getSerialSerie());
+                                            frontend::readingForm($key, 'VerProc', 'w33', 'serialverproc', '', $currentNfe->getSerialVerProc());
+                                            frontend::readingForm($key, 'NNF', 'w33', 'serialnnf', '', $currentNfe->getSerialNNF());
+                                            frontend::readingForm($key, 'Data do Protocolo', 'w33', 'serialdataprotocolo', '', $currentNfe->getDataProtocolo()  ? frontend::formatDate($currentNfe->getDataProtocolo()) : 'Sem CT-e vinculado');
+                                            frontend::readingForm($key, 'Emissor do Protocolo', 'w33', 'serialemissor', '', $currentNfe->getSerialEmissorProtocolo());
 
                                             ?>
                                         </form>
@@ -873,33 +899,58 @@
 
                                             <label class="formTitle"><i class="fa-solid fa-user-tag"></i>Operadores</label>
                                             <?php
-                                            frontend::readingForm($key, 'Operador atendente', '100', 'operadornome', $currentNfe->getOperadorNome());
-                                            frontend::readingForm($key, 'Comercial', '100', 'operadornome', $currentNfe->getExecutivoNome());
+                                            frontend::readingForm($key, 'Operador atendente', '100', 'operadornome', '', $currentNfe->getOperadorNome());
+                                            frontend::readingForm($key, 'Comercial', '100', 'operadornome', '', $currentNfe->getExecutivoNome());
                                             ?>
                                         </form>
 
                                         <form class="formContainer">
-
-                                            <label class="formTitle"><i class="fa-solid fa-calendar"></i>Datas</label>
-                                            <?php
-                                            frontend::readingForm($key, 'Data de criação', 'w33', 'criacao', $currentNfe->getDataCriacao());
-                                            frontend::readingForm($key, 'Data de alteração', 'w33', 'alteracao', $currentNfe->getDataAlteracao()); ?>
-
-                                        </form>
+                                            <label class="formTitle"><i class="fa-solid fa-box"></i>Volumes</label>
                                         <?php
-                                        echo "<a class='btn btn-light' href=\"ctepdfgenerator.php?\" target='_blank'><i class='fa-solid fa-download'></i> <b>CT-E PDF</b></a><br>";
+                                            $volumes = volume::getAllData($currentNfe->getId());
+                                            if($volumes){
+                                                foreach($volumes as $value){
+                                                    $currentVolume = new volume(
+                                                        $value['vol_id'],
+                                                        $value['vol_id_nfe'],
+                                                        $value['vol_item'],
+                                                        $value['vol_codigo'],
+                                                        $value['vol_peso'],
+                                                        $value['vol_largura'],
+                                                        $value['vol_altura'],
+                                                        $value['vol_comprimento'],
+                                                    );
+                                                    ?>
 
-                                        if (isset($currentCTE) && $currentCTE->getArquivoXML()) {
-                                            echo isset($currentCTE) ? "<a class='btn btn-light' href=\"download.php?file=" . urlencode($currentCTE->getArquivoXML()) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>" : NULL;
-                                        } elseif (isset($currentCTE) && is_array($currentCTE)) {
-                                            foreach ($currentCTE as $value) {
-                                                echo "<a class='btn btn-light' href=\"download.php?file=" . urlencode($value->getArquivoXML()) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>";
+                                                    <button type="button" class="btn btn-lg btn-danger m-3" style="background-color: #F06021 !important; border: #F06021 !important;" data-toggle="popover" title="<?php echo $currentVolume->getItem() ?>" data-trigger="focus" data-content="<?php echo "A{$currentVolume->getAltura()} X L{$currentVolume->getLargura()} X C{$currentVolume->getComprimento()}"; ?>"><i class="fa-solid fa-box"></i> #<?php echo $currentVolume->getId(); ?></button>
+
+                                                    <?php
+                                                }
+                                            }else{
+                                                echo frontend::alert('times', 'dark', 'Não há <b>nenhum volume</b> relacionado a encomenda.');
                                             }
-                                        }
+                                            
+                                        ?>
+                                        </form>
+                                        </div>
+                                        <div class="bigfooter" style="width:100%; background-color: #ddd; display: flex; height: 80px; border-radius: 10px">
+                                        <?php
+                                        frontend::readingForm($key, 'Data de criação', 'w33', 'criacao', '', $currentNfe->getDataCriacao());
+                                        frontend::readingForm($key, 'Data de alteração', 'w33', 'alteracao', '', $currentNfe->getDataAlteracao());
+                                        //echo "<a class='btn btn-light' href=\"ctepdfgenerator.php?\" target='_blank'><i class='fa-solid fa-download'></i> <b>CT-E PDF</b></a><br>";
+                                         $chaveCTe = $currentNfe->getChCTe();
+                                            echo !empty(cte::getArquivoXMLByKey($chaveCTe)) ? "<a class='btn btn-light' href=\"download.php?file=" . urlencode(cte::getArquivoXMLByKey($chaveCTe)) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>" : NULL;
+                                         // elseif (isset($currentCTE) && is_array($currentCTE)) {
+                                        //     foreach ($currentCTE as $value) {
+                                        //         echo "<a class='btn btn-light' href=\"download.php?file=" . urlencode($value->getArquivoXML()) . "\" target='_blank'><i class='fa-solid fa-download'></i> <b>XML da CT-e</b></a><br>";
+                                        //     }
+                                        // }
                                         ?>
                                         <br>
                                     </div>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </td>
                     </tr>

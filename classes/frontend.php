@@ -36,6 +36,8 @@ class frontend
         }
     }
 
+
+
     // public static function removerAcentos($str)
     // {
     //     return iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -90,10 +92,10 @@ class frontend
         //links de cada botão
         $menuLinks = array(
             array(
-                'title' => 'Relatórios',
+                'title' => 'Encomendas',
                 'subButtons' => array(
                     array(
-                        'title' => 'Relatórios NFe',
+                        'title' => 'Gerenciar Encomendas',
                         'link' => 'relatorios',
                         'access' => 2 //acessar_relatorios
                     ),
@@ -128,12 +130,12 @@ class frontend
                     array(
                         'title' => 'Gerenciar usuários',
                         'link' => 'usuarios',
-                        'access' => 3 //editar_acessos
+                        'access' => 3 //gerenciar_acessos
                     ),
                     array(
                         'title' => 'Acessos',
                         'link' => 'acessos',
-                        'access' => 3 //editar_acessos
+                        'access' => 3 //gerenciar_acessos
                     ),
 
                 )
@@ -145,10 +147,13 @@ class frontend
                     array(
                         'title' => 'Gerenciar clientes',
                         'link' => 'clientes',
-                        'access' => 9 //editar_acessos
+                        'access' => 9 //gerenciar_clientes
                     ),
-
-
+                    array(
+                        'title' => 'Cadastrar clientes',
+                        'link' => 'cadClientes',
+                        'access' => 11 //cadastrar_clientes
+                    ),
                 )
             ),
 
@@ -208,7 +213,7 @@ class frontend
         // }
 
         $deleteBtn = acesso::verifyAppliedAccess($userID, 7) ? '<a class="btn btn-danger" href="functions/deleteTicket.php?id=' . $currentTicket->id . '&userId=' . $userID . '"><i class="fa-solid fa-trash-can"></i></a>' : '';
-
+        $volume = $currentTicket->idVolume ? $currentTicket->idVolume : 'TODAS';
         return '
         <div class="ticketSingle">
              <div class="ticketBox">
@@ -224,18 +229,16 @@ class frontend
                     <div class="ticketContent">
                         <textarea disabled>' . $currentTicket->conteudo . '</textarea>
                     </div>
-                    <form method="post" action="' . $sessionActive . '">
-                        <button type="submit" class="btn btn-outline-secondary btn-block" name="ticketId" style="margin-bottom:10px;" value="' . $currentTicket->id . '"><i class="fa-solid fa-message"></i></button>
-                    </form>      
                         <div class="ticketFooter">
-                        <p>' . $currentTicket->data . '</p>
-                    </div>
+                        <p>' . self::formatDate($currentTicket->data) . '</p>
+                        <p> Para encomenda: ' . $volume . '</p>
+                        </div>
                     <input type ="hidden" value="' . $currentTicket->id . '">
                 </div>
              </div>';
     }
 
-    public static function readingForm($key, $title, $class, $id, $function)
+    public static function readingForm($key, $title, $class, $id, $alterable, $function)
     {
         echo '<div class="form-group insideContainer ' . $class . '">
 
@@ -243,7 +246,7 @@ class frontend
         <label for="formGroupExampleInput">' . $title . '</label>
         <!--Input-->
         <div class="input-group mb-3">
-            <input type="text" id="' . $id, $key . '" name="' . $id . '" class="form-control"
+            <input type="text" id="' . $id, $key . '" name="' . $id . '" class="form-control ' . $alterable . '"
                 value="' . $function . '" readonly>
                 </input>
             <div class="input-group-append">
@@ -264,7 +267,48 @@ class frontend
         <label for="formGroupExampleInput">' . $title . '</label>
         <!--Input-->
         <div class="input-group mb-3">
-            <input name="' . $title . '" type="text" id="' . $id, $key . '" class="form-control">
+            <input name="' . $id . '" type="text" id="' . $id, $key . '" class="form-control" required>
         </div></div>';
+    }
+
+    public static function selectForm($formTitle, $class, $options, $value, $title, $selectedValue)
+    {
+        echo "<div class='form-group'> 
+    <label for='select{$formTitle}'>{$formTitle}</label>
+    <select class='form-control mb-3 {$class}' name='select{$formTitle}' id='select{$formTitle}'>
+    <option disabled>Selecione</option>";
+        foreach ($options as $option) {
+            $optionValue = is_array($option) ? $option[$value] : $option;
+            $optionTitle = is_array($option) ? $option[$title] : $option;
+
+            if ($value != '') {
+                if ($optionValue == $selectedValue) {
+                    echo "<option value='{$optionValue}' selected>{$optionTitle}</option>";
+                } else {
+                    echo "<option value='{$optionValue}'>{$optionTitle}</option>";
+                }
+            } else {
+                if ($optionValue == $selectedValue) {
+                    echo "<option value='{$optionValue}' selected>{$optionValue}</option>";
+                } else {
+                    echo "<option value='{$optionValue}'>{$optionValue}</option>";
+                }
+            }
+        }
+        echo "</select> </div>";
+    }
+
+
+    public static function dateGetter()
+    {
+        $date = date('Y-m-d H:i:s');
+        return $date;
+    }
+
+    public static function formatDate($date)
+    {
+        $data = new DateTime($date);
+        $dataFormatada = $data->format("d/m/Y H:i");
+        return $dataFormatada;
     }
 }

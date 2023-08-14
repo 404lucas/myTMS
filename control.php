@@ -53,7 +53,7 @@ require 'config.php';
 
                 <?php
                 frontend::MenuBtn(0, 'DashBoard', 'fa-gauge-high',  $_SESSION['id']);
-                frontend::MenuBtn(1, 'Relatórios', 'fa-chart-line', $_SESSION['id']);
+                frontend::MenuBtn(1, 'Encomendas', 'fa-truck-fast', $_SESSION['id']);
                 //frontend::MenuBtn(2, 'Financeiro', 'fa-wallet',  $_SESSION['id']);
                 frontend::MenuBtn(3, 'Usuários', 'fa-user', $_SESSION['id']);
                 frontend::MenuBtn(4, 'Clientes', 'fa-building',  $_SESSION['id']);
@@ -63,7 +63,7 @@ require 'config.php';
                 ?>
 
                 <div style="height:100px;"></div>
-                <button type="button" class="commsBtn" data-toggle="popover"data-trigger="focus" title="<?php echo notificator::getLastNotification()['com_title'] ?? 'Nenhum comunicado, por enquanto!'; ?>" data-content="<?php echo notificator::getLastNotification()['com_content'] ?? '' . notificator::getLastNotification()['com_autor'] ?? ''.' - '. notificator::getLastNotification()['com_data'] ?? ''; ?>"><span class="notificationSpan"></span><i id='notificationBell' class="fa-solid fa-bell"></i></button>
+                <button type="button" class="commsBtn" data-toggle="popover" data-trigger="focus" title="<?php echo notificator::getLastNotification()['com_title'] ?? 'Nenhum comunicado, por enquanto!'; ?>" data-content="<?php echo notificator::getLastNotification()['com_content'] ?? '' . notificator::getLastNotification()['com_autor'] ?? '' . ' - ' . notificator::getLastNotification()['com_data'] ?? ''; ?>"><span class="notificationSpan"></span><i id='notificationBell' class="fa-solid fa-bell"></i></button>
             </div>
         </div>
         <div class="footer">
@@ -113,7 +113,6 @@ require 'config.php';
     <script defer src="./js/app.js"></script>
     <div class="contentArea">
         <?php
-
         //Incluindo todas as páginas
         frontend::loadPage();
         ?>

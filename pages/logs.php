@@ -3,7 +3,7 @@
         <div>
             <i class="fa-solid fa-scroll"></i>
             <h1>
-                Logs
+                Logs<span></span>
             </h1>
         </div>
     </header>
@@ -14,8 +14,8 @@
 
     <div class="contentBox hidden" style="background: #fff;">
         <div class="contentBoxHeader">
-            <div class="contentBoxTitle"><i class="fa-solid fa-scroll"></i>
-                <h1>Next Express - LOG</h1>
+            <div class="contentBoxTitle"><i class="fa-solid fa-scroll fa-sharp"></i>
+                <h1>Next Express - LOG<span></span></h1>
             </div>
         </div>
         <div class="d-flex flex-column">
@@ -32,7 +32,7 @@
                 </form>
             </div>
             <hr>
-            <div class="d-flex flex-column w-100 p-3">
+            <div class="d-flex flex-column w-100 p-3 logsContainer">
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -56,9 +56,11 @@
                                 <?php echo $currentLog['lg_acao']; ?>
                             </td>
                             <td>
-                                <?php $data = new DateTime($currentLog['lg_data']);
+                                <?php
+                                $data = new DateTime($currentLog['lg_data']);
                                 $dataFormatada = $data->format("d/m/Y H:i");
-                                echo $dataFormatada; ?>
+                                echo $dataFormatada;
+                                ?>
                             </td>
                         </tr>
                     <?php } ?>

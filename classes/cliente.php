@@ -72,10 +72,12 @@ class cliente
     private $dataCriacao;
     private $dataAlteracao;
     private $prazoExtra;
+    private $contatoEmail;
+    private $contatoTelefone;
 
 
     // Método construtor
-    public function __construct($id, $grupoId, $executivoId, $contatoId, $operadorAtendenteId, $status, $cpf, $cnpj, $razao, $fantasia, $ie, $integradorRemoto, $integradorColeta, $pais, $uf, $cep, $municipio, $bairro, $logradouro, $numero, $complemento, $baseOperacional, $codMun, $prazoPagamento, $cicloFatura, $crisGrupo, $calcIcms, $documento, $remuneracao, $remuneracaoValor, $remuneracaoCourrier, $diferencaMinimaValor, $adiFTP, $diferencaPrazo, $vmAdicional, $cubagemRodo, $percentAdicional, $expedidor, $herdeirocomercial, $esporadico, $protestavel, $tomador, $isentoICMS, $grupo, $cobraSeguro, $opBloqueada, $isencaoCubagem, $interno, $atualizaEmail, $operacaoRodo, $operadorCourier, $isenscaoCubagem, $redespacho, $webService, $cabecalho, $rodape, $pesoMaximoRodo, $pesoMinimoRodo, $pesoMaximoCourier, $pesoMinimoCourier, $analiseEnvios, $fxInicio, $tabfxFim, $token, $mediaEnvio, $indicadorCon, $dataCriacao, $dataAlteracao, $prazoExtra)
+    public function __construct($id, $grupoId, $executivoId, $contatoId, $operadorAtendenteId, $status, $cpf, $cnpj, $razao, $fantasia, $ie, $integradorRemoto, $integradorColeta, $pais, $uf, $cep, $municipio, $bairro, $logradouro, $numero, $complemento, $baseOperacional, $codMun, $prazoPagamento, $cicloFatura, $crisGrupo, $calcIcms, $documento, $remuneracao, $remuneracaoValor, $remuneracaoCourrier, $diferencaMinimaValor, $adiFTP, $diferencaPrazo, $vmAdicional, $cubagemRodo, $percentAdicional, $expedidor, $herdeirocomercial, $esporadico, $protestavel, $tomador, $isentoICMS, $grupo, $cobraSeguro, $opBloqueada, $isencaoCubagem, $interno, $atualizaEmail, $operacaoRodo, $operadorCourier, $isenscaoCubagem, $redespacho, $webService, $cabecalho, $rodape, $pesoMaximoRodo, $pesoMinimoRodo, $pesoMaximoCourier, $pesoMinimoCourier, $analiseEnvios, $fxInicio, $tabfxFim, $token, $mediaEnvio, $indicadorCon, $dataCriacao, $dataAlteracao, $prazoExtra, $contatoEmail, $contatoTelefone)
     {
         $this->id = $id;
         $this->grupoId = $grupoId;
@@ -150,6 +152,8 @@ class cliente
         $this->dataCriacao = $dataCriacao;
         $this->dataAlteracao = $dataAlteracao;
         $this->prazoExtra = $prazoExtra;
+        $this->contatoEmail = $contatoEmail;
+        $this->contatoTelefone = $contatoTelefone;
     }
 
     // Métodos para retornar os dados do usuário
@@ -429,6 +433,14 @@ class cliente
     {
         return $this->prazoExtra;
     }
+    public function getContatoEmail()
+    {
+        return $this->contatoEmail;
+    }
+    public function getContatoTelefone()
+    {
+        return $this->contatoTelefone;
+    }
 
     // public static function newCliente($cliente)
     // {
@@ -468,7 +480,11 @@ class cliente
 
     public static function getSingleClient($cnpj)
     {
-        $query = "SELECT `cli_id`, `cli_id_grupo_cliente`, `cli_id_executivo`, `cli_id_cliente_contato`, `cli_id_operador_atendente`, `cli_status`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_fantasia`, `cli_dado_ie`, `cliente_dado_id_integrador_remoto`, `cliente_dado_id_integrador_coleta`, `cli_end_pais`, `cli_end_uf`, `cli_end_cep`, `cli_end_municipio`, `cli_end_bairro`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_base_operacional`, `cli_end_cod_municipal`, `cli_fin_prazo_pagamento`, `cli_fin_ciclo_fatura`, `cli_fin_cris_grupo`, `cli_fin_base_calc_icms`, `cli_fin_tipo_documento`, `cli_fin_tp_remuneracao`, `cli_fin_tp_remuneracao_valor`, `cli_fin_tp_remuneracao_courier`, `cli_fin_diferenca_minima_valor`, `cli_fin_adi_ftp`, `cli_fin_diferenca_prazo`, `cli_fin_vm_adicional`, `cli_fin_fatura_cubagem_rodo`, `cli_fin_percent_adicional`, `cli_cond_expedidor`, `cli_cond_herdeiro_comercial`, `cli_cond_esporadico`, `cli_cond_protestavel`, `cli_cond_tomador`, `cli_cond_isento_icms`, `cli_cond_grupo`, `cli_cond_cobra_seguro`, `cli_cond_op_bloqueada`, `cli_cond_isencao_cubagem_rodo`, `cli_rodo_interno`, `cli_cond_atualiza_email`, `cli_cond_operacao_rodo`, `cli_cond_operacao_courier`, `cli_cond_isencao_cubagem`, `cli_cond_redespacho`, `cli_cond_webservice`, `cli_email_cabecalho`, `cli_email_rodape`, `cli_espec_peso_maximo_rodo`, `cli_espec_peso_minimo_rodo`, `cli_espec_peso_maximo_courier`, `cli_espec_peso_minimo_courier`, `cli_espec_analise_envios`, `cli_fx_inicio`, `cli_tab_fx_fim`, `cli_token`, `cli_media_envio`, `cli_indicador_con`, `cli_data_criacao`, `cli_data_alteracao`, `cli_data_prazo_extra` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpj'";
+        $query = "SELECT `cli_id`, `cli_id_grupo_cliente`, `cli_id_executivo`, `cli_id_cliente_contato`, `cli_id_operador_atendente`, `cli_status`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_fantasia`, `cli_dado_ie`, `cliente_dado_id_integrador_remoto`, `cliente_dado_id_integrador_coleta`, `cli_end_pais`, `cli_end_uf`, `cli_end_cep`, `cli_end_municipio`, `cli_end_bairro`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_base_operacional`, `cli_end_cod_municipal`, `cli_fin_prazo_pagamento`, `cli_fin_ciclo_fatura`, `cli_fin_cris_grupo`, `cli_fin_base_calc_icms`, `cli_fin_tipo_documento`, `cli_fin_tp_remuneracao`, `cli_fin_tp_remuneracao_valor`, `cli_fin_tp_remuneracao_courier`, `cli_fin_diferenca_minima_valor`, `cli_fin_adi_ftp`, `cli_fin_diferenca_prazo`, `cli_fin_vm_adicional`, `cli_fin_fatura_cubagem_rodo`, `cli_fin_percent_adicional`, `cli_cond_expedidor`, `cli_cond_herdeiro_comercial`, `cli_cond_esporadico`, `cli_cond_protestavel`, `cli_cond_tomador`, `cli_cond_isento_icms`, `cli_cond_grupo`, `cli_cond_cobra_seguro`, `cli_cond_op_bloqueada`, `cli_cond_isencao_cubagem_rodo`, `cli_rodo_interno`, `cli_cond_atualiza_email`, `cli_cond_operacao_rodo`, `cli_cond_operacao_courier`, `cli_cond_isencao_cubagem`, `cli_cond_redespacho`, `cli_cond_webservice`, `cli_email_cabecalho`, `cli_email_rodape`, `cli_espec_peso_maximo_rodo`, `cli_espec_peso_minimo_rodo`, `cli_espec_peso_maximo_courier`, `cli_espec_peso_minimo_courier`, `cli_espec_analise_envios`, `cli_fx_inicio`, `cli_tab_fx_fim`, `cli_token`, `cli_media_envio`, `cli_indicador_con`, `cli_data_criacao`, `cli_data_alteracao`, `cli_data_prazo_extra`, `clictt_email`, `clictt_telefone` FROM `tb_cliente` 
+        
+        LEFT JOIN `tb_cliente_contato` ON `tb_cliente`.`cli_id` = `tb_cliente_contato`.`clictt_id_cliente` 
+        
+        WHERE `cli_dado_cnpj` = '$cnpj'";
 
         $sql = connectionFactory::connect()->prepare($query);
         $sql->execute();
@@ -546,13 +562,166 @@ class cliente
                 $sql['cli_indicador_con'],
                 $sql['cli_data_criacao'],
                 $sql['cli_data_alteracao'],
-                $sql['cli_data_prazo_extra']
+                $sql['cli_data_prazo_extra'],
+                $sql['clictt_email'],
+                $sql['clictt_telefone']
             );
             return $cliente;
         }
     }
 
-    public static function conditionedUpdate($cnpj, $nRazaosocial, $nFantasia, $nCPF, $nCNPJ, $nIE, $nPais, $nUF, $nCEP, $nMunicipio, $nBairro, $nLogradouro, $nNumero, $nComplemento, $nCMUN)
+    public static function insertClient($cliente)
+    {
+        $id = $cliente->id;
+        $grupoId = $cliente->grupoId;
+        $executivoId = $cliente->executivoId;
+        $contatoId = $cliente->contatoId;
+        $operadorAtendenteId = $cliente->operadorAtendenteId;
+        $status = $cliente->status;
+        $cpf = $cliente->cpf;
+        $cnpj = $cliente->cnpj;
+        $razao = $cliente->razao;
+        $fantasia = $cliente->fantasia;
+        $ie = $cliente->ie;
+        $integradorRemoto = $cliente->integradorRemoto;
+        $integradorColeta = $cliente->integradorColeta;
+        $pais = $cliente->pais;
+        $uf = $cliente->uf;
+        $cep = $cliente->cep;
+        $municipio = $cliente->municipio;
+        $bairro = $cliente->bairro;
+        $logradouro = $cliente->logradouro;
+        $numero = $cliente->numero;
+        $complemento = $cliente->complemento;
+        $baseOperacional = $cliente->baseOperacional;
+        $codMun = $cliente->codMun;
+        $prazoPagamento = $cliente->prazoPagamento;
+        $cicloFatura = $cliente->cicloFatura;
+        $crisGrupo = $cliente->crisGrupo;
+        $calcIcms = $cliente->calcIcms;
+        $documento = $cliente->documento;
+        $remuneracao = $cliente->remuneracao;
+        $remuneracaoValor = $cliente->remuneracaoValor;
+        $remuneracaoCourrier = $cliente->remuneracaoCourrier;
+        $diferencaMinimaValor = $cliente->diferencaMinimaValor;
+        $adiFTP = $cliente->adiFTP;
+        $diferencaPrazo = $cliente->diferencaPrazo;
+        $vmAdicional = $cliente->vmAdicional;
+        $cubagemRodo = $cliente->cubagemRodo;
+        $percentAdicional = $cliente->percentAdicional;
+        $expedidor = $cliente->expedidor;
+        $herdeirocomercial = $cliente->herdeirocomercial;
+        $esporadico = $cliente->esporadico;
+        $protestavel = $cliente->protestavel;
+        $tomador = $cliente->tomador;
+        $isentoICMS = $cliente->isentoICMS;
+        $grupo = $cliente->grupo;
+        $cobraSeguro = $cliente->cobraSeguro;
+        $opBloqueada = $cliente->opBloqueada;
+        $isencaoCubagem = $cliente->isencaoCubagem;
+        $interno = $cliente->interno;
+        $atualizaEmail = $cliente->atualizaEmail;
+        $operacaoRodo = $cliente->operacaoRodo;
+        $operadorCourier = $cliente->operadorCourier;
+        $isenscaoCubagem = $cliente->isenscaoCubagem;
+        $redespacho = $cliente->redespacho;
+        $webService = $cliente->webService;
+        $cabecalho = $cliente->cabecalho;
+        $rodape = $cliente->rodape;
+        $pesoMaximoRodo = $cliente->pesoMaximoRodo;
+        $pesoMinimoRodo = $cliente->pesoMinimoRodo;
+        $pesoMaximoCourier = $cliente->pesoMaximoCourier;
+        $pesoMinimoCourier = $cliente->pesoMinimoCourier;
+        $analiseEnvios = $cliente->analiseEnvios;
+        $fxInicio = $cliente->fxInicio;
+        $tabfxFim = $cliente->tabfxFim;
+        $token = $cliente->token;
+        $mediaEnvio = $cliente->mediaEnvio;
+        $indicadorCon = $cliente->indicadorCon;
+        $dataCriacao = $cliente->dataCriacao;
+        $dataAlteracao = $cliente->dataAlteracao;
+        $prazoExtra = $cliente->prazoExtra;
+
+        if (self::verifyExistence($cnpj, $cpf)) {
+            $query = "INSERT INTO `tb_cliente`(`cli_id`, `cli_id_grupo_cliente`, `cli_id_executivo`, `cli_id_cliente_contato`, `cli_id_operador_atendente`, `cli_status`, `cli_dado_cpf`, `cli_dado_cnpj`, `cli_dado_razao`, `cli_dado_fantasia`, `cli_dado_ie`, `cliente_dado_id_integrador_remoto`, `cliente_dado_id_integrador_coleta`, `cli_end_pais`, `cli_end_uf`, `cli_end_cep`, `cli_end_municipio`, `cli_end_bairro`, `cli_end_logradouro`, `cli_end_numero`, `cli_end_complemento`, `cli_end_base_operacional`, `cli_end_cod_municipal`, `cli_fin_prazo_pagamento`, `cli_fin_ciclo_fatura`, `cli_fin_cris_grupo`, `cli_fin_base_calc_icms`, `cli_fin_tipo_documento`, `cli_fin_tp_remuneracao`, `cli_fin_tp_remuneracao_valor`, `cli_fin_tp_remuneracao_courier`, `cli_fin_diferenca_minima_valor`, `cli_fin_adi_ftp`, `cli_fin_diferenca_prazo`, `cli_fin_vm_adicional`, `cli_fin_fatura_cubagem_rodo`, `cli_fin_percent_adicional`, `cli_cond_expedidor`, `cli_cond_herdeiro_comercial`, `cli_cond_esporadico`, `cli_cond_protestavel`, `cli_cond_tomador`, `cli_cond_isento_icms`, `cli_cond_grupo`, `cli_cond_cobra_seguro`, `cli_cond_op_bloqueada`, `cli_cond_isencao_cubagem_rodo`, `cli_rodo_interno`, `cli_cond_atualiza_email`, `cli_cond_operacao_rodo`, `cli_cond_operacao_courier`, `cli_cond_isencao_cubagem`, `cli_cond_redespacho`, `cli_cond_webservice`, `cli_email_cabecalho`, `cli_email_rodape`, `cli_espec_peso_maximo_rodo`, `cli_espec_peso_minimo_rodo`, `cli_espec_peso_maximo_courier`, `cli_espec_peso_minimo_courier`, `cli_espec_analise_envios`, `cli_fx_inicio`, `cli_tab_fx_fim`, `cli_token`, `cli_media_envio`, `cli_indicador_con`, `cli_data_criacao`, `cli_data_alteracao`, `cli_data_prazo_extra`) VALUES (
+        '$id',
+        '$grupoId',
+        '$executivoId',
+        '$contatoId',
+        '$operadorAtendenteId',
+        '$status',
+        '$cpf',
+        '$cnpj',
+        '$razao',
+        '$fantasia',
+        '$ie',
+        '$integradorRemoto',
+        '$integradorColeta',
+        '$pais',
+        '$uf',
+        '$cep',
+        '$municipio',
+        '$bairro',
+        '$logradouro',
+        '$numero',
+        '$complemento',
+        '$baseOperacional',
+        '$codMun',
+        '$prazoPagamento',
+        '$cicloFatura',
+        '$crisGrupo',
+        '$calcIcms',
+        '$documento',
+        '$remuneracao',
+        '$remuneracaoValor',
+        '$remuneracaoCourrier',
+        '$diferencaMinimaValor',
+        '$adiFTP',
+        '$diferencaPrazo',
+        '$vmAdicional',
+        '$cubagemRodo',
+        '$percentAdicional',
+        '$expedidor',
+        '$herdeirocomercial',
+        '$esporadico',
+        '$protestavel',
+        '$tomador',
+        '$isentoICMS',
+        '$grupo',
+        '$cobraSeguro',
+        '$opBloqueada',
+        '$isencaoCubagem',
+        '$interno',
+        '$atualizaEmail',
+        '$operacaoRodo',
+        '$operadorCourier',
+        '$isenscaoCubagem',
+        '$redespacho',
+        '$webService',
+        '$cabecalho',
+        '$rodape',
+        '$pesoMaximoRodo',
+        '$pesoMinimoRodo',
+        '$pesoMaximoCourier',
+        '$pesoMinimoCourier',
+        '$analiseEnvios',
+        '$fxInicio',
+        '$tabfxFim',
+        '$token',
+        '$mediaEnvio',
+        '$indicadorCon',
+        '$dataCriacao',
+        '$dataAlteracao',
+        '$prazoExtra')";
+
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        } else {
+            echo frontend::alert('plus', 'warning', 'Esse cliente já está registrado.');
+        }
+    }
+
+    public static function conditionedUpdate($cnpj, $nRazaosocial, $nFantasia, $nCPF, $nCNPJ, $nIE, $nPais, $nUF, $nCEP, $nMunicipio, $nBairro, $nLogradouro, $nNumero, $nComplemento, $nCMUN, $nRedespacho, $nIsencaoICMS, $nIsencaoCubagem, $nHerdeiro, $nEmail, $nTelefone)
     {
         $currentClient = self::getSingleClient($cnpj);
 
@@ -600,12 +769,36 @@ class cliente
         if ($currentClient->codMun != $nCMUN) {
             $colunasAlteradas[] = "cli_end_cod_municipal = '$nCMUN'";
         }
+        if ($currentClient->redespacho != $nRedespacho) {
+            $colunasAlteradas[] = "cli_cond_redespacho = $nRedespacho";
+        }
+        if ($currentClient->isentoICMS != $nIsencaoICMS) {
+            $colunasAlteradas[] = "cli_cond_isento_icms = $nIsencaoICMS";
+        }
+        if ($currentClient->isencaoCubagem != $nIsencaoCubagem) {
+            $colunasAlteradas[] = "cli_cond_isencao_cubagem = $nIsencaoCubagem";
+        }
+        if ($currentClient->herdeirocomercial != $nHerdeiro) {
+            $colunasAlteradas[] = "cli_cond_herdeiro_comercial = $nHerdeiro";
+        }
+        if ($currentClient->herdeirocomercial != $nHerdeiro) {
+            $colunasAlteradas[] = "cli_cond_herdeiro_comercial = $nHerdeiro";
+        }
+        if ($currentClient->contatoEmail != $nEmail) {
+            $query = "UPDATE `tb_cliente_contato` SET  `clictt_email` = '$nEmail' WHERE `clictt_id_cliente` = '$currentClient->id'";
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        }
+        if ($currentClient->contatoTelefone != $nTelefone) {
+            $query = "UPDATE `tb_cliente_contato` SET  `clictt_telefone` = '$nTelefone' WHERE `clictt_id_cliente` = '$currentClient->id'";
+            $sql = connectionFactory::connect()->prepare($query);
+            $sql->execute();
+        }
 
-        $data = connectionFactory::dateGetter();
+        $data = frontend::dateGetter();
         // Se houver colunas alteradas, construa e execute a consulta UPDATE
         if (!empty($colunasAlteradas)) {
             $query = "UPDATE `tb_cliente` SET " . implode(', ', $colunasAlteradas) . ", `cli_data_alteracao` = '$data' WHERE `cli_dado_cnpj` = $cnpj";
-            echo $query;
             $sql = connectionFactory::connect()->prepare($query);
             $sql->execute();
         }
@@ -624,6 +817,21 @@ class cliente
         } else {
             return false;
         }
+    }
+
+    public static function idGetter($cnpjData, $cpfData)
+    {
+        $getter = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cnpjData'");
+        $getter->execute();
+        $getter = $getter->fetch();
+
+        if (empty($CNPJ)) {
+            $getter = connectionFactory::connect()->prepare("SELECT `cli_id` FROM `tb_cliente` WHERE `cli_dado_cnpj` = '$cpfData'");
+            $getter->execute();
+            $getter = $getter->fetch();
+        }
+
+        return $getter;
     }
 
     public static function getMainCTEData($chave)
